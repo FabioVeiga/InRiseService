@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InRiseService.Domain\InRiseService.Domain.csproj" />
-    <ProjectReference Include="..\InRiseService.Infrastructure\InRiseService.Infrastructure.csproj" />
+    <ProjectReference Include="..\InRiseService.Data\InRiseService.Data.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

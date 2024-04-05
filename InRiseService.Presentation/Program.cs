@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using InRiseService.Infrastructure.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ var secret = builder.Configuration.GetSection("AppSettings").GetValue<string>("S
 var key = Encoding.ASCII.GetBytes(secret);
 
 // Add services to the container.
+builder.Services.RegisterDependencies();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
