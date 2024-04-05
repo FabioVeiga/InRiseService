@@ -29,8 +29,10 @@ namespace InRiseService.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    Profile = table.Column<int>(type: "int", nullable: false),
                     Marketing = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Term = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Active = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     InsertIn = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdateIn = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DeleteIn = table.Column<DateTime>(type: "datetime(6)", nullable: false)

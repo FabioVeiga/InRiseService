@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using InRiseService.Domain.Enums;
 
 namespace InRiseService.Domain.Users
 {
@@ -25,6 +26,10 @@ namespace InRiseService.Domain.Users
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public string Password { get; set; } = default!;
 
+        [Display(Name = "Perfil")]
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public Profile Profile { get; set; }
+
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool Marketing { get; set; }
 
@@ -32,12 +37,13 @@ namespace InRiseService.Domain.Users
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool Term { get; set; }
 
-        public User(string name, string nickname, string email, string password, bool marketing, bool term) 
+        public User(string name, string nickname, string email, string password, Profile profile, bool marketing, bool term) 
         {
             Name = name;
             Nickname = nickname;
             Email = email;
             Password = password;
+            Profile = profile;
             Marketing = marketing;
             Term = term;
         }

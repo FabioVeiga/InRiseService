@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240405015618_Adicionando Usuario")]
+    [Migration("20240405143133_Adicionando Usuario")]
     partial class AdicionandoUsuario
     {
         /// <inheritdoc />
@@ -27,6 +27,9 @@ namespace InRiseService.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime>("DeleteIn")
                         .HasColumnType("datetime(6)");
@@ -54,6 +57,9 @@ namespace InRiseService.Data.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("Profile")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Term")
                         .HasColumnType("tinyint(1)");

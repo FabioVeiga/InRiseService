@@ -25,6 +25,9 @@ namespace InRiseService.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<DateTime>("DeleteIn")
                         .HasColumnType("datetime(6)");
 
@@ -51,6 +54,9 @@ namespace InRiseService.Data.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("Profile")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Term")
                         .HasColumnType("tinyint(1)");
