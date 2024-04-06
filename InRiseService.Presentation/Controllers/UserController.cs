@@ -2,6 +2,7 @@ using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.DTOs.UserDto;
 using InRiseService.Application.Interfaces;
+using InRiseService.Application.UserDto;
 using InRiseService.Domain.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -41,14 +42,21 @@ namespace InRiseService.Presentation.Controllers
                 var checkEmail = await _userService.CheckEmailIfExists(request.Email);
                 if(checkEmail is not null)
                 {
-                    ModelState.AddModelError(nameof(request.Email), "E-mail  já cadastrado.");
+                    ModelState.AddModelError(nameof(request.Email), "Já cadastrado.");
+                    return BadRequest(new ValidationProblemDetails(ModelState));
+                }
+                var checkPhoneNumber = await _userService.CheckPhoneNumberIfExists(request.PhoneNumber);
+                if(checkPhoneNumber is not null)
+                {
+                    ModelState.AddModelError(nameof(request.Email), "Já cadastrado.");
                     return BadRequest(new ValidationProblemDetails(ModelState));
                 }
                 var mapped = _mapper.Map<User>(request);
                 var result = await _userService.InsertAsync(mapped);
+                var mappedResponse = _mapper.Map<UserDtoResponse>(result);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
-                    result
+                    mappedResponse
                 );
                 return Ok(response);
             }

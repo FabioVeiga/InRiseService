@@ -1,5 +1,6 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.UserDto;
+using InRiseService.Application.UserDto;
 using InRiseService.Domain.Users;
 
 namespace InRiseService.Infrastructure.Configurations
@@ -9,6 +10,7 @@ namespace InRiseService.Infrastructure.Configurations
         public Mappings()
         {
             CreateMap<User,UserDtoInsertRequest>().ReverseMap();
+            CreateMap<User,UserDtoResponse>().ReverseMap();
         }
     }
 }

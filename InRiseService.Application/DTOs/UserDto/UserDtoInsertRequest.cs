@@ -15,12 +15,17 @@ namespace InRiseService.Application.DTOs.UserDto
         [Required(ErrorMessage = "{0} é obrigatório!")]
         [MinLength(5, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
-        public string Nickname { get; set; } = default!;
+        public string Lastname { get; set; } = default!;
 
         [Display(Name = "E-mail")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         [EmailAddress(ErrorMessage = "{0} deve ser um e-mail válido")]
         public string Email { get; set; } = default!;
+
+        [Display(Name = "Telemóvel")]
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        [RegularExpression(@"^\+(?:[0-9] ?){6,14}[0-9]$", ErrorMessage = "{0}  não está no formato correto! ex: +44 20 1234 5678")]
+        public string PhoneNumber { get; set; } = default!;
 
         [Display(Name = "Senha")]
         [Required(ErrorMessage = "{0} é obrigatório!")]

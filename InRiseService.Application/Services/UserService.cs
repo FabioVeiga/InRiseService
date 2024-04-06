@@ -31,6 +31,19 @@ namespace InRiseService.Application.Services
             }
         }
 
+        public async Task<User?> CheckPhoneNumberIfExists(string phoneNumber)
+        {
+            try
+            {
+                return await _context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(UserService)}::{nameof(CheckEmailIfExists)}] - Exception: {ex}");
+                throw;
+            }
+        }
+
         public async Task<User> InsertAsync(User user)
         {
             try

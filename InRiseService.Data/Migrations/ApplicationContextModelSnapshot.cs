@@ -35,8 +35,16 @@ namespace InRiseService.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<bool>("EmailValide")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<DateTime>("InsertIn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Lastname")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<bool>("Marketing")
                         .HasColumnType("tinyint(1)");
@@ -46,14 +54,16 @@ namespace InRiseService.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("Nickname")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("PhoneNumberValide")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("Profile")
                         .HasColumnType("int");
