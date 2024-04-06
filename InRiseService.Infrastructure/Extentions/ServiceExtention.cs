@@ -10,6 +10,7 @@ namespace InRiseService.Infrastructure.Extentions
         public static void RegisterDependencies(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Mappings));
+            services.AddScoped<IUserProfileService,UserProfileService>();
             services.AddScoped<IUserService,UserService>();
         }
     }

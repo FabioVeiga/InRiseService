@@ -28,7 +28,7 @@ namespace InRiseService.Domain.Users
 
         [Display(Name = "Perfil")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
-        public Profile Profile { get; set; }
+        public EnumProfile Profile { get; set; }
 
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool Marketing { get; set; }
@@ -37,7 +37,7 @@ namespace InRiseService.Domain.Users
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool Term { get; set; }
 
-        public User(string name, string nickname, string email, string password, Profile profile, bool marketing, bool term) 
+        public User(string name, string nickname, string email, string password, EnumProfile profile, bool marketing, bool term) 
         {
             Name = name;
             Nickname = nickname;

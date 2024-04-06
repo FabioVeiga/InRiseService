@@ -22,6 +22,7 @@
     <ProjectReference Include="..\InRiseService.Domain\InRiseService.Domain.csproj" />
     <ProjectReference Include="..\InRiseService.Infrastructure\InRiseService.Infrastructure.csproj" />
     <ProjectReference Include="..\InRiseService.Data\InRiseService.Data.csproj" />
+    <ProjectReference Include="..\InRiseService.Util\InRiseService.Util.csproj" />
   </ItemGroup>
 
 </Project>
