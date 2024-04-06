@@ -38,6 +38,12 @@ namespace InRiseService.Presentation.Controllers
                     ModelState.AddModelError(nameof(request.Profile), "Não existe!");
                     return BadRequest(new ValidationProblemDetails(ModelState));
                 }
+                var checkEmail = await _userService.CheckEmailIfExists(request.Email);
+                if(checkEmail is not null)
+                {
+                    ModelState.AddModelError(nameof(request.Email), "E-mail  já cadastrado.");
+                    return BadRequest(new ValidationProblemDetails(ModelState));
+                }
                 var mapped = _mapper.Map<User>(request);
                 var result = await _userService.InsertAsync(mapped);
                 var response = new ApiResponse<dynamic>(

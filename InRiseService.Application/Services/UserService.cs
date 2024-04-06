@@ -2,6 +2,7 @@ using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
 using InRiseService.Domain.Users;
 using InRiseService.Util;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace InRiseService.Application.Services
@@ -15,6 +16,19 @@ namespace InRiseService.Application.Services
         {
             _context = context;
             _logger = logger;
+        }
+
+        public async Task<User?> CheckEmailIfExists(string email)
+        {
+            try
+            {
+                return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(UserService)}::{nameof(CheckEmailIfExists)}] - Exception: {ex}");
+                throw;
+            }
         }
 
         public async Task<User> InsertAsync(User user)
