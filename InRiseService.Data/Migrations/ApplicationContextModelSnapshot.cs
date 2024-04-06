@@ -28,7 +28,7 @@ namespace InRiseService.Data.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime>("DeleteIn")
+                    b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
@@ -61,7 +61,7 @@ namespace InRiseService.Data.Migrations
                     b.Property<bool>("Term")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime>("UpdateIn")
+                    b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");

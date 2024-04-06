@@ -3,6 +3,11 @@
   <ItemGroup>
     <ProjectReference Include="..\InRiseService.Domain\InRiseService.Domain.csproj" />
     <ProjectReference Include="..\InRiseService.Data\InRiseService.Data.csproj" />
+    <ProjectReference Include="..\InRiseService.Util\InRiseService.Util.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt" Version="1.0.0" />
   </ItemGroup>
 
   <PropertyGroup>

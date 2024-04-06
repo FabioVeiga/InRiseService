@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using InRiseService.Domain.Enums;
 
 namespace InRiseService.Application.DTOs.UserDto
 {
-    public class UserDtoInsertRequest
+    public class UserDtoInsertRequest : IValidatableObject
     {
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
@@ -25,11 +26,23 @@ namespace InRiseService.Application.DTOs.UserDto
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public string Password { get; set; } = default!;
 
+        [Display(Name = "Perfil")]
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public EnumProfile Profile { get; set; }
+
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool Marketing { get; set; }
 
         [Display(Name = "Termos")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool Term { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var results = new List<ValidationResult>();
+            if (!Term)
+                results.Add(new ValidationResult("É necessário aceitar os termos para continuar.", new[] { nameof(Term) }));
+            return results;
+        }
     }
 }

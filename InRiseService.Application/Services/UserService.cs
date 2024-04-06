@@ -1,6 +1,7 @@
 using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
 using InRiseService.Domain.Users;
+using InRiseService.Util;
 using Microsoft.Extensions.Logging;
 
 namespace InRiseService.Application.Services
@@ -21,13 +22,14 @@ namespace InRiseService.Application.Services
             try
             {
                 user.InsertIn = DateTime.Now;
+                user.Password = PasswordHelper.EncryptPassword(user.Password);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return user;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError($"[{nameof(UserService)}::{nameof(InsertAsync)}] - Exception: {ex}");
                 throw;
             }
         }

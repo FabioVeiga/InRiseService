@@ -34,8 +34,8 @@ namespace InRiseService.Data.Migrations
                     Term = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Active = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     InsertIn = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdateIn = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DeleteIn = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    UpdateIn = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    DeleteIn = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {

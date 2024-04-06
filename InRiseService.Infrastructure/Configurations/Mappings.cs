@@ -8,7 +8,7 @@ namespace InRiseService.Infrastructure.Configurations
     {
         public Mappings()
         {
-            CreateMap<User,UserDtoInsertRequest>();
+            CreateMap<User,UserDtoInsertRequest>().ReverseMap();
         }
     }
 }

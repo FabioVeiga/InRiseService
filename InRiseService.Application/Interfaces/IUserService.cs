@@ -1,4 +1,3 @@
-using InRiseService.Domain.Enums;
 using InRiseService.Domain.Users;
 
 namespace InRiseService.Application.Interfaces
