@@ -4,6 +4,7 @@ using InRiseService.Application.DTOs.UserDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Application.UserDto;
 using InRiseService.Domain.Users;
+using InRiseService.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -68,6 +69,69 @@ namespace InRiseService.Presentation.Controllers
                     "Erro ao inserir usuário!"
                 );
                 return StatusCode(StatusCodes.Status500InternalServerError,response);
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UserDtoUpdateRequest request)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var userId = await _userService.GetByIdAsync(request.Id);
+                if (userId is null)
+                {
+                    ModelState.AddModelError(nameof(request.Id), "Não existe!");
+                    return BadRequest(new ValidationProblemDetails(ModelState));
+                }
+
+                var checkEmail = await _userService.CheckEmailIfExists(request.Email);
+                if (checkEmail is not null && request.Id != checkEmail.Id)
+                {
+                    ModelState.AddModelError(nameof(request.Email), "Já cadastrado.");
+                    return BadRequest(new ValidationProblemDetails(ModelState));
+                }
+                else
+                {
+                    if(userId.Email != request.Email)
+                    {
+                        userId.EmailValide = false;
+                    }
+                }
+
+                if(userId.PhoneNumber != request.PhoneNumber) 
+                { 
+                    userId.PhoneNumberValide = false;
+                }
+
+                if (request.Password is null)
+                    userId.Password = userId.Password;
+                else
+                    userId.Password = PasswordHelper.EncryptPassword(request.Password);
+
+                userId.Name= request.Name;
+                userId.Email = request.Email;
+                userId.Lastname= request.Lastname;
+                userId.PhoneNumber = request.PhoneNumber;
+
+                var result = await _userService.UpdateAsync(userId);
+                var mappedResponse = _mapper.Map<UserDtoResponse>(result);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status202Accepted,
+                    mappedResponse
+                );
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao alterar o usuário!"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
     }

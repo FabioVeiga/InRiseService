@@ -49,6 +49,8 @@ namespace InRiseService.Domain.Users
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool Term { get; set; }
 
+        public User(){}
+
         public User(string name, string lastname, string email, string phoneNumber, string password, EnumProfile profile, bool marketing, bool term) 
         {
             Name = name;

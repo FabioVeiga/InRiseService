@@ -7,5 +7,8 @@ namespace InRiseService.Application.Interfaces
         Task<User> InsertAsync(User user);
         Task<User?> CheckEmailIfExists(string email);
         Task<User?> CheckPhoneNumberIfExists(string phoneNumber);
+        Task<User> UpdateAsync(User user);
+        Task<User?> GetByIdAsync(int id);
+
     }
 }
