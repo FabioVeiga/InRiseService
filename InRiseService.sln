@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InRiseService.Infrastructur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InRiseService.Data", "InRiseService.Data\InRiseService.Data.csproj", "{F09F17A3-5BE9-48B6-82D0-1CFA313388FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InRiseService.Util", "InRiseService.Util\InRiseService.Util.csproj", "{887C8DE6-B372-48F8-B6C5-E209D44D0139}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{F09F17A3-5BE9-48B6-82D0-1CFA313388FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F09F17A3-5BE9-48B6-82D0-1CFA313388FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F09F17A3-5BE9-48B6-82D0-1CFA313388FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{887C8DE6-B372-48F8-B6C5-E209D44D0139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{887C8DE6-B372-48F8-B6C5-E209D44D0139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{887C8DE6-B372-48F8-B6C5-E209D44D0139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{887C8DE6-B372-48F8-B6C5-E209D44D0139}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
