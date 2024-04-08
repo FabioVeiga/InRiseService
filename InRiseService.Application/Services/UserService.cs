@@ -1,3 +1,4 @@
+using InRiseService.Application.DTOs.UserDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
 using InRiseService.Domain.Users;
@@ -57,6 +58,36 @@ namespace InRiseService.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError($"[{nameof(UserService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
+
+        public async Task<User> UpdateAsync(User user)
+        {
+            try
+            {
+                user.UpdateIn = DateTime.Now;
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+                return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(UserService)}::{nameof(UpdateAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
+
+        public async Task<User?> GetByIdAsync(int id)
+        {
+            try
+            {
+                return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+                    
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(UserService)}::{nameof(GetByIdAsync)}] - Exception: {ex}");
                 throw;
             }
         }

@@ -11,6 +11,7 @@ namespace InRiseService.Infrastructure.Configurations
         {
             CreateMap<User,UserDtoInsertRequest>().ReverseMap();
             CreateMap<User,UserDtoResponse>().ReverseMap();
+            CreateMap<User, UserDtoUpdateRequest>().ReverseMap();
         }
     }
 }
