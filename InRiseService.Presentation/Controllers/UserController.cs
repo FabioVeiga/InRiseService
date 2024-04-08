@@ -90,6 +90,8 @@ namespace InRiseService.Presentation.Controllers
                 if (!userId.Active)
                 {
                     ModelState.AddModelError(nameof(userId.Active), "Usuário desativado");
+                    if(userId.DeleteIn is not null)
+                        ModelState.AddModelError(nameof(userId.DeleteIn), "Usuário deletado");
                     return BadRequest(new ValidationProblemDetails(ModelState));
                 }
 
@@ -136,6 +138,41 @@ namespace InRiseService.Presentation.Controllers
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao alterar o usuário!"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpDelete]
+        [Route("/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var userId = await _userService.GetByIdAsync(id);
+                if (userId is null)
+                {
+                    ModelState.AddModelError(nameof(id), "Não existe!");
+                    return BadRequest(new ValidationProblemDetails(ModelState));
+                }
+
+                var result = await _userService.DeleteAsync(userId);
+                var mappedResponse = _mapper.Map<UserDtoResponse>(result);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status200OK,
+                    mappedResponse
+                );
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao deletar usuário!"
                );
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }

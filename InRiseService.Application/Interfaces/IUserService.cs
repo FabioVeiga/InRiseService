@@ -9,6 +9,6 @@ namespace InRiseService.Application.Interfaces
         Task<User?> CheckPhoneNumberIfExists(string phoneNumber);
         Task<User> UpdateAsync(User user);
         Task<User?> GetByIdAsync(int id);
-
+        Task<User> DeleteAsync(User user);
     }
 }

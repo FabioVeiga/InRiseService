@@ -91,5 +91,22 @@ namespace InRiseService.Application.Services
                 throw;
             }
         }
+
+        public async Task<User> DeleteAsync(User user)
+        {
+            try
+            {
+                user.DeleteIn= DateTime.Now;
+                user.Active = false;
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+                return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(UserService)}::{nameof(DeleteAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
     }
 }
