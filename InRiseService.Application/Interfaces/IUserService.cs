@@ -11,5 +11,6 @@ namespace InRiseService.Application.Interfaces
         Task<User?> GetByIdAsync(int id);
         Task<User> DeleteAsync(User user);
         Task<User> ActivateAsync(User user);
+        Task<User> DectivateAsync(User user);
     }
 }

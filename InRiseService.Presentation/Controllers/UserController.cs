@@ -144,7 +144,7 @@ namespace InRiseService.Presentation.Controllers
         }
 
         [HttpDelete]
-        [Route("/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -160,6 +160,41 @@ namespace InRiseService.Presentation.Controllers
                 }
 
                 var result = await _userService.DeleteAsync(userId);
+                var mappedResponse = _mapper.Map<UserDtoResponse>(result);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status200OK,
+                    mappedResponse
+                );
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao deletar usuário!"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpPut]
+        [Route("deactivate/{id}")]
+        public async Task<IActionResult> Deactivate(int id)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var userId = await _userService.GetByIdAsync(id);
+                if (userId is null)
+                {
+                    ModelState.AddModelError(nameof(id), "Não existe!");
+                    return BadRequest(new ValidationProblemDetails(ModelState));
+                }
+
+                var result = await _userService.DectivateAsync(userId);
                 var mappedResponse = _mapper.Map<UserDtoResponse>(result);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,

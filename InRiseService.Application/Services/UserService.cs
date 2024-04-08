@@ -126,5 +126,22 @@ namespace InRiseService.Application.Services
                 throw;
             }
         }
+
+        public async Task<User> DectivateAsync(User user)
+        {
+            try
+            {
+                user.Active = false;
+                user.UpdateIn = DateTime.Now;
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+                return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(UserService)}::{nameof(DectivateAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
     }
 }
