@@ -177,5 +177,40 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
+
+        [HttpPut]
+        [Route("activate/{id}")]
+        public async Task<IActionResult> Activate(int id)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var userId = await _userService.GetByIdAsync(id);
+                if (userId is null)
+                {
+                    ModelState.AddModelError(nameof(id), "Não existe!");
+                    return BadRequest(new ValidationProblemDetails(ModelState));
+                }
+
+                var result = await _userService.ActivateAsync(userId);
+                var mappedResponse = _mapper.Map<UserDtoResponse>(result);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status200OK,
+                    mappedResponse
+                );
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao deletar usuário!"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
     }
 }
