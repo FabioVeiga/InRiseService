@@ -87,6 +87,12 @@ namespace InRiseService.Presentation.Controllers
                     return BadRequest(new ValidationProblemDetails(ModelState));
                 }
 
+                if (!userId.Active)
+                {
+                    ModelState.AddModelError(nameof(userId.Active), "Usuário desativado");
+                    return BadRequest(new ValidationProblemDetails(ModelState));
+                }
+
                 var checkEmail = await _userService.CheckEmailIfExists(request.Email);
                 if (checkEmail is not null && request.Id != checkEmail.Id)
                 {
