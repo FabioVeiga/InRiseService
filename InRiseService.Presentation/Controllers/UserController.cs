@@ -49,7 +49,7 @@ namespace InRiseService.Presentation.Controllers
                 var checkPhoneNumber = await _userService.CheckPhoneNumberIfExists(request.PhoneNumber);
                 if(checkPhoneNumber is not null)
                 {
-                    ModelState.AddModelError(nameof(request.Email), "Já cadastrado.");
+                    ModelState.AddModelError(nameof(request.PhoneNumber), "Já cadastrado.");
                     return BadRequest(new ValidationProblemDetails(ModelState));
                 }
                 var mapped = _mapper.Map<User>(request);
@@ -247,5 +247,69 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
+        
+        [HttpGet]
+        [Route("get-by-id/{id}")]
+        public async Task<IActionResult> FilterById(int id)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var userId = await _userService.GetByIdAsync(id);
+                if (userId is null)
+                {
+                    ModelState.AddModelError(nameof(id), "Não existe!");
+                    return BadRequest(new ValidationProblemDetails(ModelState));
+                }
+
+                var mappedResponse = _mapper.Map<UserDtoResponse>(userId);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status200OK,
+                    mappedResponse
+                );
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao buscar usuário!"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpGet]
+        [Route("get-by-filter")]
+        public async Task<IActionResult> FilterByRequest([FromQuery] UserDtoFilterRequest request)
+        {
+            try
+            {
+                var result = await _userService.GetUserByFilter(request);
+                if(result.Count() == 0)
+                {
+                    return NotFound();
+                }
+
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status200OK,
+                    result
+                );
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao buscar usuário!"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
     }
 }
