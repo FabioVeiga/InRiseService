@@ -4,6 +4,6 @@ namespace InRiseService.Application.DTOs.UserAutenticationDto
 {
     public class UserAutenticationDtoResponse : UserDtoResponse
     {
-        public UserAuntenticationAcessTokenDtoResponse AcessToken { get; set; } = null!;
+        public UserAutenticationAcessTokenDtoResponse AcessToken { get; set; } = null!;
     }
 }

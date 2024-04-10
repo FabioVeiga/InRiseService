@@ -18,7 +18,5 @@ namespace InRiseService.Application.DTOs.UserAutenticationDto
         [Display(Name = "Perfil")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public EnumProfile Profile { get; set; } = EnumProfile.User;
-
-        internal string Secret { get; set; } = string.Empty;
     }
 }

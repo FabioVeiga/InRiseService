@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using InRiseService.Infrastructure.Extentions;
-using Microsoft.Extensions.Configuration;
+using InRiseService.Application.DTOs.ApiSettingDto;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var secret = builder.Configuration.GetSection("AppSettings").GetValue<string>("Secret");
 var key = Encoding.ASCII.GetBytes(secret);
+builder.Services.Configure<AppSetting>(builder.Configuration.GetSection("AppSettings"));
 
 // Add services to the container.
 builder.Services.RegisterDependencies();
@@ -72,23 +73,6 @@ builder.Services.AddDbContext<ApplicationContext>(opt =>
     opt.UseMySql(builder.Configuration.GetConnectionString("WebApiDatabase"),
     new MySqlServerVersion(new Version(8, 0, 23)))
 );
-
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(x =>
-    {
-        x.RequireHttpsMetadata = false;
-        x.SaveToken = true;
-        x.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidateIssuer = false,
-            ValidateAudience = false
-        };
-    });
 
 var app = builder.Build();
 

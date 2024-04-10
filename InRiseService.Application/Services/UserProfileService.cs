@@ -36,6 +36,23 @@ namespace InRiseService.Application.Services
             }
         }
 
+        public int? GetById(int id)
+        {
+            try
+            {
+                var resultId = GetAllProfile().FirstOrDefault(x => x.Id == id);
+                if (resultId is null)  
+                    return null; // not found
+
+                return resultId.Id;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(UserProfileService)}::{nameof(GetProfileById)}] - Exception: {ex}");
+                throw;
+            }
+        }
+
         public ProfileDto? GetProfileById(int id)
         {
             try
