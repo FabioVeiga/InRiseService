@@ -3,6 +3,7 @@ using System;
 using InRiseService.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240410175847_Endereco Usuario ajuste 01")]
+    partial class EnderecoUsuarioajuste01
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,10 +107,8 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime>("InsertIn")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<bool>("IsDefault")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<int>("Number")
+                        .HasMaxLength(10)
                         .HasColumnType("int");
 
                     b.Property<string>("Observation")

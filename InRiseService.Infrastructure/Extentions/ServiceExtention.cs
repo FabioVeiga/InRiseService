@@ -13,6 +13,7 @@ namespace InRiseService.Infrastructure.Extentions
             services.AddScoped<IUserProfileService,UserProfileService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserAutenticationService, UserAutenticationService>();
+            services.AddScoped<IUserAddressService, UserAddressService>();
         }
     }
 }

@@ -1,10 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using InRiseService.Domain.Users;
 
-namespace InRiseService.Domain.UsersAddress
+namespace InRiseService.Application.DTOs.UserAddressDto
 {
-    public class UserAddress : BaseDomain
+    public class UserAddressDtoInsertRequest
     {
         [Display(Name = "Pais")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
@@ -47,8 +45,5 @@ namespace InRiseService.Domain.UsersAddress
         public bool IsDefault { get; set; } = default!;
 
         public int UserId { get; set; } = default!;
-        
-        [JsonIgnore]
-        public User User { get; set; } = default!;
     }
 }
