@@ -96,6 +96,20 @@ namespace InRiseService.Application.Services
             }
         }
 
+        public async Task<User?> GetByEmailAsync(string email)
+        {
+            try
+            {
+                return await _context.Users.FirstOrDefaultAsync(x => x.Email.ToUpper() == email.ToUpper());
+                    
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(UserService)}::{nameof(GetByIdAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
+
         public async Task<User> DeleteAsync(User user)
         {
             try
