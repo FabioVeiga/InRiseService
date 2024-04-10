@@ -289,9 +289,7 @@ namespace InRiseService.Presentation.Controllers
             {
                 var result = await _userService.GetUserByFilter(request);
                 if(result.TotalItems == 0)
-                {
                     return NotFound();
-                }
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
