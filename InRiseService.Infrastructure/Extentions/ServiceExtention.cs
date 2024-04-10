@@ -1,6 +1,8 @@
+using InRiseService.Application.DTOs.AppSettings;
 using InRiseService.Application.Interfaces;
 using InRiseService.Application.Services;
 using InRiseService.Infrastructure.Configurations;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace InRiseService.Infrastructure.Extentions
@@ -11,7 +13,7 @@ namespace InRiseService.Infrastructure.Extentions
         {
             services.AddAutoMapper(typeof(Mappings));
             services.AddScoped<IUserProfileService,UserProfileService>();
-            services.AddScoped<IUserService,UserService>();
+            services.AddScoped<IUserService, UserService>();
         }
     }
 }

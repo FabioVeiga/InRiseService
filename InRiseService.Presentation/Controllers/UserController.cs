@@ -1,11 +1,13 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
+using InRiseService.Application.DTOs.AppSettings;
 using InRiseService.Application.DTOs.UserDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Application.UserDto;
 using InRiseService.Domain.Users;
 using InRiseService.Util;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace InRiseService.Presentation.Controllers
@@ -18,13 +20,15 @@ namespace InRiseService.Presentation.Controllers
         private readonly IMapper _mapper;
         private readonly IUserProfileService _userProfileService;
         private readonly IUserService _userService;
+        private readonly PaginationDto _paginationDto;
 
-        public UserController(ILogger<UserController> logger, IMapper mapper, IUserProfileService userProfileService, IUserService userService)
+        public UserController(ILogger<UserController> logger, IMapper mapper, IUserProfileService userProfileService, IUserService userService, IOptions<PaginationDto> paginationDto)
         {
             _logger = logger;
             _mapper = mapper;
             _userProfileService = userProfileService;
             _userService = userService;
+            _paginationDto = paginationDto.Value;
         }
 
         [HttpPost]
