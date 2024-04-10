@@ -1,4 +1,5 @@
-﻿using InRiseService.Domain.Enums;
+﻿using InRiseService.Application.DTOs.PaginationDto;
+using InRiseService.Domain.Enums;
 
 namespace InRiseService.Application.DTOs.UserDto
 {
@@ -12,5 +13,6 @@ namespace InRiseService.Application.DTOs.UserDto
         public bool? Marketing { get; set; }
         public bool? Active { get; set; }
         public bool? Deleted { get; set; }
+        public PaginationRequest Pagination { get; set; } = default!;
     }
 }

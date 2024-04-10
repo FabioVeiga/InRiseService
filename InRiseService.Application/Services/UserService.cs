@@ -1,4 +1,6 @@
+using InRiseService.Application.DTOs.PaginationDto;
 using InRiseService.Application.DTOs.UserDto;
+using InRiseService.Application.Extentions;
 using InRiseService.Application.Interfaces;
 using InRiseService.Application.UserDto;
 using InRiseService.Data.Context;
@@ -6,6 +8,7 @@ using InRiseService.Domain.Users;
 using InRiseService.Util;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+
 
 namespace InRiseService.Application.Services
 {
@@ -145,24 +148,25 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task<IEnumerable<UserDtoResponse>> GetUserByFilter(UserDtoFilterRequest request)
+        public async Task<Pagination<UserDtoResponse>> GetUserByFilter(UserDtoFilterRequest request)
         {
             try
             {
-                var result = await _context.Users
-                    .Where(x => x.Name.ToUpper().Contains(request.Name)
+                var query = _context.Users
+                .AsNoTracking()
+                .Where(x => x.Name.ToUpper().Contains(request.Name)
                     && x.Lastname.ToUpper().Contains(request.Lastname)
                     && x.PhoneNumber.Contains(request.PhoneNumber)
                     && x.Email.ToUpper().Contains(request.Email)
-                ).ToListAsync();
+                );
                 if(request.Deleted.HasValue)
-                    result = result.Where(x => x.DeleteIn is not null).ToList();
+                    query = query.Where(x => x.DeleteIn != null);
                 if(request.Active.HasValue)
-                    result = result.Where(x => x.Active == request.Active).ToList();
+                    query = query.Where(x => x.Active == request.Active);
                 if (request.Marketing.HasValue)
-                    result = result.Where(x => x.Marketing == request.Marketing).ToList();
+                    query = query.Where(x => x.Marketing == request.Marketing);
 
-                var listResultDto = result.Select(x => new UserDtoResponse()
+                var listResultDto = query.Select(x => new UserDtoResponse()
                 {
                     DeleteIn = x.DeleteIn,
                     Active = x.Active,
@@ -175,7 +179,9 @@ namespace InRiseService.Application.Services
                     UpdateIn = x.UpdateIn,
                     PhoneNumber = x.PhoneNumber
                 });
-                return listResultDto;
+
+                var finalListResult = await listResultDto.PaginationAsync(request.Pagination.PageIndex, request.Pagination.PageSize);
+                return finalListResult;
             }
             catch (Exception ex)
             {

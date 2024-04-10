@@ -1,8 +1,6 @@
-using InRiseService.Application.DTOs.AppSettings;
 using InRiseService.Application.Interfaces;
 using InRiseService.Application.Services;
 using InRiseService.Infrastructure.Configurations;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace InRiseService.Infrastructure.Extentions
