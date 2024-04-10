@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using InRiseService.Domain.Enums;
+using InRiseService.Domain.UsersAddress;
 
 namespace InRiseService.Domain.Users
 {
@@ -48,6 +49,8 @@ namespace InRiseService.Domain.Users
         [Display(Name = "Termos")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool Term { get; set; }
+
+        public UserAddress Address { get; set; }
 
         public User(){}
 
