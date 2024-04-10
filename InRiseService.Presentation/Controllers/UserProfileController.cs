@@ -1,5 +1,6 @@
 using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InRiseService.Presentation.Controllers
@@ -19,6 +20,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("GetByName")]
+        [Authorize(Roles =  "Admin")]
         public IActionResult GetByName([FromQuery] string name)
         {
             try
@@ -44,6 +46,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("GetById")]
+        [Authorize(Roles =  "Admin")]
         public IActionResult GetById([FromQuery]int id)
         {
             try
@@ -68,6 +71,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("GetAllProfile")]
+        [Authorize(Roles =  "Admin")]
         public IActionResult GetAllProfile()
         {
             try
