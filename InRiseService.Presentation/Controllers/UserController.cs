@@ -6,8 +6,6 @@ using InRiseService.Application.UserDto;
 using InRiseService.Domain.Users;
 using InRiseService.Util;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace InRiseService.Presentation.Controllers
 {
