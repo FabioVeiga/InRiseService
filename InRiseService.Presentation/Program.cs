@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using InRiseService.Infrastructure.Extentions;
-using Microsoft.Extensions.Configuration;
+using InRiseService.Application.DTOs.ApiSettingDto;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var secret = builder.Configuration.GetSection("AppSettings").GetValue<string>("Secret");
 var key = Encoding.ASCII.GetBytes(secret);
+builder.Services.Configure<AppSetting>(builder.Configuration.GetSection("AppSettings"));
 
 // Add services to the container.
 builder.Services.RegisterDependencies();
@@ -20,7 +21,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "InRise  API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "InRiseService  API", Version = "v1" });
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -77,7 +78,12 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(options =>
+{
+    options.RoutePrefix = string.Empty;
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+});
+
 
 app.UseHttpsRedirection();
 

@@ -5,6 +5,7 @@ using InRiseService.Application.Interfaces;
 using InRiseService.Application.UserDto;
 using InRiseService.Domain.Users;
 using InRiseService.Util;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InRiseService.Presentation.Controllers
@@ -45,12 +46,7 @@ namespace InRiseService.Presentation.Controllers
                     ModelState.AddModelError(nameof(request.Email), "Já cadastrado.");
                     return BadRequest(new ValidationProblemDetails(ModelState));
                 }
-                var checkPhoneNumber = await _userService.CheckPhoneNumberIfExists(request.PhoneNumber);
-                if(checkPhoneNumber is not null)
-                {
-                    ModelState.AddModelError(nameof(request.PhoneNumber), "Já cadastrado.");
-                    return BadRequest(new ValidationProblemDetails(ModelState));
-                }
+                
                 var mapped = _mapper.Map<User>(request);
                 var result = await _userService.InsertAsync(mapped);
                 var mappedResponse = _mapper.Map<UserDtoResponse>(result);
@@ -72,6 +68,7 @@ namespace InRiseService.Presentation.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles =  "Admin, User")]
         public async Task<IActionResult> Update([FromBody] UserDtoUpdateRequest request)
         {
             try
@@ -144,6 +141,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles =  "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -179,6 +177,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpPut]
         [Route("deactivate/{id}")]
+        [Authorize(Roles =  "Admin")]
         public async Task<IActionResult> Deactivate(int id)
         {
             try
@@ -214,6 +213,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpPut]
         [Route("activate/{id}")]
+        [Authorize(Roles =  "Admin")]
         public async Task<IActionResult> Activate(int id)
         {
             try
@@ -249,6 +249,7 @@ namespace InRiseService.Presentation.Controllers
         
         [HttpGet]
         [Route("get-by-id/{id}")]
+        [Authorize(Roles =  "Admin")]
         public async Task<IActionResult> FilterById(int id)
         {
             try
@@ -283,6 +284,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("get-by-filter")]
+        [Authorize(Roles =  "Admin")]
         public async Task<IActionResult> FilterByRequest([FromQuery] UserDtoFilterRequest request)
         {
             try
