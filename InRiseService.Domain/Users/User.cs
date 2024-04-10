@@ -50,7 +50,7 @@ namespace InRiseService.Domain.Users
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool Term { get; set; }
 
-        public UserAddress Address { get; set; }
+        public ICollection<UserAddress> Address { get; set; }
 
         public User(){}
 

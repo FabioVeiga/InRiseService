@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using InRiseService.Domain.Users;
 
@@ -45,7 +46,8 @@ namespace InRiseService.Domain.UsersAddress
         [Display(Name = "Padrão")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool IsDefault { get; set; } = default!;
-
+        
+        [ForeignKey("User")]
         public int UserId { get; set; } = default!;
         
         [JsonIgnore]

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240410175847_Endereco Usuario ajuste 01")]
-    partial class EnderecoUsuarioajuste01
+    [Migration("20240410224752_Initial_01")]
+    partial class Initial_01
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -107,8 +107,10 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime>("InsertIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<int>("Number")
-                        .HasMaxLength(10)
                         .HasColumnType("int");
 
                     b.Property<string>("Observation")
@@ -137,8 +139,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserAddresses");
                 });
@@ -146,8 +147,8 @@ namespace InRiseService.Data.Migrations
             modelBuilder.Entity("InRiseService.Domain.UsersAddress.UserAddress", b =>
                 {
                     b.HasOne("InRiseService.Domain.Users.User", "User")
-                        .WithOne("Address")
-                        .HasForeignKey("InRiseService.Domain.UsersAddress.UserAddress", "UserId")
+                        .WithMany("Address")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -156,8 +157,7 @@ namespace InRiseService.Data.Migrations
 
             modelBuilder.Entity("InRiseService.Domain.Users.User", b =>
                 {
-                    b.Navigation("Address")
-                        .IsRequired();
+                    b.Navigation("Address");
                 });
 #pragma warning restore 612, 618
         }

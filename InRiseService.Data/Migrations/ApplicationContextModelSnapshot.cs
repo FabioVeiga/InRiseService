@@ -136,8 +136,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserAddresses");
                 });
@@ -145,8 +144,8 @@ namespace InRiseService.Data.Migrations
             modelBuilder.Entity("InRiseService.Domain.UsersAddress.UserAddress", b =>
                 {
                     b.HasOne("InRiseService.Domain.Users.User", "User")
-                        .WithOne("Address")
-                        .HasForeignKey("InRiseService.Domain.UsersAddress.UserAddress", "UserId")
+                        .WithMany("Address")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -155,8 +154,7 @@ namespace InRiseService.Data.Migrations
 
             modelBuilder.Entity("InRiseService.Domain.Users.User", b =>
                 {
-                    b.Navigation("Address")
-                        .IsRequired();
+                    b.Navigation("Address");
                 });
 #pragma warning restore 612, 618
         }

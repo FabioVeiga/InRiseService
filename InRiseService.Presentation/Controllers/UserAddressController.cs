@@ -39,9 +39,18 @@ namespace InRiseService.Presentation.Controllers
                 ModelState.AddModelError(nameof(request.UserId), "Não existe");
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
+            if(request.IsDefault)
+            {
+                var getCurrent = await _userAddressService.GetCurrentDefaultAsync(request.UserId);
+                if(getCurrent is not null)
+                {
+                    getCurrent.IsDefault = false;
+                    await _userAddressService.UpdateAsync(getCurrent);
+                }
+            }
             var mapped = _mapper.Map<UserAddress>(request);
             var responseMapped = await _userAddressService.InsertAsync(mapped);
-
+            
             var response = new ApiResponse<dynamic>(
                 StatusCodes.Status200OK,
                 responseMapped
