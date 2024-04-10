@@ -20,7 +20,6 @@ namespace InRiseService.Presentation.Controllers
         private readonly IMapper _mapper;
         private readonly IUserProfileService _userProfileService;
         private readonly IUserService _userService;
-        private readonly PaginationDto _paginationDto;
 
         public UserController(ILogger<UserController> logger, IMapper mapper, IUserProfileService userProfileService, IUserService userService, IOptions<PaginationDto> paginationDto)
         {
@@ -28,7 +27,6 @@ namespace InRiseService.Presentation.Controllers
             _mapper = mapper;
             _userProfileService = userProfileService;
             _userService = userService;
-            _paginationDto = paginationDto.Value;
         }
 
         [HttpPost]
