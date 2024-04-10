@@ -11,7 +11,7 @@ namespace InRiseService.Infrastructure.Extentions
         {
             services.AddAutoMapper(typeof(Mappings));
             services.AddScoped<IUserProfileService,UserProfileService>();
-            services.AddScoped<IUserService,UserService>();
+            services.AddScoped<IUserService, UserService>();
         }
     }
 }

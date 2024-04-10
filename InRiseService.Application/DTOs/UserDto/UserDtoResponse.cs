@@ -1,8 +1,9 @@
+using InRiseService.Domain;
 using System.ComponentModel.DataAnnotations;
 
 namespace InRiseService.Application.UserDto
 {
-    public class UserDtoResponse
+    public class UserDtoResponse : BaseDomain
     {
         public string Name { get; set; } = default!;
         public string Lastname { get; set; } = default!;
