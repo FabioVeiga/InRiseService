@@ -1,6 +1,5 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
-using InRiseService.Application.DTOs.AppSettings;
 using InRiseService.Application.DTOs.UserDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Application.UserDto;
@@ -21,7 +20,7 @@ namespace InRiseService.Presentation.Controllers
         private readonly IUserProfileService _userProfileService;
         private readonly IUserService _userService;
 
-        public UserController(ILogger<UserController> logger, IMapper mapper, IUserProfileService userProfileService, IUserService userService, IOptions<PaginationDto> paginationDto)
+        public UserController(ILogger<UserController> logger, IMapper mapper, IUserProfileService userProfileService, IUserService userService)
         {
             _logger = logger;
             _mapper = mapper;
@@ -291,7 +290,7 @@ namespace InRiseService.Presentation.Controllers
             try
             {
                 var result = await _userService.GetUserByFilter(request);
-                if(result.Count() == 0)
+                if(result.TotalItems == 0)
                 {
                     return NotFound();
                 }
