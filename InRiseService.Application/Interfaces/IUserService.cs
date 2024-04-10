@@ -1,3 +1,5 @@
+using InRiseService.Application.DTOs.UserDto;
+using InRiseService.Application.UserDto;
 using InRiseService.Domain.Users;
 
 namespace InRiseService.Application.Interfaces
@@ -12,5 +14,6 @@ namespace InRiseService.Application.Interfaces
         Task<User> DeleteAsync(User user);
         Task<User> ActivateAsync(User user);
         Task<User> DectivateAsync(User user);
+        Task<IEnumerable<UserDtoResponse>> GetUserByFilter(UserDtoFilterRequest request);
     }
 }

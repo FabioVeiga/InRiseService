@@ -1,5 +1,6 @@
 using InRiseService.Application.DTOs.UserDto;
 using InRiseService.Application.Interfaces;
+using InRiseService.Application.UserDto;
 using InRiseService.Data.Context;
 using InRiseService.Domain.Users;
 using InRiseService.Util;
@@ -140,6 +141,45 @@ namespace InRiseService.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError($"[{nameof(UserService)}::{nameof(DectivateAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<UserDtoResponse>> GetUserByFilter(UserDtoFilterRequest request)
+        {
+            try
+            {
+                var result = await _context.Users
+                    .Where(x => x.Name.ToUpper().Contains(request.Name)
+                    && x.Lastname.ToUpper().Contains(request.Lastname)
+                    && x.PhoneNumber.Contains(request.PhoneNumber)
+                    && x.Email.ToUpper().Contains(request.Email)
+                ).ToListAsync();
+                if(request.Deleted.HasValue)
+                    result = result.Where(x => x.DeleteIn is not null).ToList();
+                if(request.Active.HasValue)
+                    result = result.Where(x => x.Active == request.Active).ToList();
+                if (request.Marketing.HasValue)
+                    result = result.Where(x => x.Marketing == request.Marketing).ToList();
+
+                var listResultDto = result.Select(x => new UserDtoResponse()
+                {
+                    DeleteIn = x.DeleteIn,
+                    Active = x.Active,
+                    Email = x.Email,
+                    Id = x.Id,
+                    InsertIn = x.InsertIn,
+                    Marketing = x.Marketing,
+                    Lastname = x.Lastname,
+                    Name = x.Name,
+                    UpdateIn = x.UpdateIn,
+                    PhoneNumber = x.PhoneNumber
+                });
+                return listResultDto;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(UserService)}::{nameof(UserDtoResponse)}] - Exception: {ex}");
                 throw;
             }
         }
