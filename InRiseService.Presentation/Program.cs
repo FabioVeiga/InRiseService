@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using InRiseService.Infrastructure.Extentions;
 using InRiseService.Application.DTOs.ApiSettingDto;
+using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 

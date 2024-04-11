@@ -15,16 +15,19 @@ namespace InRiseService.Presentation.Controllers
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
         private readonly IUserAddressService _userAddressService;
+        private readonly IZipCodeBaseService _zipCodeBaseService;
 
         public UserAddressController(ILogger<UserAddressController> logger, 
         IMapper mapper,
         IUserService userService,
-        IUserAddressService userAddressService)
+        IUserAddressService userAddressService,
+        IZipCodeBaseService zipCodeBaseService)
         {
             _logger = logger;
             _mapper = mapper;
             _userService = userService;
             _userAddressService = userAddressService;
+            _zipCodeBaseService = zipCodeBaseService;
         }
 
         [HttpPost]
@@ -56,6 +59,24 @@ namespace InRiseService.Presentation.Controllers
                 responseMapped
             );
             return Ok(response);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAddressByZipCode(string zipcode)
+        {
+            try
+            {
+                if(string.IsNullOrEmpty(zipcode)) return BadRequest();
+                var normalizeZipCode = zipcode.Normalize().Trim().ToUpper();
+                var result = await _zipCodeBaseService.GetAddressByZipCode(normalizeZipCode);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+           
         }
 
     }
