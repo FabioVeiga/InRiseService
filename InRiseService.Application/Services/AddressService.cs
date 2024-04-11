@@ -1,6 +1,7 @@
 using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
 using InRiseService.Domain.Addressed;
+using InRiseService.Util;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -34,6 +35,7 @@ namespace InRiseService.Application.Services
         {
             try
             {
+                address.PostalCode = StringHelper.NormalizePostalCode(address.PostalCode);
                 address.InsertIn = DateTime.Now;
                 address.Active = true;
                 _context.Addresses.Add(address);

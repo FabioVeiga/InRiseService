@@ -52,6 +52,7 @@ namespace InRiseService.Presentation.Controllers
                     return Ok(responseAddress);
                 }
                 var result = await _zipCodeBaseService.GetAddressByZipCode(postalcode);
+                if(result == null) return BadRequest();
                 var mapped = _mapper.Map<Address>(result);
                 var inserted = await _addressService.InsertAsync(mapped);
                 var response = new ApiResponse<dynamic>(

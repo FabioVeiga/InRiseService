@@ -12,5 +12,11 @@ namespace InRiseService.Util
                 return true;
             return false;
         }
+
+        public static string NormalizePostalCode(string input)
+        {
+            string pattern = @"\D";
+            return Regex.Replace(input, pattern, "");
+        }
     }
 }
