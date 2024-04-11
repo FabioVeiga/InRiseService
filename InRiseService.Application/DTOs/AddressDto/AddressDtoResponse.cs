@@ -1,6 +1,6 @@
 namespace InRiseService.Application.DTOs.ZipCodeBaseDto
 {
-    public class ZipCodeBaseDtoResponse
+    public class AddressDtoResponse
     {
         public string PostalCode { get; set; } = null!;
         public string CountryCode { get; set; } = null!;

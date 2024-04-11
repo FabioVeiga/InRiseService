@@ -16,6 +16,7 @@ namespace InRiseService.Infrastructure.Extentions
             services.AddScoped<IUserAutenticationService, UserAutenticationService>();
             services.AddScoped<IUserAddressService, UserAddressService>();
             services.AddScoped<IZipCodeBaseService,ZipCodeBaseService>();
+            services.AddScoped<IAddressService,AddressService>();
         }
     }
 }

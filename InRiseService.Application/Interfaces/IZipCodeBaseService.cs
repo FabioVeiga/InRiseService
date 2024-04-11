@@ -4,6 +4,6 @@ namespace InRiseService.Application.Interfaces
 {
     public interface IZipCodeBaseService
     {
-        Task<ZipCodeBaseDtoResponse?> GetAddressByZipCode(string zipcode);
+        Task<AddressDtoResponse?> GetAddressByZipCode(string zipcode);
     }
 }

@@ -1,7 +1,7 @@
 
 namespace InRiseService.Application.DTOs.ApiSettingDto
 {
-    public class ZipCodeBaseSettingsDto
+    public class ZipCodeBaseSettings
     {
         public string ApiKey { get; set; } = null!;
         public string Url { get; set; } = null!;

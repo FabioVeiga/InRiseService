@@ -12,19 +12,24 @@ namespace InRiseService.Application.Services
     {
         private readonly ILogger<ZipCodeBaseService> _logger;
         private readonly HttpClient _httpClient;
-        private readonly ZipCodeBaseSettingsDto _zipCodeBaseSettingsDto;
+        private readonly ZipCodeBaseSettings _zipCodeBaseSettings;
+        private string _uri;
 
-        public ZipCodeBaseService(ILogger<ZipCodeBaseService> logger, HttpClient httpClient, IOptions<ZipCodeBaseSettingsDto> options)
+        public ZipCodeBaseService(
+            ILogger<ZipCodeBaseService> logger, 
+            HttpClient httpClient, 
+            IOptions<ZipCodeBaseSettings> options)
         {
             _logger = logger;
+            _zipCodeBaseSettings = options.Value;
             _httpClient = httpClient;
-            _zipCodeBaseSettingsDto = options.Value;
+            _uri = $"{_zipCodeBaseSettings.Url}search?apikey={_zipCodeBaseSettings.ApiKey}&country={_zipCodeBaseSettings.CountryDefault}";
         }
-        public async Task<ZipCodeBaseDtoResponse?> GetAddressByZipCode(string zipcode)
+        public async Task<AddressDtoResponse?> GetAddressByZipCode(string zipcode)
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_zipCodeBaseSettingsDto.CountryDefault}search?apikey={_zipCodeBaseSettingsDto.ApiKey}&codes={zipcode}&country={_zipCodeBaseSettingsDto.CountryDefault}");
+                var response = await _httpClient.GetAsync($"{_uri}&codes={zipcode}");
                 if (response.IsSuccessStatusCode){
                     var jsonString = await response.Content.ReadAsStringAsync();
                     var queryResult = JsonSerializer.Deserialize<dynamic>(jsonString);
@@ -35,7 +40,7 @@ namespace InRiseService.Application.Services
                         JsonElement results = root.GetProperty("results");
                         JsonElement codeArray = results.GetProperty(zipcode)[0];
 
-                        var returnZipCodebaseDto = new ZipCodeBaseDtoResponse()
+                        var returnZipCodebaseDto = new AddressDtoResponse()
                         {
                             PostalCode = codeArray.GetProperty("postal_code").ToString(),
                             City = codeArray.GetProperty("city").ToString(),
