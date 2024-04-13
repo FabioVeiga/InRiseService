@@ -44,6 +44,10 @@ namespace InRiseService.Application.DTOs.UserAddressDto
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool IsDefault { get; set; } = default!;
 
+        [Display(Name = "Faturação")]
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public bool IsBilling { get; set; } = default!;
+
         public int UserId { get; set; } = default!;
     }
 }

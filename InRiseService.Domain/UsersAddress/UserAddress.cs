@@ -46,6 +46,10 @@ namespace InRiseService.Domain.UsersAddress
         [Display(Name = "Padrão")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool IsDefault { get; set; } = default!;
+
+        [Display(Name = "Faturamento")]
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public bool IsBilling { get; set; } = default!;
         
         [ForeignKey("User")]
         public int UserId { get; set; } = default!;

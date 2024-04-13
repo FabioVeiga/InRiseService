@@ -34,7 +34,7 @@ namespace InRiseService.Application.Services
         {
             try
             {
-                userAddress.InsertIn = DateTime.Now;
+                userAddress.Active = true;
                 _context.Add(userAddress);
                 await _context.SaveChangesAsync();
                 return userAddress;
