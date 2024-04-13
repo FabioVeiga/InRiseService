@@ -17,6 +17,19 @@ namespace InRiseService.Application.Services
             _logger = logger;
         }
 
+        public async Task<UserAddress?> GetByIdAsync(int id)
+        {
+            try
+            {
+                return await _context.UserAddresses.FirstOrDefaultAsync(x => x.Id == id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(UserAddressService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
+
         public async Task<UserAddress?> GetCurrentDefaultAsync(int userId)
         {
             try
@@ -50,6 +63,7 @@ namespace InRiseService.Application.Services
         {
             try
             {
+                address.UpdateIn = DateTime.Now;
                 _context.UserAddresses.Update(address);
                 await _context.SaveChangesAsync();
                 return  address;

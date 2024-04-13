@@ -22,6 +22,7 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<Address, AddressDtoResponse>().ReverseMap();
             CreateMap<Address, UserAddressDtoInsertRequest>().ReverseMap();
             CreateMap<UserAddress, AddressDtoResponse>().ReverseMap();
+            CreateMap<Address, UserAddress>().ReverseMap();
         }
     }
 }

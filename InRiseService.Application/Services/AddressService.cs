@@ -22,6 +22,7 @@ namespace InRiseService.Application.Services
         {
             try
             {
+                postalCode = StringHelper.NormalizePostalCode(postalCode);
                 return await _context.Addresses.FirstOrDefaultAsync(x => x.PostalCode == postalCode);
             }
             catch (Exception ex)

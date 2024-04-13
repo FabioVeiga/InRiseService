@@ -7,5 +7,8 @@ namespace InRiseService.Application.Interfaces
         Task<UserAddress> InsertAsync(UserAddress userAddress);
         Task<UserAddress?> GetCurrentDefaultAsync(int userId);
         Task<UserAddress> UpdateAsync(UserAddress address);
+        Task<UserAddress?> GetByIdAsync(int id);
+
+        
     }
 }
