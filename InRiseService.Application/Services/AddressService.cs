@@ -36,7 +36,6 @@ namespace InRiseService.Application.Services
             try
             {
                 address.PostalCode = StringHelper.NormalizePostalCode(address.PostalCode);
-                address.InsertIn = DateTime.Now;
                 address.Active = true;
                 _context.Addresses.Add(address);
                 await _context.SaveChangesAsync();

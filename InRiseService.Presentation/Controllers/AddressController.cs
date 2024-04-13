@@ -33,6 +33,35 @@ namespace InRiseService.Presentation.Controllers
         }
 
         /* [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAddressByZipCode(string postalcode)
+        {
+            try
+            {
+                if(string.IsNullOrEmpty(postalcode)) return BadRequest();
+                if(!StringHelper.CheckPostalCode(postalcode))
+                {
+                    ModelState.AddModelError(nameof(postalcode), "Invalido");
+                    return BadRequest(new ValidationProblemDetails(ModelState));
+                }
+                var getAddress = await _addressService.GetByPostalCode(postalcode);
+                if(getAddress is null){
+                    return NotFound();
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao buscar Postal Code!"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        } */
+
+        /* [HttpGet]
         public async Task<IActionResult> GetAddressByZipCode(string postalcode)
         {
             try

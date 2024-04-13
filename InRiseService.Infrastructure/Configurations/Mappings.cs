@@ -19,8 +19,9 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<User, UserDtoUpdateRequest>().ReverseMap();
             CreateMap<User, UserAutenticationDtoResponse>().ReverseMap();
             CreateMap<UserAddress, UserAddressDtoInsertRequest>().ReverseMap();
-            CreateMap<UserAddress, UserAddressDtoInsertResponse>().ReverseMap();
             CreateMap<Address, AddressDtoResponse>().ReverseMap();
+            CreateMap<Address, UserAddressDtoInsertRequest>().ReverseMap();
+            CreateMap<UserAddress, AddressDtoResponse>().ReverseMap();
         }
     }
 }

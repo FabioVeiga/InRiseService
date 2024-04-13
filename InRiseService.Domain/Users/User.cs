@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using InRiseService.Domain.Enums;
 using InRiseService.Domain.UsersAddress;
 
@@ -50,6 +51,7 @@ namespace InRiseService.Domain.Users
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool Term { get; set; }
 
+        [JsonIgnore]
         public ICollection<UserAddress> Address { get; set; }
 
         public User(){}
