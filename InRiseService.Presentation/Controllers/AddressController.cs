@@ -32,7 +32,7 @@ namespace InRiseService.Presentation.Controllers
             _addressService = addressService;
         }
 
-        [HttpGet]
+        /* [HttpGet]
         public async Task<IActionResult> GetAddressByZipCode(string postalcode)
         {
             try
@@ -67,6 +67,6 @@ namespace InRiseService.Presentation.Controllers
                 throw;
             }
            
-        }
+        } */
     }
 }
