@@ -32,23 +32,28 @@ namespace InRiseService.Presentation.Controllers
             _addressService = addressService;
         }
 
-        /* [HttpGet]
+        [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetAddressByZipCode(string postalcode)
         {
             try
             {
                 if(string.IsNullOrEmpty(postalcode)) return BadRequest();
+                
                 if(!StringHelper.CheckPostalCode(postalcode))
                 {
                     ModelState.AddModelError(nameof(postalcode), "Invalido");
                     return BadRequest(new ValidationProblemDetails(ModelState));
                 }
+
                 var getAddress = await _addressService.GetByPostalCode(postalcode);
-                if(getAddress is null){
-                    return NotFound();
-                }
-                
+                if(getAddress is null)return NotFound();
+
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status200OK,
+                    getAddress
+                );
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -58,8 +63,9 @@ namespace InRiseService.Presentation.Controllers
                    "Erro ao buscar Postal Code!"
                );
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
+                throw;
             }
-        } */
+        }
 
         /* [HttpGet]
         public async Task<IActionResult> GetAddressByZipCode(string postalcode)
