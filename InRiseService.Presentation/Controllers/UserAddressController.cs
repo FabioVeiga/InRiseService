@@ -112,14 +112,10 @@ namespace InRiseService.Presentation.Controllers
             getUserAddress.Number = request.Number;
             getUserAddress.Observation = request.Observation;
             getUserAddress.IsBilling = request.IsBilling;
-            getUserAddress.IsDefault = request.IsBilling;
+            getUserAddress.IsDefault = request.IsDefault;
 
-            var responseMapped = await _userAddressService.UpdateAsync(getUserAddress);
-            var response = new ApiResponse<dynamic>(
-                StatusCodes.Status200OK,
-                responseMapped
-            );
-            return Ok(response);
+            await _userAddressService.UpdateAsync(getUserAddress);
+            return Ok();
         }
 
     }
