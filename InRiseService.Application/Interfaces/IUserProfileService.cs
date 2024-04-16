@@ -7,7 +7,7 @@ namespace InRiseService.Application.Interfaces
     {
         public IEnumerable<ProfileDto> GetAllProfile();
         public ProfileDto? GetProfileById(int id);
-        public int? GetById(int id);
+        public ProfileDto? GetById(int id);
         public ProfileDto? GetProfileByName(string name);
     }
 }

@@ -248,7 +248,7 @@ namespace InRiseService.Presentation.Controllers
         }
         
         [HttpGet]
-        [Route("get-by-id/{id}")]
+        [Route("{id}")]
         [Authorize(Roles =  "Admin")]
         public async Task<IActionResult> FilterById(int id)
         {
@@ -283,7 +283,6 @@ namespace InRiseService.Presentation.Controllers
         }
 
         [HttpGet]
-        [Route("get-by-filter")]
         [Authorize(Roles =  "Admin")]
         public async Task<IActionResult> FilterByRequest([FromQuery] UserDtoFilterRequest request)
         {

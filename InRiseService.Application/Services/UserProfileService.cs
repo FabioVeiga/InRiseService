@@ -36,15 +36,11 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public int? GetById(int id)
+        public ProfileDto? GetById(int id)
         {
             try
             {
-                var resultId = GetAllProfile().FirstOrDefault(x => x.Id == id);
-                if (resultId is null)  
-                    return null; // not found
-
-                return resultId.Id;
+                return GetAllProfile().FirstOrDefault(x => x.Id == id);
             }
             catch (Exception ex)
             {
