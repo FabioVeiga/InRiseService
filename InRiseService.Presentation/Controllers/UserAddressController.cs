@@ -74,7 +74,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpPut]
         [Route("{userAddressId}")]
-        //[Authorize(Roles = ("Admin, User"))]
+        [Authorize(Roles = ("Admin, User"))]
         public async Task<IActionResult> Update(int userAddressId, [FromBody] UserAddressDtoInsertRequest request)
         {
             if(!ModelState.IsValid)
