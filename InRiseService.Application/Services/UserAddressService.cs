@@ -3,6 +3,7 @@ using InRiseService.Data.Context;
 using InRiseService.Domain.UsersAddress;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Xml.Linq;
 
 namespace InRiseService.Application.Services
 {
@@ -22,6 +23,24 @@ namespace InRiseService.Application.Services
             try
             {
                 return await _context.UserAddresses.FirstOrDefaultAsync(x => x.Id == id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(UserAddressService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<UserAddress>>  GetByUserIdAsync(int userId)
+        {
+            try
+            {
+                var list = await _context.UserAddresses
+                    .Where(x => x.UserId == userId)
+                    .ToListAsync();
+                if(list.Count== 0)
+                    return Enumerable.Empty<UserAddress>();
+                return list;
             }
             catch (Exception ex)
             {

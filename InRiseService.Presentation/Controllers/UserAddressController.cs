@@ -118,5 +118,29 @@ namespace InRiseService.Presentation.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        [Route("{userId}")]
+        //[Authorize(Roles = ("Admin, User"))]
+        public async Task<IActionResult> GetByUserId(int userId)
+        {
+            try
+            {
+                var result = await _userAddressService.GetByUserIdAsync(userId);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status200OK,
+                    result
+                );
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao buscar lista de endereço"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
     }
 }
