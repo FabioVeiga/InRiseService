@@ -120,7 +120,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("{userId}")]
-        //[Authorize(Roles = ("Admin, User"))]
+        [Authorize(Roles = ("Admin, User"))]
         public async Task<IActionResult> GetByUserId(int userId)
         {
             try
@@ -141,6 +141,18 @@ namespace InRiseService.Presentation.Controllers
                );
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize(Roles = ("Admin, User"))]
+        public async Task<IActionResult> Remove(int id)
+        {
+            var address = await _userAddressService.GetByIdAsync(id);
+            if (address is null)
+                return BadRequest();
+            await _userAddressService.RemoveAsync(address);
+            return Ok();
         }
     }
 }

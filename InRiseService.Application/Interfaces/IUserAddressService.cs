@@ -9,6 +9,6 @@ namespace InRiseService.Application.Interfaces
         Task<UserAddress> UpdateAsync(UserAddress address);
         Task<UserAddress?> GetByIdAsync(int id);
         Task <IEnumerable<UserAddress>> GetByUserIdAsync(int userId);
-
+        Task RemoveAsync(UserAddress address);
     }
 }

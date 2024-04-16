@@ -18,6 +18,20 @@ namespace InRiseService.Application.Services
             _logger = logger;
         }
 
+        public async Task RemoveAsync(UserAddress address)
+        {
+            try
+            {
+                _context.UserAddresses.Remove(address);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(UserAddressService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
+
         public async Task<UserAddress?> GetByIdAsync(int id)
         {
             try
