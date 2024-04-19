@@ -3,6 +3,7 @@ using System;
 using InRiseService.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240419014241_Initial_06")]
+    partial class Initial_06
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -187,7 +190,7 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("ExpirateAt")
+                    b.Property<DateTime>("ExpiratitedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("InsertIn")
@@ -202,8 +205,8 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 

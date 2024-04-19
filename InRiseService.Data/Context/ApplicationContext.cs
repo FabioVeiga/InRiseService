@@ -1,6 +1,7 @@
 using InRiseService.Domain.Addressed;
 using InRiseService.Domain.Users;
 using InRiseService.Domain.UsersAddress;
+using InRiseService.Domain.ValidationCodes;
 using Microsoft.EntityFrameworkCore;
 
 namespace InRiseService.Data.Context
@@ -12,6 +13,7 @@ namespace InRiseService.Data.Context
         public DbSet<User> Users { get; set; }
         public DbSet<UserAddress> UserAddresses { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<ValidationCode> ValidationCodes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

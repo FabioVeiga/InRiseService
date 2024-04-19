@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using InRiseService.Domain.Enums;
 using InRiseService.Domain.UsersAddress;
+using InRiseService.Domain.ValidationCodes;
 
 namespace InRiseService.Domain.Users
 {
@@ -53,6 +54,9 @@ namespace InRiseService.Domain.Users
 
         [JsonIgnore]
         public ICollection<UserAddress> Address { get; set; }
+
+        [JsonIgnore]
+        public ValidationCode ValidationCode { get; set; }
 
         public User(){}
 

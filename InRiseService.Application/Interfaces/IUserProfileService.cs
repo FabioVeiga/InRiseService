@@ -1,5 +1,4 @@
 using InRiseService.Application.DTOs.UserDto;
-using InRiseService.Domain.Enums;
 
 namespace InRiseService.Application.Interfaces
 {

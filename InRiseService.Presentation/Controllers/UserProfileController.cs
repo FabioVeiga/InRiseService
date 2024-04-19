@@ -19,8 +19,8 @@ namespace InRiseService.Presentation.Controllers
         }
 
         [HttpGet]
-        [Route("{name}")]
-        [Authorize(Roles =  "Admin")]
+        [Route("get-by-name/{name}")]
+        //[Authorize(Roles =  "Admin")]
         public IActionResult GetByName(string name)
         {
             try
@@ -43,8 +43,8 @@ namespace InRiseService.Presentation.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
-        [Authorize(Roles =  "Admin")]
+        [Route("get-by-id/{id}")]
+        //[Authorize(Roles =  "Admin")]
         public IActionResult GetById(int id)
         {
             try
