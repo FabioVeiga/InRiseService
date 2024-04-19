@@ -18,8 +18,7 @@ namespace InRiseService.Infrastructure.Extentions
             services.AddScoped<IZipCodeBaseService,ZipCodeBaseService>();
             services.AddScoped<IAddressService,AddressService>();
             services.AddScoped<ITypeCodeValidationService,TypeCodeValidationService>();
-
-            
+            services.AddScoped<IValidationCodeService,ValidationCodeService>();
         }
     }
 }

@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using InRiseService.Domain.Enums;
+using InRiseService.Domain.Users;
 
 namespace InRiseService.Domain.ValidationCodes
 {
@@ -12,7 +14,7 @@ namespace InRiseService.Domain.ValidationCodes
 
         [Display(Name = "Valido até")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
-        public DateTime ExpiratitedAt { get; set; } = DateTime.Now.AddHours(5);
+        public DateTime ExpirateAt { get; set; } = DateTime.Now.AddHours(5);
 
         public bool IsValidate { get; set; } = false;
 
@@ -20,7 +22,10 @@ namespace InRiseService.Domain.ValidationCodes
         public EnumTypeCodeValidation TypeCode { get; set; } 
         
         [ForeignKey("User")]
-        public Guid UserId { get;  set; }
+        public int UserId { get;  set; }
+
+        [JsonIgnore]
+        public User? User { get; set; }
 
     }
 }
