@@ -7,25 +7,25 @@ namespace InRiseService.Presentation.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserProfileController : ControllerBase
+    public class ValidationCodeController : ControllerBase
     {
-        private readonly ILogger<UserProfileController> _logger;
-        private readonly IUserProfileService _userProfileService;
+        private readonly ILogger<ValidationCodeController> _logger;
+        private readonly ITypeCodeValidationService _typeCodeValidationService;
 
-        public UserProfileController(ILogger<UserProfileController> logger, IUserProfileService userProfileService)
+        public ValidationCodeController(ILogger<ValidationCodeController> logger, ITypeCodeValidationService typeCodeValidationService)
         {
             _logger = logger;
-            _userProfileService = userProfileService;
+            _typeCodeValidationService = typeCodeValidationService;
         }
 
         [HttpGet]
         [Route("get-by-name/{name}")]
-        //[Authorize(Roles =  "Admin")]
+        //[Authorize(Roles =  "Admin, User")]
         public IActionResult GetByName(string name)
         {
             try
             {
-                var result = _userProfileService.GetProfileByName(name);
+                var result = _typeCodeValidationService.GetByName(name);
                 if(result is null)
                     return NotFound();
 
@@ -44,12 +44,12 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("get-by-id/{id}")]
-        //[Authorize(Roles =  "Admin")]
+        //[Authorize(Roles =  "Admin, User")]
         public IActionResult GetById(int id)
         {
             try
             {
-                var result = _userProfileService.GetProfileById(id);
+                var result = _typeCodeValidationService.GetById(id);
                 
                 if(result is null)
                     return NotFound();
@@ -67,12 +67,12 @@ namespace InRiseService.Presentation.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles =  "Admin")]
-        public IActionResult GetAllProfile()
+        //[Authorize(Roles =  "Admin, User")]
+        public IActionResult GetAllTypeValidationCode()
         {
             try
             {
-                var result = _userProfileService.GetAllProfile();
+                var result = _typeCodeValidationService.GetAll();
                 
                 if(result is null)
                     return NotFound();
@@ -85,7 +85,12 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                throw;
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao buscar todos!"
+                );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
     }
