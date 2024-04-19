@@ -59,6 +59,12 @@ namespace InRiseService.Presentation.Controllers
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
+            if(!getUser.EmailValide)
+            {
+                ModelState.AddModelError(nameof(request.Email), "Este e-mail não foi validado!");
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            }
+
             var acessTokenResult = _userAutenticationService.GetTokenAsync(request);
             var mappedResponse = _mapper.Map<UserAutenticationDtoResponse>(getUser);
             mappedResponse.AcessToken = acessTokenResult;

@@ -103,6 +103,9 @@ namespace InRiseService.Presentation.Controllers
                 code.IsValidate =  true;
                 await _validationCodeService.UpdateAsync(code);
 
+                code.User.EmailValide = true;
+                await _userService.UpdateAsync(code.User);
+
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
                     $"O código foi validado!"
