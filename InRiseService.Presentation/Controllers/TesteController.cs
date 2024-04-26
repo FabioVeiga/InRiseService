@@ -23,10 +23,11 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public  async Task<ActionResult> Teste01()
+        public  async Task<ActionResult> Teste01([FromBody] string secret)
         {
             try
             {
+                if(secret  != "inrise2024") return Unauthorized();
                 var teste = await _sendGridService.SendAsync("droidbinho@gmail.com", "Fabio", "Teste", "Este é um email de teste");
                 return Ok(teste);
             }
