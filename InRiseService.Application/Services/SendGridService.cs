@@ -40,7 +40,8 @@ namespace InRiseService.Application.Services
                 },
                 From = new EmailAddress()
                 {
-                    Email = _sendGridSetting.FromAddress
+                    Email = _sendGridSetting.FromEmail,
+                    Name = _sendGridSetting.Name
                 },
                 Subject = subject,
                 Contents = new List<Content>()
