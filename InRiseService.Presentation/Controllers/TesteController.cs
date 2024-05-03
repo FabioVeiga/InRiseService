@@ -23,12 +23,40 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public  async Task<ActionResult> Teste01([FromBody] string secret)
+        public  async Task<ActionResult> Teste01([FromBody] string secret, string email)
         {
             try
             {
                 if(secret  != "inrise2024") return Unauthorized();
-                var teste = await _sendGridService.SendAsync("droidbinho@gmail.com", "Fabio", "Teste", "Este é um email de teste");
+                email = string.IsNullOrEmpty(email) ? "droidbinho@gmail.com" : email;
+                var teste = await _sendGridService.SendAsync(email, "Teste envio", "Teste", "Este é um email de teste");
+                return Ok(teste);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao gerar código de validação!"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("Teste02")]
+        public  async Task<ActionResult> Teste02([FromBody] string secret, string templateId)
+        {
+            try
+            {
+                if(secret  != "inrise2024") return Unauthorized();
+                var dic = new Dictionary<string, string>(){
+                    { "-name-", "Fabinho" },
+                    { "-email-", "droidbinho@gmail.com" }
+                };
+
+                var teste = await _sendGridService.SendByTemplateAsync("droidbinho@gmail.com", "Teste Template", dic, templateId);
                 return Ok(teste);
             }
             catch (Exception ex)

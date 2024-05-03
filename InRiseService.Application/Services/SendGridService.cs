@@ -62,5 +62,25 @@ namespace InRiseService.Application.Services
                 throw;
             }
         }
+
+        public async Task<bool> SendByTemplateAsync(string toEmail, string subject, IDictionary<string, string> substitutions, string templateId)
+        {
+            try
+            {
+                var client = new SendGridClient(_sendGridSetting.ApiKey);
+                var msg = new SendGridMessage();
+                msg.SetFrom(new EmailAddress(_sendGridSetting.FromEmail, _sendGridSetting.Name));
+                msg.AddTo(new EmailAddress(toEmail));
+                msg.SetTemplateId(templateId);
+                msg.SetSubject(subject);
+                msg.SetTemplateData(substitutions);
+                var response = await client.SendEmailAsync(msg);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
