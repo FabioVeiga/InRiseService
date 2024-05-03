@@ -61,7 +61,7 @@ namespace InRiseService.Presentation.Controllers
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status201Created,
-                    $"O código de validação gerado e enviado para o email."
+                    $"O código de validação gerado e enviado para o email!"
                 );
                 return Ok(response);
             }
