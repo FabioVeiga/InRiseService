@@ -1,6 +1,7 @@
 
 using InRiseService.Application.DTOs.ApiSettingDto;
 using InRiseService.Application.Interfaces;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -10,19 +11,22 @@ namespace InRiseService.Application.Services
     public class SendGridService : ISendGridService
     {
         private readonly SendGridSetting _sendGridSetting;
+        private readonly ILogger<SendGridService> _logger;
 
         public SendGridService(
-            IOptions<SendGridSetting> options
+            IOptions<SendGridSetting> options,
+            ILogger<SendGridService> logger
             ) 
         {
             _sendGridSetting = options.Value;
+            _logger = logger;
         }
 
         public async Task<bool> SendAsync(string toEmail, string name, string subject, string message)
         {
             try
             {
-                var msg = new SendGridMessage
+                var msg = new SendGridMessage()
                 {
                     Personalizations = new List<Personalization>()
                 {
@@ -57,8 +61,9 @@ namespace InRiseService.Application.Services
                 var response = await client.SendEmailAsync(msg);
                 return response.IsSuccessStatusCode;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError("Failed to send email: ", ex);
                 throw;
             }
         }
