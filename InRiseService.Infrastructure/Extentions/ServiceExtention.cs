@@ -1,6 +1,8 @@
+using InRiseService.Application.DTOs.ApiSettingDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Application.Services;
 using InRiseService.Infrastructure.Configurations;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace InRiseService.Infrastructure.Extentions
@@ -19,6 +21,15 @@ namespace InRiseService.Infrastructure.Extentions
             services.AddScoped<IAddressService,AddressService>();
             services.AddScoped<ITypeCodeValidationService,TypeCodeValidationService>();
             services.AddScoped<IValidationCodeService,ValidationCodeService>();
+            services.AddScoped<ISendGridService,SendGridService>();
+        }
+
+        public static void RegisterConfigurationDependencies(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<SendGridSetting>(configuration.GetSection("SendGridSetting"));
+            services.Configure<AppSetting>(configuration.GetSection("AppSettings"));
+            services.Configure<ZipCodeBaseSettings>(configuration.GetSection("ZipCodeBaseSettings"));
+
         }
     }
 }

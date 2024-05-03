@@ -12,11 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 var secret = builder.Configuration.GetSection("AppSettings").GetValue<string>("Secret");
 var key = Encoding.ASCII.GetBytes(secret);
-builder.Services.Configure<AppSetting>(builder.Configuration.GetSection("AppSettings"));
-builder.Services.Configure<ZipCodeBaseSettings>(builder.Configuration.GetSection("ZipCodeBaseSettings"));
 
 // Add services to the container.
 builder.Services.RegisterDependencies();
+builder.Services.RegisterConfigurationDependencies(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -14,23 +14,26 @@ namespace InRiseService.Presentation.Controllers
         private readonly ITypeCodeValidationService _typeCodeValidationService;
         private readonly IUserService _userService;
         private readonly IValidationCodeService _validationCodeService;
+        private readonly ISendGridService _sendGridService;
 
         public ValidationCodeController(
             ILogger<ValidationCodeController> logger, 
             ITypeCodeValidationService typeCodeValidationService,
             IUserService userService,
-            IValidationCodeService validationCodeService)
+            IValidationCodeService validationCodeService,
+            ISendGridService sendGridService)
         {
             _logger = logger;
             _typeCodeValidationService = typeCodeValidationService;
             _userService = userService;
             _validationCodeService = validationCodeService;
+            _sendGridService = sendGridService;
         }
 
         [HttpPost]
         [Route("generate-by-email")]
         [AllowAnonymous]
-        public  async Task<ActionResult> Generate([FromBody] string email)
+        public  async Task<ActionResult> Generate([FromQuery] string email)
         {
             try
             {
@@ -38,18 +41,27 @@ namespace InRiseService.Presentation.Controllers
                 if(user is null) return NotFound();
 
                 var code = await _validationCodeService.GetLastValideCodeByUserIdAsync(user.Id);
-                if(code is not null) 
-                return BadRequest(
-                    new ApiResponse<dynamic>(
-                    StatusCodes.Status400BadRequest,
-                    $"O código de validação ainda está válido."
-                ));
-                
+                if(code is not null)
+                {
+                    await _sendGridService.SendAsync(
+                        user.Email, user.Name, "Confirmação de Cadastro", code.Code.ToString()
+                    );
+
+                    return BadRequest(
+                        new ApiResponse<dynamic>(
+                        StatusCodes.Status400BadRequest,
+                        $"O código de validação ainda está válido. E reenviado código por email!"
+                    ));
+                }
+
                 var newCode = await _validationCodeService.InsertAsync(user.Id);
+                var message = await _sendGridService.SendAsync(
+                    user.Email, user.Name, "Confirmação de Cadastro", newCode.Code.ToString()
+                );
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status201Created,
-                    $"O código de validação gerado e enviado para o email."
+                    $"O código de validação gerado e enviado para o email!"
                 );
                 return Ok(response);
             }
