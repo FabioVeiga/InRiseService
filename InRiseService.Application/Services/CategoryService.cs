@@ -35,7 +35,7 @@ namespace InRiseService.Application.Services
         {
             try
             {
-                return await _context.Categories.Where(c => c.DeleteIn != null && c.Active).ToListAsync();
+                return await _context.Categories.Where(c => c.DeleteIn == null && c.Active).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -57,12 +57,26 @@ namespace InRiseService.Application.Services
             }
         }
 
+        public Task<Category?> GetByNameAsync(string name)
+        {
+            try
+            {
+                return _context.Categories.FirstOrDefaultAsync(x => x.Name.Contains(name));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(CategoryService)}::{nameof(GetByIdAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
+
         public async Task<Category> InsertAsync(string name)
         {
             try
             {
                 var model = new Category{
-                    Name = name
+                    Name = name,
+                    Active = true
                 };
                 _context.Add(model);
                 await _context.SaveChangesAsync();
@@ -80,7 +94,8 @@ namespace InRiseService.Application.Services
             try
             {
                 category.UpdateIn = DateTime.Now;
-                _context.Update(category);
+                _context.Categories.Update(category);
+                await _context.SaveChangesAsync();
                 return category;
             }
             catch (Exception ex)
@@ -89,5 +104,6 @@ namespace InRiseService.Application.Services
                 throw;
             }
         }
+    
     }
 }

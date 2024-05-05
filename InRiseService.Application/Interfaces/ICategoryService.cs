@@ -9,5 +9,6 @@ namespace InRiseService.Application.Interfaces
         Task DeleteAsync(Category category);
         Task<IEnumerable<Category>> GetAllAsync();
         Task<Category?> GetByIdAsync(int id);
+        Task<Category?> GetByNameAsync(string name);
     }
 }
