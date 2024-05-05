@@ -1,4 +1,5 @@
 using InRiseService.Domain.Addressed;
+using InRiseService.Domain.Categories;
 using InRiseService.Domain.Users;
 using InRiseService.Domain.UsersAddress;
 using InRiseService.Domain.ValidationCodes;
@@ -14,6 +15,7 @@ namespace InRiseService.Data.Context
         public DbSet<UserAddress> UserAddresses { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<ValidationCode> ValidationCodes { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
