@@ -22,6 +22,7 @@ namespace InRiseService.Infrastructure.Extentions
             services.AddScoped<ITypeCodeValidationService,TypeCodeValidationService>();
             services.AddScoped<IValidationCodeService,ValidationCodeService>();
             services.AddScoped<ISendGridService,SendGridService>();
+            services.AddScoped<ICategoryService,CategoryService>();
         }
 
         public static void RegisterConfigurationDependencies(this IServiceCollection services, IConfiguration configuration)
