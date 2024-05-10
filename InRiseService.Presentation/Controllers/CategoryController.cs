@@ -2,7 +2,7 @@ using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.DTOs.CategoryDto;
 using InRiseService.Application.Interfaces;
-using InRiseService.Domain.Categories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InRiseService.Presentation.Controllers
@@ -25,6 +25,7 @@ namespace InRiseService.Presentation.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, User")]
         public async Task<ActionResult> Create([FromBody] CategoryDtoRequest request)
         {
             try
@@ -55,6 +56,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<ActionResult> Update(int id, [FromBody] CategoryDtoRequest request)
         {
             try
@@ -89,6 +91,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpDelete]
         [Route("{id:int}")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<ActionResult> Delete(int id)
         {
             try
@@ -111,6 +114,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("{id:int}")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<ActionResult> GetById(int id)
         {
             try
@@ -136,6 +140,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("{name}")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<ActionResult> GetByname(string name)
         {
             try
@@ -160,6 +165,7 @@ namespace InRiseService.Presentation.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, User")]
         public async Task<ActionResult> GetAll()
         {
             try
@@ -185,6 +191,7 @@ namespace InRiseService.Presentation.Controllers
         
         [HttpPatch]
         [Route("deactivate/{id:int}")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<ActionResult> Deactivate(int id)
         {
             try
@@ -209,8 +216,10 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
+        
         [HttpPatch]
         [Route("activate/{id:int}")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<ActionResult> Activate(int id)
         {
             try

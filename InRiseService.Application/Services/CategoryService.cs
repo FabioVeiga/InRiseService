@@ -48,7 +48,9 @@ namespace InRiseService.Application.Services
         {
             try
             {
-                return _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+                return _context.Categories
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
             }
             catch (Exception ex)
             {

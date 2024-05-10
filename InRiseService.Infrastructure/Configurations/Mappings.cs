@@ -1,10 +1,12 @@
 using AutoMapper;
+using InRiseService.Application.DTOs.ProcessorDto;
 using InRiseService.Application.DTOs.UserAddressDto;
 using InRiseService.Application.DTOs.UserAutenticationDto;
 using InRiseService.Application.DTOs.UserDto;
 using InRiseService.Application.DTOs.ZipCodeBaseDto;
 using InRiseService.Application.UserDto;
 using InRiseService.Domain.Addressed;
+using InRiseService.Domain.Processors;
 using InRiseService.Domain.Users;
 using InRiseService.Domain.UsersAddress;
 
@@ -23,6 +25,7 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<Address, UserAddressDtoInsertRequest>().ReverseMap();
             CreateMap<UserAddress, AddressDtoResponse>().ReverseMap();
             CreateMap<Address, UserAddress>().ReverseMap();
+            CreateMap<Processor, ProcessorDtoInsertRequest>().ReverseMap();
         }
     }
 }
