@@ -6,31 +6,37 @@ namespace InRiseService.Application.DTOs.ProcessorDto
     {
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
-        [MinLength(5, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
+        [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public string Name { get; set; } = default!;
 
         [Display(Name = "Geração")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
-        [MinLength(5, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
+        [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public string Generation { get; set; } = default!;
 
         [Display(Name = "Socket")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
-        public int Socket { get; set; } = default!;
+        [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
+        [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
+        public string Socket { get; set; } = default!;
 
         [Display(Name = "Nucleos")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
-        public int Core { get; set; } = default!;
+        [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
+        [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
+        public string Core { get; set; } = default!;
 
         [Display(Name = "Frequência")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
-        public int Frequency { get; set; } = default!;
+        [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
+        [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
+        public string Frequency { get; set; } = default!;
 
         [Display(Name = "Potência/Consumo")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
-        [MinLength(5, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
+        [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public string Potency { get; set; } = default!;
 

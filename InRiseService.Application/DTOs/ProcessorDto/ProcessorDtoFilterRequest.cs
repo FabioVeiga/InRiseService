@@ -6,7 +6,7 @@ namespace InRiseService.Application.DTOs.ProcessorDto
     {
         public string Name { get; set; } = string.Empty;
         public string Generation { get; set; } = string.Empty;
-        public bool? IsDeleted { get; set; } = true;
+        public bool? IsDeleted { get; set; }
         public int? CategoryId { get; set; }
         public PaginationRequest Pagination { get; set; } = default!;
     }

@@ -58,11 +58,27 @@ namespace InRiseService.Application.Services
             }
         }
 
+        public async Task<Processor?> GetByIdAsync(int id)
+        {
+            try
+            {
+                return await _context.Processors
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(GetByIdAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
+
         public async Task<Processor> InsertAsync(Processor processor)
         {
             try
             {
                 processor.InsertIn = DateTime.Now;
+                processor.Active = true;
                 _context.Add(processor);
                 await _context.SaveChangesAsync();
                 return processor;
@@ -78,7 +94,7 @@ namespace InRiseService.Application.Services
         {
             try
             {
-                processor.InsertIn = DateTime.Now;
+                processor.UpdateIn = DateTime.Now;
                 _context.Processors.Update(processor);
                 await _context.SaveChangesAsync();
             }

@@ -10,5 +10,6 @@ namespace InRiseService.Application.Interfaces
         Task UpdateAsync(Processor processor);
         Task DeleteAsync(Processor processor);
         Task<Pagination<Processor>> GetByFilterAsync(ProcessorDtoFilterRequest filter);
+        Task<Processor?> GetByIdAsync(int id);
     }
 }
