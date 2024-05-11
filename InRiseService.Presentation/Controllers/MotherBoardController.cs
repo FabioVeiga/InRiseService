@@ -1,8 +1,8 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
-using InRiseService.Application.DTOs.ProcessorDto;
+using InRiseService.Application.DTOs.MotherBoardDto;
 using InRiseService.Application.Interfaces;
-using InRiseService.Domain.Processors;
+using InRiseService.Domain.MotherBoards;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,29 +10,29 @@ namespace InRiseService.Presentation.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProcessorController : ControllerBase
+    public class MotherBoardController : ControllerBase
     {
-        private readonly ILogger<ProcessorController> _logger;
+        private readonly ILogger<MotherBoardController> _logger;
         private readonly IMapper _mapper;
-        private readonly IProcessorService _processorService;
+        private readonly IMotherBoardService _motherBoardService;
         private readonly ICategoryService _categoryService;
 
-        public ProcessorController(
-            ILogger<ProcessorController> logger,
+        public MotherBoardController(
+            ILogger<MotherBoardController> logger,
             IMapper mapper,
-            IProcessorService processorService,
+            IMotherBoardService motherBoardService,
             ICategoryService categoryService
             )
         {
             _logger = logger;
             _mapper = mapper;
-            _processorService = processorService;
+            _motherBoardService = motherBoardService;
             _categoryService = categoryService;
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] ProcessorDtoInsertRequest request)
+        //[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create([FromBody] MotherBoardDtoInsertRequest request)
         {
             try
             {
@@ -43,9 +43,9 @@ namespace InRiseService.Presentation.Controllers
                     ModelState.AddModelError(nameof(request.CategoryId), "Informar um Id que existe!!");
                     return BadRequest(new ValidationProblemDetails(ModelState));
                 }
-                var mapped = _mapper.Map<Processor>(request);
+                var mapped = _mapper.Map<MotherBoard>(request);
                 mapped.CategoryId = category.Id;
-                var result = await _processorService.InsertAsync(mapped);
+                var result = await _motherBoardService.InsertAsync(mapped);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
                     result
@@ -65,13 +65,13 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update([FromBody] ProcessorDtoInsertRequest request, int id)
+        //[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Update([FromBody] MotherBoardDtoInsertRequest request, int id)
         {
             try
             {
-                var processor = await _processorService.GetByIdAsync(id);
-                if(processor is null) return NotFound();
+                var motherBoard = await _motherBoardService.GetByIdAsync(id);
+                if(motherBoard is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
                 var category = await _categoryService.GetByIdAsync(request.CategoryId);
                 if(category is null)
@@ -79,14 +79,15 @@ namespace InRiseService.Presentation.Controllers
                     ModelState.AddModelError(nameof(request.CategoryId), "Informar um Id que existe!!");
                     return BadRequest(new ValidationProblemDetails(ModelState));
                 }
-                processor.Category = category;
-                processor.Core = request.Core;
-                processor.Frequency = request.Frequency;
-                processor.Generation = request.Generation;
-                processor.Name = request.Name;
-                processor.Socket = request.Socket;
-                processor.Potency = request.Potency;
-                await _processorService.UpdateAsync(processor);
+                motherBoard.Category = category;
+                motherBoard.Name = request.Name;
+                motherBoard.Socket = request.Socket;
+                motherBoard.Potency = request.Potency;
+                motherBoard.SocketM2 = request.SocketM2;
+                motherBoard.SocketMemory = request.SocketMemory;
+                motherBoard.SocketMemoryVideo = request.SocketMemoryVideo;
+                motherBoard.SocketSSD = request.SocketSSD;
+                await _motherBoardService.UpdateAsync(motherBoard);
                 return Ok();
             }
             catch (Exception ex)
@@ -102,12 +103,12 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin)]
         public async Task<IActionResult> GetById(int id)
         {
             try
             {
-                var result = await _processorService.GetByIdAsync(id);
+                var result = await _motherBoardService.GetByIdAsync(id);
                 if(result == null) return NotFound();
 
                 var response = new ApiResponse<dynamic>(
@@ -128,12 +129,12 @@ namespace InRiseService.Presentation.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetFiltered([FromBody] ProcessorDtoFilterRequest request)
+        //[Authorize(Roles = "Admin)]
+        public async Task<IActionResult> GetFiltered([FromBody] MotherBoardDtoFilterRequest request)
         {
             try
             {
-               var result = await _processorService.GetByFilterAsync(request);
+               var result = await _motherBoardService.GetByFilterAsync(request);
                 if(result.TotalItems == 0)
                     return NotFound();
 
