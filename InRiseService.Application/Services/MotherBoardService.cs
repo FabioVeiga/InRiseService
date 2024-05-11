@@ -1,3 +1,6 @@
+using InRiseService.Application.DTOs.MotherBoardDto;
+using InRiseService.Application.DTOs.PaginationDto;
+using InRiseService.Application.Extentions;
 using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
 using InRiseService.Domain.MotherBoards;
@@ -15,6 +18,30 @@ namespace InRiseService.Application.Services
         {
             _context = context;
             _logger = logger;
+        }
+
+        public async Task<Pagination<MotherBoard>> GetByFilterAsync(MotherBoardDtoFilterRequest filter)
+        {
+            try
+            {
+                var query = _context.MotherBoards
+                .AsNoTracking()
+                .Where(p => p.Name.ToUpper().Contains(filter.Name)
+                );
+
+                if(filter.IsDeleted.HasValue)
+                    query = query.Where(x => x.DeleteIn != null);
+                if(filter.CategoryId.HasValue)
+                    query = query.Where(x => x.Category.Id == filter.CategoryId);
+                
+                var finalListResult = await query.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);
+                return finalListResult;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(GetByFilterAsync)}] - Exception: {ex}");
+                throw;
+            }
         }
         
         public async Task DeleteAsync(MotherBoard motherBoard)
