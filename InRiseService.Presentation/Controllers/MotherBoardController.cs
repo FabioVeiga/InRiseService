@@ -28,7 +28,7 @@ namespace InRiseService.Presentation.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] MotherBoardDtoInsertRequest request)
         {
             try
@@ -86,7 +86,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        //[Authorize(Roles = "Admin)]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetById(int id)
         {
             try
@@ -112,7 +112,7 @@ namespace InRiseService.Presentation.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Admin)]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetFiltered([FromBody] MotherBoardDtoFilterRequest request)
         {
             try
