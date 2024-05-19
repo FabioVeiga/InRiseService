@@ -15,19 +15,16 @@ namespace InRiseService.Presentation.Controllers
         private readonly ILogger<ProcessorController> _logger;
         private readonly IMapper _mapper;
         private readonly IProcessorService _processorService;
-        private readonly ICategoryService _categoryService;
 
         public ProcessorController(
             ILogger<ProcessorController> logger,
             IMapper mapper,
-            IProcessorService processorService,
-            ICategoryService categoryService
+            IProcessorService processorService
             )
         {
             _logger = logger;
             _mapper = mapper;
             _processorService = processorService;
-            _categoryService = categoryService;
         }
 
         [HttpPost]
@@ -37,14 +34,7 @@ namespace InRiseService.Presentation.Controllers
             try
             {
                 if(!ModelState.IsValid) return BadRequest();
-                var category = await _categoryService.GetByIdAsync(request.CategoryId);
-                if(category is null)
-                {
-                    ModelState.AddModelError(nameof(request.CategoryId), "Informar um Id que existe!!");
-                    return BadRequest(new ValidationProblemDetails(ModelState));
-                }
                 var mapped = _mapper.Map<Processor>(request);
-                mapped.CategoryId = category.Id;
                 var result = await _processorService.InsertAsync(mapped);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
@@ -73,13 +63,6 @@ namespace InRiseService.Presentation.Controllers
                 var processor = await _processorService.GetByIdAsync(id);
                 if(processor is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
-                var category = await _categoryService.GetByIdAsync(request.CategoryId);
-                if(category is null)
-                {
-                    ModelState.AddModelError(nameof(request.CategoryId), "Informar um Id que existe!!");
-                    return BadRequest(new ValidationProblemDetails(ModelState));
-                }
-                processor.Category = category;
                 processor.Core = request.Core;
                 processor.Frequency = request.Frequency;
                 processor.Generation = request.Generation;

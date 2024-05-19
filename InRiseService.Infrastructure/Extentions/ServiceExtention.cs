@@ -1,7 +1,6 @@
 using InRiseService.Application.DTOs.ApiSettingDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Application.Services;
-using InRiseService.Domain.MotherBoards;
 using InRiseService.Infrastructure.Configurations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +22,6 @@ namespace InRiseService.Infrastructure.Extentions
             services.AddScoped<ITypeCodeValidationService,TypeCodeValidationService>();
             services.AddScoped<IValidationCodeService,ValidationCodeService>();
             services.AddScoped<ISendGridService,SendGridService>();
-            services.AddScoped<ICategoryService,CategoryService>();
             services.AddScoped<IProcessorService,ProcessorService>();
             services.AddScoped<IMotherBoardService,MotherBoardService>();
         }

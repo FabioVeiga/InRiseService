@@ -15,19 +15,16 @@ namespace InRiseService.Presentation.Controllers
         private readonly ILogger<MotherBoardController> _logger;
         private readonly IMapper _mapper;
         private readonly IMotherBoardService _motherBoardService;
-        private readonly ICategoryService _categoryService;
 
         public MotherBoardController(
             ILogger<MotherBoardController> logger,
             IMapper mapper,
-            IMotherBoardService motherBoardService,
-            ICategoryService categoryService
+            IMotherBoardService motherBoardService
             )
         {
             _logger = logger;
             _mapper = mapper;
             _motherBoardService = motherBoardService;
-            _categoryService = categoryService;
         }
 
         [HttpPost]
@@ -37,14 +34,7 @@ namespace InRiseService.Presentation.Controllers
             try
             {
                 if(!ModelState.IsValid) return BadRequest();
-                var category = await _categoryService.GetByIdAsync(request.CategoryId);
-                if(category is null)
-                {
-                    ModelState.AddModelError(nameof(request.CategoryId), "Informar um Id que existe!!");
-                    return BadRequest(new ValidationProblemDetails(ModelState));
-                }
                 var mapped = _mapper.Map<MotherBoard>(request);
-                mapped.CategoryId = category.Id;
                 var result = await _motherBoardService.InsertAsync(mapped);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
@@ -73,13 +63,6 @@ namespace InRiseService.Presentation.Controllers
                 var motherBoard = await _motherBoardService.GetByIdAsync(id);
                 if(motherBoard is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
-                var category = await _categoryService.GetByIdAsync(request.CategoryId);
-                if(category is null)
-                {
-                    ModelState.AddModelError(nameof(request.CategoryId), "Informar um Id que existe!!");
-                    return BadRequest(new ValidationProblemDetails(ModelState));
-                }
-                motherBoard.Category = category;
                 motherBoard.Name = request.Name;
                 motherBoard.Socket = request.Socket;
                 motherBoard.Potency = request.Potency;
