@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240510003313_Initial_12")]
-    partial class Initial_12
+    [Migration("20240529231110_Initial_01")]
+    partial class Initial_01
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,7 +65,7 @@ namespace InRiseService.Data.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("InRiseService.Domain.Categories.Category", b =>
+            modelBuilder.Entity("InRiseService.Domain.MotherBoards.MotherBoard", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -85,12 +85,42 @@ namespace InRiseService.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<string>("Potency")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Socket")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("SocketM2")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("SocketMemory")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("SocketMemoryVideo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("SocketSSD")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
                     b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("MotherBoards");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Processors.Processor", b =>
@@ -101,9 +131,6 @@ namespace InRiseService.Data.Migrations
 
                     b.Property<bool>("Active")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Core")
                         .IsRequired()
@@ -145,8 +172,6 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Processors");
                 });
@@ -300,17 +325,6 @@ namespace InRiseService.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("ValidationCodes");
-                });
-
-            modelBuilder.Entity("InRiseService.Domain.Processors.Processor", b =>
-                {
-                    b.HasOne("InRiseService.Domain.Categories.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.UsersAddress.UserAddress", b =>
