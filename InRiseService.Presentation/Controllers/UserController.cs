@@ -18,13 +18,23 @@ namespace InRiseService.Presentation.Controllers
         private readonly IMapper _mapper;
         private readonly IUserProfileService _userProfileService;
         private readonly IUserService _userService;
+        private readonly IValidationCodeService _validationCodeService;
+        private readonly ISendGridService _sendGridService;
 
-        public UserController(ILogger<UserController> logger, IMapper mapper, IUserProfileService userProfileService, IUserService userService)
+        public UserController(
+            ILogger<UserController> logger, 
+            IMapper mapper, 
+            IUserProfileService userProfileService, 
+            IUserService userService,
+            IValidationCodeService validationCodeService,
+            ISendGridService sendGridService)
         {
             _logger = logger;
             _mapper = mapper;
             _userProfileService = userProfileService;
             _userService = userService;
+            _validationCodeService = validationCodeService;
+            _sendGridService = sendGridService;
         }
 
         [HttpPost]
@@ -50,6 +60,17 @@ namespace InRiseService.Presentation.Controllers
                 var mapped = _mapper.Map<User>(request);
                 var result = await _userService.InsertAsync(mapped);
                 var mappedResponse = _mapper.Map<UserDtoResponse>(result);
+                var code = await _validationCodeService.InsertAsync(mappedResponse.Id, Domain.Enums.EnumTypeCodeValidation.Email);
+                
+                if(code is not null)
+                {
+                    mappedResponse.ValidationCodeMsg = "Foi enviado um email para ativar sua conta!";
+                    var msg = $"Seu código é {code}";
+                    await _sendGridService.SendAsync(mappedResponse.Email, mappedResponse.Name, "InRise - Validar Conta", msg);
+                }
+                else
+                    mappedResponse.ValidationCodeMsg = "Necessita gerar um código para ativar a conta!";
+                        
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
                     mappedResponse

@@ -62,34 +62,6 @@ namespace InRiseService.Data.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("InRiseService.Domain.Categories.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<DateTime?>("DeleteIn")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("InsertIn")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<DateTime?>("UpdateIn")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
-
             modelBuilder.Entity("InRiseService.Domain.MotherBoards.MotherBoard", b =>
                 {
                     b.Property<int>("Id")
@@ -98,9 +70,6 @@ namespace InRiseService.Data.Migrations
 
                     b.Property<bool>("Active")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
@@ -148,8 +117,6 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("MotherBoards");
                 });
 
@@ -161,9 +128,6 @@ namespace InRiseService.Data.Migrations
 
                     b.Property<bool>("Active")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Core")
                         .IsRequired()
@@ -205,8 +169,6 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Processors");
                 });
@@ -360,28 +322,6 @@ namespace InRiseService.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("ValidationCodes");
-                });
-
-            modelBuilder.Entity("InRiseService.Domain.MotherBoards.MotherBoard", b =>
-                {
-                    b.HasOne("InRiseService.Domain.Categories.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("InRiseService.Domain.Processors.Processor", b =>
-                {
-                    b.HasOne("InRiseService.Domain.Categories.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.UsersAddress.UserAddress", b =>

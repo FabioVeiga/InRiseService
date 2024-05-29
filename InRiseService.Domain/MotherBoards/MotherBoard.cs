@@ -1,8 +1,5 @@
 
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
-using InRiseService.Domain.Categories;
 
 namespace InRiseService.Domain.MotherBoards
 {
@@ -49,11 +46,5 @@ namespace InRiseService.Domain.MotherBoards
         [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public string Potency { get; set; } = default!;
-
-        [JsonIgnore]
-        public Category Category { get; set; } = default!;
-
-        [ForeignKey("Category")]
-        public int CategoryId { get; set; } = default!;
     }
 }
