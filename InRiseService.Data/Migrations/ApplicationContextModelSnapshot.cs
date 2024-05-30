@@ -82,11 +82,6 @@ namespace InRiseService.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("Potency")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
                     b.Property<string>("Socket")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -129,18 +124,16 @@ namespace InRiseService.Data.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("Core")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                    b.Property<int>("Core")
+                        .HasMaxLength(10)
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Frequency")
-                        .IsRequired()
+                    b.Property<double>("Frequency")
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("double");
 
                     b.Property<string>("Generation")
                         .IsRequired()
@@ -155,12 +148,26 @@ namespace InRiseService.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("Potency")
+                    b.Property<int>("Potency")
+                        .HasMaxLength(10)
+                        .HasColumnType("int");
+
+                    b.Property<string>("Socket")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("Socket")
+                    b.Property<string>("SuportMemoryRAM")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("SuportMemoryROM")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("SuportVideo")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
