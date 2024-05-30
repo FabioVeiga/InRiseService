@@ -24,20 +24,14 @@ namespace InRiseService.Application.DTOs.ProcessorDto
 
         [Display(Name = "Números Nucleos")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
-        [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
-        [MaxLength(10, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public int Core { get; set; }
 
         [Display(Name = "Frequência GHz")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
-        [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
-        [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public double Frequency { get; set; }
 
         [Display(Name = "Potência/Consumo W")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
-        [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
-        [MaxLength(10, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public int Potency { get; set; }
 
         [Display(Name = "Suporte RAM")]
