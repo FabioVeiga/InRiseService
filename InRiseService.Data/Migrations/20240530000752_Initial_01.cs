@@ -60,8 +60,6 @@ namespace InRiseService.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     SocketM2 = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Potency = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Active = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     InsertIn = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdateIn = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -85,11 +83,14 @@ namespace InRiseService.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Socket = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Core = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    Core = table.Column<int>(type: "int", maxLength: 10, nullable: false),
+                    Frequency = table.Column<double>(type: "double", maxLength: 100, nullable: false),
+                    Potency = table.Column<int>(type: "int", maxLength: 10, nullable: false),
+                    SuportMemoryRAM = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Frequency = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    SuportMemoryROM = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Potency = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    SuportVideo = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Active = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     InsertIn = table.Column<DateTime>(type: "datetime(6)", nullable: false),

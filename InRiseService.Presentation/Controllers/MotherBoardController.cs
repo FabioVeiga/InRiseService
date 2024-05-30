@@ -65,7 +65,6 @@ namespace InRiseService.Presentation.Controllers
                 if(!ModelState.IsValid) return BadRequest();
                 motherBoard.Name = request.Name;
                 motherBoard.Socket = request.Socket;
-                motherBoard.Potency = request.Potency;
                 motherBoard.SocketM2 = request.SocketM2;
                 motherBoard.SocketMemory = request.SocketMemory;
                 motherBoard.SocketMemoryVideo = request.SocketMemoryVideo;

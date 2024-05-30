@@ -11,7 +11,7 @@ namespace InRiseService.Domain.MotherBoards
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public string Name { get; set; } = default!;
 
-        [Display(Name = "Socket Procssador")]
+        [Display(Name = "Socket Processador")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
@@ -40,11 +40,5 @@ namespace InRiseService.Domain.MotherBoards
         [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public string SocketM2 { get; set; } = default!;
-
-        [Display(Name = "Potencia /Consumo")]
-        [Required(ErrorMessage = "{0} é obrigatório!")]
-        [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
-        [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
-        public string Potency { get; set; } = default!;
     }
 }

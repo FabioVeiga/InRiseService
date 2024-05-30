@@ -16,32 +16,46 @@ namespace InRiseService.Application.DTOs.ProcessorDto
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public string Generation { get; set; } = default!;
 
-        [Display(Name = "Socket")]
+        [Display(Name = "Socket Processador")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public string Socket { get; set; } = default!;
 
-        [Display(Name = "Nucleos")]
+        [Display(Name = "Números Nucleos")]
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
+        [MaxLength(10, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
+        public int Core { get; set; }
+
+        [Display(Name = "Frequência GHz")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
-        public string Core { get; set; } = default!;
+        public double Frequency { get; set; }
 
-        [Display(Name = "Frequência")]
+        [Display(Name = "Potência/Consumo W")]
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
+        [MaxLength(10, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
+        public int Potency { get; set; }
+
+        [Display(Name = "Suporte RAM")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
-        public string Frequency { get; set; } = default!;
+        public string SuportMemoryRAM { get; set; } = default!;
 
-        [Display(Name = "Potência/Consumo")]
+        [Display(Name = "Suporte SSD/HD")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
-        public string Potency { get; set; } = default!;
+        public string SuportMemoryROM { get; set; } = default!;
 
-        [Display(Name = "CategoryId")]
+        [Display(Name = "Suporte Video")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
-        public int CategoryId { get; set; } = default!;
+        [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
+        [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
+        public string SuportVideo { get; set; } = default!;
     }
 }
