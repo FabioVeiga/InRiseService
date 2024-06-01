@@ -6,6 +6,7 @@ using InRiseService.Domain.Processors;
 using InRiseService.Domain.Users;
 using InRiseService.Domain.UsersAddress;
 using InRiseService.Domain.ValidationCodes;
+using InRiseService.Domain.VideoBoards;
 using Microsoft.EntityFrameworkCore;
 
 namespace InRiseService.Data.Context
@@ -22,6 +23,7 @@ namespace InRiseService.Data.Context
         public DbSet<MotherBoard> MotherBoards { get; set; }
         public DbSet<MemoryRam> MemoriesRam { get; set; }
         public DbSet<MemoryRom> MemoriesRom { get; set; }
+        public DbSet<VideoBoard> VideosBoard { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
