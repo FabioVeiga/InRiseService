@@ -1,4 +1,5 @@
 using AutoMapper;
+using InRiseService.Application.DTOs.MemoryRamDto;
 using InRiseService.Application.DTOs.MotherBoardDto;
 using InRiseService.Application.DTOs.ProcessorDto;
 using InRiseService.Application.DTOs.UserAddressDto;
@@ -7,6 +8,7 @@ using InRiseService.Application.DTOs.UserDto;
 using InRiseService.Application.DTOs.ZipCodeBaseDto;
 using InRiseService.Application.UserDto;
 using InRiseService.Domain.Addressed;
+using InRiseService.Domain.MemoriesRam;
 using InRiseService.Domain.MotherBoards;
 using InRiseService.Domain.Processors;
 using InRiseService.Domain.Users;
@@ -29,6 +31,7 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<Address, UserAddress>().ReverseMap();
             CreateMap<Processor, ProcessorDtoInsertRequest>().ReverseMap();
             CreateMap<MotherBoard, MotherBoardDtoInsertRequest>().ReverseMap();
+            CreateMap<MemoryRam, MemoryRamInsertDto>().ReverseMap();
         }
     }
 }

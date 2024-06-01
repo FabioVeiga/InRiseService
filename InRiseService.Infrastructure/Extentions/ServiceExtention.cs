@@ -24,6 +24,7 @@ namespace InRiseService.Infrastructure.Extentions
             services.AddScoped<ISendGridService,SendGridService>();
             services.AddScoped<IProcessorService,ProcessorService>();
             services.AddScoped<IMotherBoardService,MotherBoardService>();
+            services.AddScoped<IMemoryRamService,MemoryRamService>();
         }
 
         public static void RegisterConfigurationDependencies(this IServiceCollection services, IConfiguration configuration)
