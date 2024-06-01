@@ -27,6 +27,7 @@ namespace InRiseService.Infrastructure.Extentions
             services.AddScoped<IMemoryRamService,MemoryRamService>();
             services.AddScoped<IMemoryRomService,MemoryRomService>();
             services.AddScoped<IVideoBoardService,VideoBoardService>();
+            services.AddScoped<IPowerSupplyService,PowerSuppliesService>();
         }
 
         public static void RegisterConfigurationDependencies(this IServiceCollection services, IConfiguration configuration)
