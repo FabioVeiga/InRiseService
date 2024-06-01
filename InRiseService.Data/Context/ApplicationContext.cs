@@ -1,4 +1,5 @@
 using InRiseService.Domain.Addressed;
+using InRiseService.Domain.MemoriesRam;
 using InRiseService.Domain.MotherBoards;
 using InRiseService.Domain.Processors;
 using InRiseService.Domain.Users;
@@ -18,6 +19,7 @@ namespace InRiseService.Data.Context
         public DbSet<ValidationCode> ValidationCodes { get; set; }
         public DbSet<Processor> Processors { get; set; }
         public DbSet<MotherBoard> MotherBoards { get; set; }
+        public DbSet<MemoryRam> MemoriesRam { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
