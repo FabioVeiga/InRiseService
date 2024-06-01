@@ -13,5 +13,6 @@ namespace InRiseService.Application.UserDto
         public bool PhoneNumberValide { get; set; }
         public bool Marketing { get; set; }
         public bool Term { get; set; }
+        public string? ValidationCodeMsg { get; set; }
     }
 }

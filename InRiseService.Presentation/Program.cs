@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using InRiseService.Infrastructure.Extentions;
-using Microsoft.Extensions.Configuration;
+using InRiseService.Application.DTOs.ApiSettingDto;
+using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,13 +15,14 @@ var key = Encoding.ASCII.GetBytes(secret);
 
 // Add services to the container.
 builder.Services.RegisterDependencies();
+builder.Services.RegisterConfigurationDependencies(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "InRise  API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "InRiseService  API", Version = "v1" });
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -76,11 +78,13 @@ builder.Services.AddDbContext<ApplicationContext>(opt =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    options.RoutePrefix = string.Empty;
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+});
+
 
 app.UseHttpsRedirection();
 
