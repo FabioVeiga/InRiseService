@@ -1,45 +1,45 @@
-using InRiseService.Application.DTOs.MemoryRomDto;
 using InRiseService.Application.DTOs.PaginationDto;
+using InRiseService.Application.DTOs.VideoBoardDto;
 using InRiseService.Application.Extentions;
 using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
-using InRiseService.Domain.MemoriesRom;
+using InRiseService.Domain.VideoBoards;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace InRiseService.Application.Services
 {
-    public class MemoryRomService : IMemoryRomService
+    public class VideoBoardService : IVideoBoardService
     {
         private readonly ApplicationContext _context;
-        private readonly ILogger<MemoryRomService> _logger;
+        private readonly ILogger<VideoBoardService> _logger;
 
-        public MemoryRomService(ApplicationContext context,  ILogger<MemoryRomService> logger)
+        public VideoBoardService(ApplicationContext context,  ILogger<VideoBoardService> logger)
         {
             _context = context;
             _logger = logger;
         }
         
-        public async Task DeleteAsync(MemoryRom memoryRom)
+        public async Task DeleteAsync(VideoBoard videoBoard)
         {
             try
             {
-                memoryRom.DeleteIn = DateTime.Now;
-                _context.Update(memoryRom);
+                videoBoard.DeleteIn = DateTime.Now;
+                _context.Update(videoBoard);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MemoryRomService)}::{nameof(DeleteAsync)}] - Exception: {ex}");
+                _logger.LogError($"[{nameof(VideoBoardService)}::{nameof(DeleteAsync)}] - Exception: {ex}");
                 throw;
             }
         }
 
-        public async Task<Pagination<MemoryRom>> GetByFilterAsync(MemoryRomFilterDto filter)
+         public async Task<Pagination<VideoBoard>> GetByFilterAsync(VideoBoardFilterDto filter)
         {
             try
             {
-                var query = _context.MemoriesRom
+                var query = _context.VideosBoard
                 .AsNoTracking()
                 .Where(p => p.Name.ToUpper().Contains(filter.Name)
                 );
@@ -57,50 +57,49 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task<MemoryRom?> GetByIdAsync(int id)
+        public async Task<VideoBoard?> GetByIdAsync(int id)
         {
             try
             {
-                return await _context.MemoriesRom
+                return await _context.VideosBoard
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MemoryRomService)}::{nameof(GetByIdAsync)}] - Exception: {ex}");
+                _logger.LogError($"[{nameof(VideoBoardService)}::{nameof(GetByIdAsync)}] - Exception: {ex}");
                 throw;
             }
         }
 
-        public async Task<MemoryRom> InsertAsync(MemoryRom MemoryRom)
+        public async Task<VideoBoard> InsertAsync(VideoBoard videoBoard)
         {
             try
             {
-                _context.Add(MemoryRom);
+                _context.Add(videoBoard);
                 await _context.SaveChangesAsync();
-                return MemoryRom;
+                return videoBoard;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MemoryRomService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                _logger.LogError($"[{nameof(VideoBoardService)}::{nameof(InsertAsync)}] - Exception: {ex}");
                 throw;
             }
         }
 
-        public async Task UpdateAsync(MemoryRom memoryRom)
+        public async Task UpdateAsync(VideoBoard videoBoard)
         {
             try
             {
-                memoryRom.UpdateIn = DateTime.Now;
-                _context.Update(memoryRom);
+                videoBoard.UpdateIn = DateTime.Now;
+                _context.Update(videoBoard);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MemoryRomService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                _logger.LogError($"[{nameof(VideoBoardService)}::{nameof(InsertAsync)}] - Exception: {ex}");
                 throw;
             }
         }
-        
     }
 }

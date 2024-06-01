@@ -6,6 +6,7 @@ using InRiseService.Application.DTOs.ProcessorDto;
 using InRiseService.Application.DTOs.UserAddressDto;
 using InRiseService.Application.DTOs.UserAutenticationDto;
 using InRiseService.Application.DTOs.UserDto;
+using InRiseService.Application.DTOs.VideoBoardDto;
 using InRiseService.Application.DTOs.ZipCodeBaseDto;
 using InRiseService.Application.UserDto;
 using InRiseService.Domain.Addressed;
@@ -15,6 +16,7 @@ using InRiseService.Domain.MotherBoards;
 using InRiseService.Domain.Processors;
 using InRiseService.Domain.Users;
 using InRiseService.Domain.UsersAddress;
+using InRiseService.Domain.VideoBoards;
 
 namespace InRiseService.Infrastructure.Configurations
 {
@@ -35,6 +37,7 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<MotherBoard, MotherBoardDtoInsertRequest>().ReverseMap();
             CreateMap<MemoryRam, MemoryRamInsertDto>().ReverseMap();
             CreateMap<MemoryRom, MemoryRomInsertDto>().ReverseMap();
+            CreateMap<VideoBoard, VideoBoardInsertDto>().ReverseMap();
         }
     }
 }
