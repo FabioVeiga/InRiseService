@@ -25,6 +25,7 @@ namespace InRiseService.Application.Services
             try
             {
                 memoryRam.DeleteIn = DateTime.Now;
+                _context.Update(memoryRam);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -91,6 +92,7 @@ namespace InRiseService.Application.Services
             try
             {
                 memoryRam.UpdateIn = DateTime.Now;
+                _context.Update(memoryRam);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)

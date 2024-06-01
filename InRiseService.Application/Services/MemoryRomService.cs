@@ -1,45 +1,45 @@
+using InRiseService.Application.DTOs.MemoryRomDto;
 using InRiseService.Application.DTOs.PaginationDto;
-using InRiseService.Application.DTOs.ProcessorDto;
 using InRiseService.Application.Extentions;
 using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
-using InRiseService.Domain.Processors;
+using InRiseService.Domain.MemoriesRom;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace InRiseService.Application.Services
 {
-    public class ProcessorService : IProcessorService
+    public class MemoryRomService : IMemoryRomService
     {
         private readonly ApplicationContext _context;
-        private readonly ILogger<ProcessorService> _logger;
+        private readonly ILogger<MemoryRomService> _logger;
 
-        public ProcessorService(ApplicationContext context,  ILogger<ProcessorService> logger)
+        public MemoryRomService(ApplicationContext context,  ILogger<MemoryRomService> logger)
         {
             _context = context;
             _logger = logger;
         }
         
-        public async Task DeleteAsync(Processor processor)
+        public async Task DeleteAsync(MemoryRom memoryRom)
         {
             try
             {
-                processor.DeleteIn = DateTime.Now;
-                _context.Processors.Update(processor);
-                await UpdateAsync(processor);
+                memoryRom.DeleteIn = DateTime.Now;
+                _context.Update(memoryRom);
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(DeleteAsync)}] - Exception: {ex}");
+                _logger.LogError($"[{nameof(MemoryRomService)}::{nameof(DeleteAsync)}] - Exception: {ex}");
                 throw;
             }
         }
 
-        public async Task<Pagination<Processor>> GetByFilterAsync(ProcessorDtoFilterRequest filter)
+        public async Task<Pagination<MemoryRom>> GetByFilterAsync(MemoryRomFilterDto filter)
         {
             try
             {
-                var query = _context.Processors
+                var query = _context.MemoriesRom
                 .AsNoTracking()
                 .Where(p => p.Name.ToUpper().Contains(filter.Name)
                 );
@@ -57,49 +57,47 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task<Processor?> GetByIdAsync(int id)
+        public async Task<MemoryRom?> GetByIdAsync(int id)
         {
             try
             {
-                return await _context.Processors
+                return await _context.MemoriesRom
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(GetByIdAsync)}] - Exception: {ex}");
+                _logger.LogError($"[{nameof(MemoryRomService)}::{nameof(GetByIdAsync)}] - Exception: {ex}");
                 throw;
             }
         }
 
-        public async Task<Processor> InsertAsync(Processor processor)
+        public async Task<MemoryRom> InsertAsync(MemoryRom MemoryRom)
         {
             try
             {
-                processor.InsertIn = DateTime.Now;
-                processor.Active = true;
-                _context.Add(processor);
+                _context.Add(MemoryRom);
                 await _context.SaveChangesAsync();
-                return processor;
+                return MemoryRom;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                _logger.LogError($"[{nameof(MemoryRomService)}::{nameof(InsertAsync)}] - Exception: {ex}");
                 throw;
             }
         }
 
-        public async Task UpdateAsync(Processor processor)
+        public async Task UpdateAsync(MemoryRom memoryRom)
         {
             try
             {
-                processor.UpdateIn = DateTime.Now;
-                _context.Processors.Update(processor);
+                memoryRom.UpdateIn = DateTime.Now;
+                _context.Update(memoryRom);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(UpdateAsync)}] - Exception: {ex}");
+                _logger.LogError($"[{nameof(MemoryRomService)}::{nameof(InsertAsync)}] - Exception: {ex}");
                 throw;
             }
         }
