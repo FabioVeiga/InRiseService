@@ -2,6 +2,7 @@ using InRiseService.Domain.Addressed;
 using InRiseService.Domain.MemoriesRam;
 using InRiseService.Domain.MemoriesRom;
 using InRiseService.Domain.MotherBoards;
+using InRiseService.Domain.PowerSupplies;
 using InRiseService.Domain.Processors;
 using InRiseService.Domain.Users;
 using InRiseService.Domain.UsersAddress;
@@ -24,6 +25,7 @@ namespace InRiseService.Data.Context
         public DbSet<MemoryRam> MemoriesRam { get; set; }
         public DbSet<MemoryRom> MemoriesRom { get; set; }
         public DbSet<VideoBoard> VideosBoard { get; set; }
+        public DbSet<PowerSupply> PowerSupplies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

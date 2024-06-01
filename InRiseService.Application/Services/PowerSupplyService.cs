@@ -1,30 +1,30 @@
-using InRiseService.Application.DTOs.MotherBoardDto;
 using InRiseService.Application.DTOs.PaginationDto;
+using InRiseService.Application.DTOs.PowerSupplyDto;
 using InRiseService.Application.Extentions;
 using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
-using InRiseService.Domain.MotherBoards;
+using InRiseService.Domain.PowerSupplies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace InRiseService.Application.Services
 {
-    public class MotherBoardService : IMotherBoardService
+    public class PowerSuppliesService : IPowerSupplyService
     {
         private readonly ApplicationContext _context;
-        private readonly ILogger<MotherBoardService> _logger;
+        private readonly ILogger<PowerSuppliesService> _logger;
 
-        public MotherBoardService(ApplicationContext context,  ILogger<MotherBoardService> logger)
+        public PowerSuppliesService(ApplicationContext context,  ILogger<PowerSuppliesService> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        public async Task<Pagination<MotherBoard>> GetByFilterAsync(MotherBoardDtoFilterRequest filter)
+        public async Task<Pagination<PowerSupply>> GetByFilterAsync(PowerSupplyFilterDto filter)
         {
             try
             {
-                var query = _context.MotherBoards
+                var query = _context.PowerSupplies
                 .AsNoTracking()
                 .Where(p => p.Name.ToUpper().Contains(filter.Name)
                 );
@@ -42,60 +42,60 @@ namespace InRiseService.Application.Services
             }
         }
         
-        public async Task DeleteAsync(MotherBoard motherBoard)
+        public async Task DeleteAsync(PowerSupply powerSupply)
         {
             try
             {
-                motherBoard.DeleteIn = DateTime.Now;
-                _context.Update(motherBoard);
+                powerSupply.DeleteIn = DateTime.Now;
+                _context.Update(powerSupply);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MotherBoardService)}::{nameof(DeleteAsync)}] - Exception: {ex}");
+                _logger.LogError($"[{nameof(PowerSuppliesService)}::{nameof(DeleteAsync)}] - Exception: {ex}");
                 throw;
             }
         }
 
-        public async Task<MotherBoard?> GetByIdAsync(int id)
+        public async Task<PowerSupply?> GetByIdAsync(int id)
         {
             try
             {
-                return await _context.MotherBoards.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+                return await _context.PowerSupplies.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MotherBoardService)}::{nameof(GetByIdAsync)}] - Exception: {ex}");
+                _logger.LogError($"[{nameof(PowerSuppliesService)}::{nameof(GetByIdAsync)}] - Exception: {ex}");
                 throw;
             }
         }
 
-        public async Task<MotherBoard> InsertAsync(MotherBoard motherBoard)
+        public async Task<PowerSupply> InsertAsync(PowerSupply PowerSupply)
         {
             try
             {
-                _context.Add(motherBoard);
+                _context.Add(PowerSupply);
                 await _context.SaveChangesAsync();
-                return motherBoard;
+                return PowerSupply;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MotherBoardService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                _logger.LogError($"[{nameof(PowerSuppliesService)}::{nameof(InsertAsync)}] - Exception: {ex}");
                 throw;
             }
         }
 
-        public async Task UpdateAsync(MotherBoard motherBoard)
+        public async Task UpdateAsync(PowerSupply powerSupply)
         {
             try
             {
-                motherBoard.UpdateIn = DateTime.Now;
-                _context.Update(motherBoard);
+                powerSupply.UpdateIn = DateTime.Now;
+                _context.Update(powerSupply);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MotherBoardService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                _logger.LogError($"[{nameof(PowerSuppliesService)}::{nameof(InsertAsync)}] - Exception: {ex}");
                 throw;
             }
         }

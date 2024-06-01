@@ -2,6 +2,7 @@ using AutoMapper;
 using InRiseService.Application.DTOs.MemoryRamDto;
 using InRiseService.Application.DTOs.MemoryRomDto;
 using InRiseService.Application.DTOs.MotherBoardDto;
+using InRiseService.Application.DTOs.PowerSupplyDto;
 using InRiseService.Application.DTOs.ProcessorDto;
 using InRiseService.Application.DTOs.UserAddressDto;
 using InRiseService.Application.DTOs.UserAutenticationDto;
@@ -13,6 +14,7 @@ using InRiseService.Domain.Addressed;
 using InRiseService.Domain.MemoriesRam;
 using InRiseService.Domain.MemoriesRom;
 using InRiseService.Domain.MotherBoards;
+using InRiseService.Domain.PowerSupplies;
 using InRiseService.Domain.Processors;
 using InRiseService.Domain.Users;
 using InRiseService.Domain.UsersAddress;
@@ -38,6 +40,7 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<MemoryRam, MemoryRamInsertDto>().ReverseMap();
             CreateMap<MemoryRom, MemoryRomInsertDto>().ReverseMap();
             CreateMap<VideoBoard, VideoBoardInsertDto>().ReverseMap();
+            CreateMap<PowerSupply, PowerSupplyInsertDto>().ReverseMap();
         }
     }
 }
