@@ -1,4 +1,5 @@
 using InRiseService.Domain.Addressed;
+using InRiseService.Domain.Coolers;
 using InRiseService.Domain.MemoriesRam;
 using InRiseService.Domain.MemoriesRom;
 using InRiseService.Domain.MotherBoards;
@@ -26,6 +27,7 @@ namespace InRiseService.Data.Context
         public DbSet<MemoryRom> MemoriesRom { get; set; }
         public DbSet<VideoBoard> VideosBoard { get; set; }
         public DbSet<PowerSupply> PowerSupplies { get; set; }
+        public DbSet<Cooler> Coolers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

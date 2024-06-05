@@ -11,6 +11,7 @@ using InRiseService.Application.DTOs.VideoBoardDto;
 using InRiseService.Application.DTOs.ZipCodeBaseDto;
 using InRiseService.Application.UserDto;
 using InRiseService.Domain.Addressed;
+using InRiseService.Domain.Coolers;
 using InRiseService.Domain.MemoriesRam;
 using InRiseService.Domain.MemoriesRom;
 using InRiseService.Domain.MotherBoards;
@@ -41,6 +42,7 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<MemoryRom, MemoryRomInsertDto>().ReverseMap();
             CreateMap<VideoBoard, VideoBoardInsertDto>().ReverseMap();
             CreateMap<PowerSupply, PowerSupplyInsertDto>().ReverseMap();
+            CreateMap<Cooler, CoolerInsertDto>().ReverseMap();
         }
     }
 }
