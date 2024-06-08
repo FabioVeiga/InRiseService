@@ -19,12 +19,12 @@ namespace InRiseService.Presentation.Controllers
         public VideoBoardController(
             ILogger<VideoBoardController> logger,
             IMapper mapper,
-            IVideoBoardService processorService
+            IVideoBoardService videoBoardService
             )
         {
             _logger = logger;
             _mapper = mapper;
-            _videoBoardService = processorService;
+            _videoBoardService = videoBoardService;
         }
 
         [HttpPost]
@@ -105,6 +105,30 @@ namespace InRiseService.Presentation.Controllers
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao buscar"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var result = await _videoBoardService.GetByIdAsync(id);
+                if(result == null) return NotFound();
+
+                await _videoBoardService.DeleteAsync(result);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao deletar"
                );
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }

@@ -55,7 +55,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromBody] MotherBoardDtoInsertRequest request, int id)
         {
             try
@@ -105,6 +105,30 @@ namespace InRiseService.Presentation.Controllers
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao buscar"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var result = await _motherBoardService.GetByIdAsync(id);
+                if(result == null) return NotFound();
+
+                await _motherBoardService.DeleteAsync(result);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao deletar"
                );
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }

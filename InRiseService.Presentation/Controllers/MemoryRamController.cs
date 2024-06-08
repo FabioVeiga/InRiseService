@@ -1,10 +1,8 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.DTOs.MemoryRamDto;
-using InRiseService.Application.DTOs.ProcessorDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Domain.MemoriesRam;
-using InRiseService.Domain.Processors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,12 +19,12 @@ namespace InRiseService.Presentation.Controllers
         public MemoryRamController(
             ILogger<MemoryRamController> logger,
             IMapper mapper,
-            IMemoryRamService processorService
+            IMemoryRamService pmemoryRamService
             )
         {
             _logger = logger;
             _mapper = mapper;
-            _memoryRamService = processorService;
+            _memoryRamService = pmemoryRamService;
         }
 
         [HttpPost]
@@ -110,6 +108,30 @@ namespace InRiseService.Presentation.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var result = await _memoryRamService.GetByIdAsync(id);
+                if(result == null) return NotFound();
+
+                await _memoryRamService.DeleteAsync(result);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao deletar"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+        
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetFiltered([FromBody] MemoryRamFilterDto request)

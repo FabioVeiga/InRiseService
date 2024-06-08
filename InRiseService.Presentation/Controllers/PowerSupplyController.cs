@@ -19,12 +19,12 @@ namespace InRiseService.Presentation.Controllers
         public PowerSupplyController(
             ILogger<PowerSupplyController> logger,
             IMapper mapper,
-            IPowerSupplyService processorService
+            IPowerSupplyService powerSupplyService
             )
         {
             _logger = logger;
             _mapper = mapper;
-            _powerSupplyService = processorService;
+            _powerSupplyService = powerSupplyService;
         }
 
         [HttpPost]
@@ -104,6 +104,30 @@ namespace InRiseService.Presentation.Controllers
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao buscar"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var result = await _powerSupplyService.GetByIdAsync(id);
+                if(result == null) return NotFound();
+
+                await _powerSupplyService.DeleteAsync(result);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao deletar"
                );
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
