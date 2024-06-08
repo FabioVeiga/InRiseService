@@ -1,41 +1,41 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
-using InRiseService.Application.DTOs.ProcessorDto;
 using InRiseService.Application.Interfaces;
-using InRiseService.Domain.Processors;
+using InRiseService.Domain.Towers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using InRiseService.Application.DTOs.TowerDto;
 
 namespace InRiseService.Presentation.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProcessorController : ControllerBase
+    public class TowerController : ControllerBase
     {
-        private readonly ILogger<ProcessorController> _logger;
+        private readonly ILogger<TowerController> _logger;
         private readonly IMapper _mapper;
-        private readonly IProcessorService _processorService;
+        private readonly ITowerService _TowerService;
 
-        public ProcessorController(
-            ILogger<ProcessorController> logger,
+        public TowerController(
+            ILogger<TowerController> logger,
             IMapper mapper,
-            IProcessorService processorService
+            ITowerService processorService
             )
         {
             _logger = logger;
             _mapper = mapper;
-            _processorService = processorService;
+            _TowerService = processorService;
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] ProcessorDtoInsertRequest request)
+        public async Task<IActionResult> Create([FromBody] TowerInsertDto request)
         {
             try
             {
                 if(!ModelState.IsValid) return BadRequest();
-                var mapped = _mapper.Map<Processor>(request);
-                var result = await _processorService.InsertAsync(mapped);
+                var mapped = _mapper.Map<Tower>(request);
+                var result = await _TowerService.InsertAsync(mapped);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
                     result
@@ -56,20 +56,17 @@ namespace InRiseService.Presentation.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update([FromBody] ProcessorDtoInsertRequest request, int id)
+        public async Task<IActionResult> Update([FromBody] TowerInsertDto request, int id)
         {
             try
             {
-                var processor = await _processorService.GetByIdAsync(id);
-                if(processor is null) return NotFound();
+                var Tower = await _TowerService.GetByIdAsync(id);
+                if(Tower is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
-                processor.Core = request.Core;
-                processor.Frequency = request.Frequency;
-                processor.Generation = request.Generation;
-                processor.Name = request.Name;
-                processor.Socket = request.Socket;
-                processor.Potency = request.Potency;
-                await _processorService.UpdateAsync(processor);
+                Tower.Name = request.Name;
+                Tower.Dimesion = request.Dimesion;
+                Tower.MaxFans = request.MaxFans;
+                await _TowerService.UpdateAsync(Tower);
                 return Ok();
             }
             catch (Exception ex)
@@ -90,7 +87,7 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var result = await _processorService.GetByIdAsync(id);
+                var result = await _TowerService.GetByIdAsync(id);
                 if(result == null) return NotFound();
 
                 var response = new ApiResponse<dynamic>(
@@ -117,10 +114,10 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var result = await _processorService.GetByIdAsync(id);
+                var result = await _TowerService.GetByIdAsync(id);
                 if(result == null) return NotFound();
 
-                await _processorService.DeleteAsync(result);
+                await _TowerService.DeleteAsync(result);
                 return Ok();
             }
             catch (Exception ex)
@@ -136,11 +133,11 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetFiltered([FromBody] ProcessorDtoFilterRequest request)
+        public async Task<IActionResult> GetFiltered([FromBody] TowerFilterDto request)
         {
             try
             {
-               var result = await _processorService.GetByFilterAsync(request);
+               var result = await _TowerService.GetByFilterAsync(request);
                 if(result.TotalItems == 0)
                     return NotFound();
 
@@ -160,5 +157,7 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
+
+    
     }
 }

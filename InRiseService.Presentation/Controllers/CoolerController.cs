@@ -3,8 +3,6 @@ using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.DTOs.MemoryRamDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Domain.Coolers;
-using InRiseService.Domain.MemoriesRam;
-using InRiseService.Domain.Processors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,17 +14,17 @@ namespace InRiseService.Presentation.Controllers
     {
         private readonly ILogger<CoolerController> _logger;
         private readonly IMapper _mapper;
-        private readonly ICoolerService _CoolerService;
+        private readonly ICoolerService _coolerService;
 
         public CoolerController(
             ILogger<CoolerController> logger,
             IMapper mapper,
-            ICoolerService processorService
+            ICoolerService coolerService
             )
         {
             _logger = logger;
             _mapper = mapper;
-            _CoolerService = processorService;
+            _coolerService = coolerService;
         }
 
         [HttpPost]
@@ -37,7 +35,7 @@ namespace InRiseService.Presentation.Controllers
             {
                 if(!ModelState.IsValid) return BadRequest();
                 var mapped = _mapper.Map<Cooler>(request);
-                var result = await _CoolerService.InsertAsync(mapped);
+                var result = await _coolerService.InsertAsync(mapped);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
                     result
@@ -62,7 +60,7 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var Cooler = await _CoolerService.GetByIdAsync(id);
+                var Cooler = await _coolerService.GetByIdAsync(id);
                 if(Cooler is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
                 Cooler.Name = request.Name;
@@ -72,7 +70,7 @@ namespace InRiseService.Presentation.Controllers
                 Cooler.FanDiametric = request.FanDiametric;
                 Cooler.MaxVelocit = request.MaxVelocit;
                 Cooler.Dimension = request.Dimension;
-                await _CoolerService.UpdateAsync(Cooler);
+                await _coolerService.UpdateAsync(Cooler);
                 return Ok();
             }
             catch (Exception ex)
@@ -93,7 +91,7 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var result = await _CoolerService.GetByIdAsync(id);
+                var result = await _coolerService.GetByIdAsync(id);
                 if(result == null) return NotFound();
 
                 var response = new ApiResponse<dynamic>(
@@ -113,13 +111,37 @@ namespace InRiseService.Presentation.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var result = await _coolerService.GetByIdAsync(id);
+                if(result == null) return NotFound();
+
+                await _coolerService.DeleteAsync(result);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao deletar"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetFiltered([FromBody] CoolerFilterDto request)
         {
             try
             {
-               var result = await _CoolerService.GetByFilterAsync(request);
+               var result = await _coolerService.GetByFilterAsync(request);
                 if(result.TotalItems == 0)
                     return NotFound();
 
