@@ -1,41 +1,41 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
-using InRiseService.Application.DTOs.MemoryRamDto;
 using InRiseService.Application.Interfaces;
-using InRiseService.Domain.Coolers;
+using InRiseService.Domain.Towers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using InRiseService.Application.DTOs.TowerDto;
 
 namespace InRiseService.Presentation.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CoolerController : ControllerBase
+    public class TowerController : ControllerBase
     {
-        private readonly ILogger<CoolerController> _logger;
+        private readonly ILogger<TowerController> _logger;
         private readonly IMapper _mapper;
-        private readonly ICoolerService _CoolerService;
+        private readonly ITowerService _TowerService;
 
-        public CoolerController(
-            ILogger<CoolerController> logger,
+        public TowerController(
+            ILogger<TowerController> logger,
             IMapper mapper,
-            ICoolerService processorService
+            ITowerService processorService
             )
         {
             _logger = logger;
             _mapper = mapper;
-            _CoolerService = processorService;
+            _TowerService = processorService;
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] CoolerInsertDto request)
+        public async Task<IActionResult> Create([FromBody] TowerInsertDto request)
         {
             try
             {
                 if(!ModelState.IsValid) return BadRequest();
-                var mapped = _mapper.Map<Cooler>(request);
-                var result = await _CoolerService.InsertAsync(mapped);
+                var mapped = _mapper.Map<Tower>(request);
+                var result = await _TowerService.InsertAsync(mapped);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
                     result
@@ -56,21 +56,17 @@ namespace InRiseService.Presentation.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update([FromBody] CoolerInsertDto request, int id)
+        public async Task<IActionResult> Update([FromBody] TowerInsertDto request, int id)
         {
             try
             {
-                var Cooler = await _CoolerService.GetByIdAsync(id);
-                if(Cooler is null) return NotFound();
+                var Tower = await _TowerService.GetByIdAsync(id);
+                if(Tower is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
-                Cooler.Name = request.Name;
-                Cooler.Air = request.Air;
-                Cooler.Refrigeration = request.Refrigeration;
-                Cooler.FanQuantity = request.FanQuantity;
-                Cooler.FanDiametric = request.FanDiametric;
-                Cooler.MaxVelocit = request.MaxVelocit;
-                Cooler.Dimension = request.Dimension;
-                await _CoolerService.UpdateAsync(Cooler);
+                Tower.Name = request.Name;
+                Tower.Dimesion = request.Dimesion;
+                Tower.MaxFans = request.MaxFans;
+                await _TowerService.UpdateAsync(Tower);
                 return Ok();
             }
             catch (Exception ex)
@@ -91,7 +87,7 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var result = await _CoolerService.GetByIdAsync(id);
+                var result = await _TowerService.GetByIdAsync(id);
                 if(result == null) return NotFound();
 
                 var response = new ApiResponse<dynamic>(
@@ -111,15 +107,37 @@ namespace InRiseService.Presentation.Controllers
             }
         }
 
-        
-
-        [HttpGet]
+        [HttpDelete]
+        [Route("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetFiltered([FromBody] CoolerFilterDto request)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-               var result = await _CoolerService.GetByFilterAsync(request);
+                var result = await _TowerService.GetByIdAsync(id);
+                if(result == null) return NotFound();
+
+                await _TowerService.DeleteAsync(result);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao deletar"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetFiltered([FromBody] TowerFilterDto request)
+        {
+            try
+            {
+               var result = await _TowerService.GetByFilterAsync(request);
                 if(result.TotalItems == 0)
                     return NotFound();
 
@@ -139,5 +157,7 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
+
+    
     }
 }

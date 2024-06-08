@@ -5,6 +5,7 @@ using InRiseService.Domain.MemoriesRom;
 using InRiseService.Domain.MotherBoards;
 using InRiseService.Domain.PowerSupplies;
 using InRiseService.Domain.Processors;
+using InRiseService.Domain.Towers;
 using InRiseService.Domain.Users;
 using InRiseService.Domain.UsersAddress;
 using InRiseService.Domain.ValidationCodes;
@@ -28,6 +29,7 @@ namespace InRiseService.Data.Context
         public DbSet<VideoBoard> VideosBoard { get; set; }
         public DbSet<PowerSupply> PowerSupplies { get; set; }
         public DbSet<Cooler> Coolers { get; set; }
+        public DbSet<Tower> Towers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
