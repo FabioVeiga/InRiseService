@@ -29,6 +29,7 @@ namespace InRiseService.Infrastructure.Extentions
             services.AddScoped<IVideoBoardService,VideoBoardService>();
             services.AddScoped<IPowerSupplyService,PowerSuppliesService>();
             services.AddScoped<ICoolerService,CoolerService>();
+            services.AddScoped<IBlobFileAzureService,BlobFileAzureService>();
         }
 
         public static void RegisterConfigurationDependencies(this IServiceCollection services, IConfiguration configuration)
@@ -36,6 +37,7 @@ namespace InRiseService.Infrastructure.Extentions
             services.Configure<SendGridSetting>(configuration.GetSection("SendGridSetting"));
             services.Configure<AppSetting>(configuration.GetSection("AppSettings"));
             services.Configure<ZipCodeBaseSettings>(configuration.GetSection("ZipCodeBaseSettings"));
+            services.Configure<AzureBlobStorageSetting>(configuration.GetSection("AzureBlobStorageSetting"));
 
         }
     }
