@@ -239,7 +239,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Monitors");
+                    b.ToTable("MonitorsScreen");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.MotherBoards.MotherBoard", b =>

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240605001016_Initial_09")]
-    partial class Initial_09
+    [Migration("20240619211035_Initial_01")]
+    partial class Initial_01
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -203,6 +203,48 @@ namespace InRiseService.Data.Migrations
                     b.ToTable("MemoriesRom");
                 });
 
+            modelBuilder.Entity("InRiseService.Domain.MonitorsScreen.MonitorScreen", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("DeleteIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Dimesion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("InsertIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Quality")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("UpdateIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("UpdateVolume")
+                        .HasMaxLength(100)
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MonitorsScreen");
+                });
+
             modelBuilder.Entity("InRiseService.Domain.MotherBoards.MotherBoard", b =>
                 {
                     b.Property<int>("Id")
@@ -362,6 +404,43 @@ namespace InRiseService.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Processors");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Towers.Tower", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("DeleteIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Dimesion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("InsertIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("MaxFans")
+                        .HasMaxLength(10)
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("UpdateIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Towers");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Users.User", b =>
