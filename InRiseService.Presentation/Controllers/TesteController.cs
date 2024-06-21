@@ -95,6 +95,32 @@ namespace InRiseService.Presentation.Controllers
             }
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("delete-image")]
+        public  async Task<ActionResult> Teste04([FromQuery] string secret, [FromForm] string nameFile)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(nameFile))
+                {
+                    return BadRequest("Filename cannot be empty.");
+                }
+
+                var result = await _blobFileAzureService.DeleteFileAsync(nameFile);
+                if (result)
+                {
+                    return Ok("File deleted successfully.");
+                }
+
+                return NotFound("File not found.");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public class DtoUploadFileTeste{
             public IFormFile File { get; set; } = default!;
             public string Pathkey { get; set; } = default!;

@@ -18,16 +18,35 @@ namespace InRiseService.Application.Services
             _containerClient = _blobServiceClient.GetBlobContainerClient(_setting.ContainerName);
         }
 
-        public async Task UploadFileAsync(Stream fileStream, string fileName, string pathkey)
+        public async Task<bool> DeleteFileAsync(string pathimage)
+        {
+            try
+            {
+                var blobClient = _containerClient.GetBlobClient(pathimage);
+                var response = await blobClient.DeleteIfExistsAsync();
+                return response.Value;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<Uri?> UploadFileAsync(Stream fileStream, string pathkey, string fileName)
         {
             try
             {
                 var blobClient = _containerClient.GetBlobClient($"{pathkey}/{fileName}");
-                await blobClient.UploadAsync(fileStream, overwrite: true);
+                var result = await blobClient.UploadAsync(fileStream, overwrite: true);
+                if(result is not null)
+                {
+                    return blobClient.Uri;
+                }
+                return null;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
+                System.Console.WriteLine(ex.Message);
                 throw;
             }
         }

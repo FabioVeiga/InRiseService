@@ -3,6 +3,8 @@ using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.DTOs.MemoryRamDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Domain.Coolers;
+using InRiseService.Domain.ImagesSite;
+using InRiseService.Util;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,16 +17,22 @@ namespace InRiseService.Presentation.Controllers
         private readonly ILogger<CoolerController> _logger;
         private readonly IMapper _mapper;
         private readonly ICoolerService _coolerService;
+        private readonly IImageService _imageService;
+        private readonly IBlobFileAzureService _blobFileAzureService;
 
         public CoolerController(
             ILogger<CoolerController> logger,
             IMapper mapper,
-            ICoolerService coolerService
+            ICoolerService coolerService,
+            IImageService imageService,
+            IBlobFileAzureService blobFileAzureService
             )
         {
             _logger = logger;
             _mapper = mapper;
             _coolerService = coolerService;
+            _imageService = imageService;
+            _blobFileAzureService = blobFileAzureService;
         }
 
         [HttpPost]
@@ -161,5 +169,61 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
+    
+        [HttpPost]
+        [Route("upload-image/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UploadImage([FromForm] IFormFile file, int id)
+        {
+            try
+            {
+                var result = await _coolerService.GetByIdAsync(id);
+                if(result == null) return NotFound();
+
+                var validation = FileHelper.ValidateImage(file);
+                if(validation.Count > 0)
+                {
+                    foreach (var item in validation)
+                    {
+                        ModelState.AddModelError(nameof(file), item);
+                    }
+                    return BadRequest(new ValidationProblemDetails(ModelState));
+                }
+
+                ImagensProduct model = new(){
+                    CoolerId = result.Id,
+                    ImageName = file.FileName,
+                    Pathkey = $"cooler/{result.Id}"
+                };
+
+                Uri? urlImage = null;
+                using (var stream = file.OpenReadStream())
+                {
+                    urlImage = await _blobFileAzureService.UploadFileAsync(stream,model.Pathkey,model.ImageName);
+                    if(urlImage is null)
+                    {
+                        ModelState.AddModelError(nameof(file), "Erro no upload");
+                        return BadRequest(new ValidationProblemDetails(ModelState));
+                    }
+                }
+
+                model = await _imageService.InsertAsync(model);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status200OK,
+                    urlImage
+                );
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao upload image"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+    
     }
 }

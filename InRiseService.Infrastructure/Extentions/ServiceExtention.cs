@@ -30,6 +30,7 @@ namespace InRiseService.Infrastructure.Extentions
             services.AddScoped<IPowerSupplyService,PowerSuppliesService>();
             services.AddScoped<ICoolerService,CoolerService>();
             services.AddScoped<IBlobFileAzureService,BlobFileAzureService>();
+            services.AddScoped<IImageService,ImageService>();
         }
 
         public static void RegisterConfigurationDependencies(this IServiceCollection services, IConfiguration configuration)
