@@ -4,6 +4,7 @@ using InRiseService.Application.Extentions;
 using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
 using InRiseService.Domain.Coolers;
+using InRiseService.Domain.ImagesSite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
