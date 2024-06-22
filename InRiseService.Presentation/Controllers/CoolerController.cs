@@ -42,7 +42,7 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                if(!ModelState.IsValid) return BadRequest();
+                if (!ModelState.IsValid) return BadRequest();
                 var mapped = _mapper.Map<Cooler>(request);
                 var result = await _coolerService.InsertAsync(mapped);
                 var mappedResponse = _mapper.Map<CoolerResponseDto>(result);
@@ -72,8 +72,8 @@ namespace InRiseService.Presentation.Controllers
             try
             {
                 var Cooler = await _coolerService.GetByIdAsync(id);
-                if(Cooler is null) return NotFound();
-                if(!ModelState.IsValid) return BadRequest();
+                if (Cooler is null) return NotFound();
+                if (!ModelState.IsValid) return BadRequest();
                 Cooler.Name = request.Name;
                 Cooler.Air = request.Air;
                 Cooler.Refrigeration = request.Refrigeration;
@@ -95,6 +95,54 @@ namespace InRiseService.Presentation.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("Activate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Activate(int id)
+        {
+            try
+            {
+                var Cooler = await _coolerService.GetByIdAsync(id);
+                if (Cooler is null) return NotFound();
+                Cooler.Active = true;
+                await _coolerService.UpdateAsync(Cooler);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao ativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpPut]
+        [Route("Deactivate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Deactivate(int id)
+        {
+            try
+            {
+                var Cooler = await _coolerService.GetByIdAsync(id);
+                if (Cooler is null) return NotFound();
+                Cooler.Active = false;
+                await _coolerService.UpdateAsync(Cooler);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao desativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
         [HttpGet]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
@@ -103,7 +151,7 @@ namespace InRiseService.Presentation.Controllers
             try
             {
                 var result = await _coolerService.GetByIdAsync(id);
-                if(result == null) return NotFound();
+                if (result == null) return NotFound();
 
                 var mappedResponse = _mapper.Map<CoolerResponseDto>(result);
                 mappedResponse.Images = await _imageService.GetByCoolerIdAsync(result.Id);
@@ -116,7 +164,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("{Ex}",ex);
+                _logger.LogError("{Ex}", ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao buscar"
@@ -133,7 +181,7 @@ namespace InRiseService.Presentation.Controllers
             try
             {
                 var result = await _coolerService.GetByIdAsync(id);
-                if(result == null) return NotFound();
+                if (result == null) return NotFound();
 
                 await _coolerService.DeleteAsync(result);
                 return Ok();
@@ -155,8 +203,8 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-               var result = await _coolerService.GetByFilterAsync(request);
-                if(result.TotalItems == 0)
+                var result = await _coolerService.GetByFilterAsync(request);
+                if (result.TotalItems == 0)
                     return NotFound();
 
                 var response = new ApiResponse<dynamic>(
@@ -175,7 +223,7 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
-    
+
         [HttpPost]
         [Route("upload-image/{id}")]
         [Authorize(Roles = "Admin")]
@@ -184,10 +232,10 @@ namespace InRiseService.Presentation.Controllers
             try
             {
                 var result = await _coolerService.GetByIdAsync(id);
-                if(result == null) return NotFound();
+                if (result == null) return NotFound();
 
                 var validation = FileHelper.ValidateImage(file);
-                if(validation.Count > 0)
+                if (validation.Count > 0)
                 {
                     foreach (var item in validation)
                     {
@@ -196,7 +244,8 @@ namespace InRiseService.Presentation.Controllers
                     return BadRequest(new ValidationProblemDetails(ModelState));
                 }
 
-                ImagensProduct model = new(){
+                ImagensProduct model = new()
+                {
                     CoolerId = result.Id,
                     ImageName = file.FileName,
                     Pathkey = $"cooler/{result.Id}"
@@ -205,8 +254,8 @@ namespace InRiseService.Presentation.Controllers
                 Uri? urlImage = null;
                 using (var stream = file.OpenReadStream())
                 {
-                    urlImage = await _blobFileAzureService.UploadFileAsync(stream,model.Pathkey,model.ImageName);
-                    if(urlImage is null)
+                    urlImage = await _blobFileAzureService.UploadFileAsync(stream, model.Pathkey, model.ImageName);
+                    if (urlImage is null)
                     {
                         ModelState.AddModelError(nameof(file), "Erro no upload");
                         return BadRequest(new ValidationProblemDetails(ModelState));
@@ -239,10 +288,11 @@ namespace InRiseService.Presentation.Controllers
             try
             {
                 var result = await _imageService.GetByIdAsync(idImage);
-                if(result == null) return NotFound();
+                if (result == null) return NotFound();
 
                 var remove = await _blobFileAzureService.DeleteFileAsync($"{result.Pathkey}/{result.ImageName}");
-                if(!remove){
+                if (!remove)
+                {
                     ModelState.AddModelError("Image", "Erro ao deletar imagem!");
                     return BadRequest(new ValidationProblemDetails(ModelState));
                 }
@@ -260,6 +310,6 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
-    
+
     }
 }
