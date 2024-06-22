@@ -55,7 +55,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao inserir"
@@ -86,7 +86,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao alterar"
@@ -110,7 +110,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status500InternalServerError,
                     "Erro ao ativar"
@@ -134,7 +134,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status500InternalServerError,
                     "Erro ao desativar"
@@ -188,7 +188,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao deletar"
@@ -215,7 +215,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao buscar"
@@ -271,7 +271,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao upload image"
@@ -302,7 +302,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao delete image"
