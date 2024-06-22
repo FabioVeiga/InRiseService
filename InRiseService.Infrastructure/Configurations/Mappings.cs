@@ -1,4 +1,5 @@
 using AutoMapper;
+using InRiseService.Application.DTOs.CoolerDto;
 using InRiseService.Application.DTOs.MemoryRamDto;
 using InRiseService.Application.DTOs.MemoryRomDto;
 using InRiseService.Application.DTOs.MotherBoardDto;
@@ -43,6 +44,7 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<VideoBoard, VideoBoardInsertDto>().ReverseMap();
             CreateMap<PowerSupply, PowerSupplyInsertDto>().ReverseMap();
             CreateMap<Cooler, CoolerInsertDto>().ReverseMap();
+            CreateMap<Cooler, CoolerResponseDto>().ReverseMap();
         }
     }
 }

@@ -2,9 +2,8 @@ using InRiseService.Application.DTOs.ImageProductDto;
 
 namespace InRiseService.Application.DTOs.CoolerDto
 {
-    public class CoolerResponseDto
+    public class CoolerResponseDto : BaseDto
     {
-        public int Id { get; set; } = default!;
         public string Name { get; set; } = default!;
         public string Air { get; set; } = default!;
         public string Refrigeration { get; set; } = default!;
@@ -12,6 +11,6 @@ namespace InRiseService.Application.DTOs.CoolerDto
         public int FanDiametric { get; set; } = default!;
         public int MaxVelocit { get; set; } = default!;
         public int Dimension { get; set; } = default!;
-        public IList<ImageProductResponseDto> ImageProductResponseDtos { get; set; } = new List<ImageProductResponseDto>();
+        public ICollection<ImageProductResponseDto>? Images { get; set; }
     }
 }

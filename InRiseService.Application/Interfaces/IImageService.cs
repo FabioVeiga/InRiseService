@@ -1,3 +1,4 @@
+using InRiseService.Application.DTOs.ImageProductDto;
 using InRiseService.Domain.ImagesSite;
 
 namespace InRiseService.Application.Interfaces
@@ -6,5 +7,7 @@ namespace InRiseService.Application.Interfaces
     {
         Task<ImagensProduct> InsertAsync(ImagensProduct image);
         Task<bool> DeleteAsync(ImagensProduct image);
+        Task<ImagensProduct?> GetByIdAsync(int id);
+        Task<ICollection<ImageProductResponseDto>> GetByCoolerIdAsync(int idCooler);
     }
 }

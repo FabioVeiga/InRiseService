@@ -1,5 +1,6 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
+using InRiseService.Application.DTOs.CoolerDto;
 using InRiseService.Application.DTOs.MemoryRamDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Domain.Coolers;
@@ -44,9 +45,11 @@ namespace InRiseService.Presentation.Controllers
                 if(!ModelState.IsValid) return BadRequest();
                 var mapped = _mapper.Map<Cooler>(request);
                 var result = await _coolerService.InsertAsync(mapped);
+                var mappedResponse = _mapper.Map<CoolerResponseDto>(result);
+
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
-                    result
+                    mappedResponse
                 );
                 return Ok(response);
             }
@@ -102,15 +105,18 @@ namespace InRiseService.Presentation.Controllers
                 var result = await _coolerService.GetByIdAsync(id);
                 if(result == null) return NotFound();
 
+                var mappedResponse = _mapper.Map<CoolerResponseDto>(result);
+                mappedResponse.Images = await _imageService.GetByCoolerIdAsync(result.Id);
+
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
-                    result
+                    mappedResponse
                 );
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao buscar"
@@ -220,6 +226,36 @@ namespace InRiseService.Presentation.Controllers
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao upload image"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpDelete]
+        [Route("delete-image/{idImage}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteImage(int idImage)
+        {
+            try
+            {
+                var result = await _imageService.GetByIdAsync(idImage);
+                if(result == null) return NotFound();
+
+                var remove = await _blobFileAzureService.DeleteFileAsync($"{result.Pathkey}/{result.ImageName}");
+                if(!remove){
+                    ModelState.AddModelError("Image", "Erro ao deletar imagem!");
+                    return BadRequest(new ValidationProblemDetails(ModelState));
+                }
+
+                await _imageService.DeleteAsync(result);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao delete image"
                );
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
