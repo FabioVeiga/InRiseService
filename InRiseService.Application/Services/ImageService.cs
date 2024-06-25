@@ -2,6 +2,7 @@ using InRiseService.Application.DTOs.ApiSettingDto;
 using InRiseService.Application.DTOs.ImageProductDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
+using InRiseService.Domain.Enums;
 using InRiseService.Domain.ImagesSite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,6 @@ namespace InRiseService.Application.Services
 {
     public class ImageService : IImageService
     {
-
         private readonly ApplicationContext _context;
         private readonly ILogger<ImageService> _logger;
         private readonly AzureBlobStorageSetting _setting;
@@ -85,6 +85,54 @@ namespace InRiseService.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError($"[{nameof(ImageService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
+    
+        public ICollection<ImageCategoryDto> GetImageCategories()
+        {
+            try
+            {
+                var resultListProfileDto = new List<ImageCategoryDto>();
+                var enumValues = Enum.GetValues(typeof(EnumTypeCategoryImage));
+                foreach (EnumTypeCategoryImage value in enumValues)
+                {
+                    resultListProfileDto.Add(new ImageCategoryDto(){
+                        Id = (int)value,
+                        Name = value.ToString()
+                    });
+                }
+                return resultListProfileDto;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[{ImageService}::{GetImageCategories}] - Exception: {Ex}", nameof(ImageService),nameof(GetImageCategories), ex);
+                throw;
+            }
+        }
+
+        public ImageCategoryDto? GetImageCategoryByName(string nameCategoryImage)
+        {
+            try
+            {
+                return GetImageCategories().FirstOrDefault(x => x.Name.Contains(nameCategoryImage, StringComparison.CurrentCultureIgnoreCase));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[{ImageService}::{GetImageCategoryByName}] - Exception: {Ex}", nameof(ImageService),nameof(GetImageCategoryByName), ex);
+                throw;
+            }
+        }
+
+        public ImageCategoryDto? GetImageCategoryById(int idCategoryImage)
+        {
+            try
+            {
+                return GetImageCategories().FirstOrDefault(x => x.Id == idCategoryImage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[{ImageService}::{GetImageCategoryByName}] - Exception: {Ex}", nameof(ImageService),nameof(GetImageCategoryByName), ex);
                 throw;
             }
         }

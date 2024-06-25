@@ -9,5 +9,9 @@ namespace InRiseService.Application.Interfaces
         Task<bool> DeleteAsync(ImagensProduct image);
         Task<ImagensProduct?> GetByIdAsync(int id);
         Task<ICollection<ImageProductResponseDto>> GetByCoolerIdAsync(int idCooler);
+
+        ICollection<ImageCategoryDto> GetImageCategories();
+        ImageCategoryDto? GetImageCategoryByName(string nameCategoryImage);
+        ImageCategoryDto? GetImageCategoryById(int idCategoryImage);
     }
 }
