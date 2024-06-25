@@ -55,7 +55,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao inserir"
@@ -86,7 +86,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao alterar"
@@ -110,7 +110,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status500InternalServerError,
                     "Erro ao ativar"
@@ -134,7 +134,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status500InternalServerError,
                     "Erro ao desativar"
@@ -188,7 +188,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao deletar"
@@ -215,7 +215,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao buscar"
@@ -224,92 +224,8 @@ namespace InRiseService.Presentation.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("upload-image/{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UploadImage([FromForm] IFormFile file, int id)
-        {
-            try
-            {
-                var result = await _coolerService.GetByIdAsync(id);
-                if (result == null) return NotFound();
-
-                var validation = FileHelper.ValidateImage(file);
-                if (validation.Count > 0)
-                {
-                    foreach (var item in validation)
-                    {
-                        ModelState.AddModelError(nameof(file), item);
-                    }
-                    return BadRequest(new ValidationProblemDetails(ModelState));
-                }
-
-                ImagensProduct model = new()
-                {
-                    CoolerId = result.Id,
-                    ImageName = file.FileName,
-                    Pathkey = $"cooler/{result.Id}"
-                };
-
-                Uri? urlImage = null;
-                using (var stream = file.OpenReadStream())
-                {
-                    urlImage = await _blobFileAzureService.UploadFileAsync(stream, model.Pathkey, model.ImageName);
-                    if (urlImage is null)
-                    {
-                        ModelState.AddModelError(nameof(file), "Erro no upload");
-                        return BadRequest(new ValidationProblemDetails(ModelState));
-                    }
-                }
-
-                model = await _imageService.InsertAsync(model);
-                var response = new ApiResponse<dynamic>(
-                    StatusCodes.Status200OK,
-                    urlImage
-                );
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"{ex}");
-                var response = new ApiResponse<dynamic>(
-                   StatusCodes.Status500InternalServerError,
-                   "Erro ao upload image"
-               );
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
-        }
-
-        [HttpDelete]
-        [Route("delete-image/{idImage}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteImage(int idImage)
-        {
-            try
-            {
-                var result = await _imageService.GetByIdAsync(idImage);
-                if (result == null) return NotFound();
-
-                var remove = await _blobFileAzureService.DeleteFileAsync($"{result.Pathkey}/{result.ImageName}");
-                if (!remove)
-                {
-                    ModelState.AddModelError("Image", "Erro ao deletar imagem!");
-                    return BadRequest(new ValidationProblemDetails(ModelState));
-                }
-
-                await _imageService.DeleteAsync(result);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"{ex}");
-                var response = new ApiResponse<dynamic>(
-                   StatusCodes.Status500InternalServerError,
-                   "Erro ao delete image"
-               );
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
-        }
+        
+        
 
     }
 }
