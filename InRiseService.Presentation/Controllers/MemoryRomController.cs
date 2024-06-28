@@ -29,7 +29,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] MemoryRomInsertDto request)
+        public async Task<IActionResult> Create([FromBody] MemoryRomRequestDto request)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace InRiseService.Presentation.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update([FromBody] MemoryRomInsertDto request, int id)
+        public async Task<IActionResult> Update([FromBody] MemoryRomRequestDto request, int id)
         {
             try
             {
@@ -160,5 +160,6 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
+    
     }
 }

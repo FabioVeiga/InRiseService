@@ -38,27 +38,7 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task<ICollection<ImageProductResponseDto>> GetByCoolerIdAsync(int CoolerId)
-        {
-            try
-            {
-                var result = _context.ImagensProducts
-                .Include(x => x.Cooler)
-                .Where(x => x.CoolerId == CoolerId)
-                .Select(x => new ImageProductResponseDto(){
-                    Id = x.Id,
-                    Url = _setting.BaseUrl + "/" + x.Pathkey + "/" + x.ImageName
-                });
-                return await result.ToListAsync();
-                
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"[{nameof(ImageService)}::{nameof(GetByCoolerIdAsync)}] - Exception: {ex}");
-                throw;
-            }
-        }
-
+        
         public async Task<ImagensProduct?> GetByIdAsync(int id)
         {
             try
@@ -133,6 +113,69 @@ namespace InRiseService.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError("[{ImageService}::{GetImageCategoryByName}] - Exception: {Ex}", nameof(ImageService),nameof(GetImageCategoryByName), ex);
+                throw;
+            }
+        }
+
+        public async Task<ICollection<ImageProductResponseDto>> GetByCoolerIdAsync(int coolerId)
+        {
+            try
+            {
+                var result = _context.ImagensProducts
+                .Include(x => x.Cooler)
+                .Where(x => x.CoolerId == coolerId)
+                .Select(x => new ImageProductResponseDto(){
+                    Id = x.Id,
+                    Url = _setting.BaseUrl + "/" + x.Pathkey + "/" + x.ImageName
+                });
+                return await result.ToListAsync();
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(ImageService),nameof(GetByCoolerIdAsync),ex);
+                throw;
+            }
+        }
+
+        public async Task<ICollection<ImageProductResponseDto>> GetByMemoryRamIdAsync(int idMemoryRam)
+        {
+            try
+            {
+                var result = _context.ImagensProducts
+                .Include(x => x.MemoryRam)
+                .Where(x => x.MemoryRamId == idMemoryRam)
+                .Select(x => new ImageProductResponseDto(){
+                    Id = x.Id,
+                    Url = _setting.BaseUrl + "/" + x.Pathkey + "/" + x.ImageName
+                });
+                return await result.ToListAsync();
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(ImageService),nameof(GetByMemoryRamIdAsync),ex);
+                throw;
+            }
+        }
+
+        public async Task<ICollection<ImageProductResponseDto>> GetByMemoryRomIdAsync(int idMemoryRom)
+        {
+            try
+            {
+                var result = _context.ImagensProducts
+                .Include(x => x.MemoryRom)
+                .Where(x => x.MemoryRamId == idMemoryRom)
+                .Select(x => new ImageProductResponseDto(){
+                    Id = x.Id,
+                    Url = _setting.BaseUrl + "/" + x.Pathkey + "/" + x.ImageName
+                });
+                return await result.ToListAsync();
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(ImageService),nameof(GetByMemoryRamIdAsync),ex);
                 throw;
             }
         }

@@ -102,7 +102,7 @@ namespace InRiseService.Presentation.Controllers
                 if(result == null) return NotFound();
 
                 var mappedResponse = _mapper.Map<MemoryRamResponseDto>(result);
-                mappedResponse.Images = await _imageService.GetByCoolerIdAsync(result.Id);
+                mappedResponse.Images = await _imageService.GetByMemoryRamIdAsync(result.Id);
                 mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
 
                 var response = new ApiResponse<dynamic>(

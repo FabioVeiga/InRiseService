@@ -17,6 +17,7 @@ namespace InRiseService.Presentation.Controllers
         private readonly IMapper _mapper;
         private readonly ICoolerService _coolerService;
         private readonly IMemoryRamService _memoryRamService;
+        private readonly IMemoryRomService _memoryRomService;
         private readonly IImageService _imageService;
         private readonly IBlobFileAzureService _blobFileAzureService;
 
@@ -26,7 +27,8 @@ namespace InRiseService.Presentation.Controllers
             ICoolerService coolerService,
             IImageService imageService,
             IBlobFileAzureService blobFileAzureService,
-            IMemoryRamService memoryRamService
+            IMemoryRamService memoryRamService,
+            IMemoryRomService memoryRomService
             )
         {
             _logger = logger;
@@ -35,6 +37,7 @@ namespace InRiseService.Presentation.Controllers
             _imageService = imageService;
             _blobFileAzureService = blobFileAzureService;
             _memoryRamService = memoryRamService;
+            _memoryRomService = memoryRomService;
         }
 
         [HttpGet]
@@ -169,10 +172,20 @@ namespace InRiseService.Presentation.Controllers
 
         private static ImagensProduct GenerateModel(ImageCategoryDto imageCategoryDto, int idProduct, IFormFile file)
         {
-            var model = imageCategoryDto switch
+           var model = imageCategoryDto switch
             {
                 { Id: 1 } => new ImagensProduct(){
                     CoolerId = idProduct,
+                    ImageName = file.FileName,
+                    Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
+                },
+                { Id: 2 } => new ImagensProduct(){
+                    MemoryRamId = idProduct,
+                    ImageName = file.FileName,
+                    Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
+                },
+                { Id: 3 } => new ImagensProduct(){
+                    MemoryRomId = idProduct,
                     ImageName = file.FileName,
                     Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
                 },
@@ -186,7 +199,8 @@ namespace InRiseService.Presentation.Controllers
             var result = imageCategoryDto.Name.ToLower() switch
             {
                 "cooler" => await _coolerService.GetByIdAsync(imagensProduct.CoolerId ?? 0) is null ? false : true,
-                "memoryRam" => await _memoryRamService.GetByIdAsync(imagensProduct.MemoryRamId ?? 0) is null ? false : true,
+                "memoryram" => await _memoryRamService.GetByIdAsync(imagensProduct.MemoryRamId ?? 0) is null ? false : true,
+                "memoryrom" => await _memoryRomService.GetByIdAsync(imagensProduct.MemoryRamId ?? 0) is null ? false : true,
                 _ => throw new NotImplementedException()
             };
             return result;

@@ -39,17 +39,6 @@ namespace InRiseService.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Cooler>()
-                .HasOne(c => c.Price)
-                .WithMany(p => p.Coolers)
-                .HasForeignKey(c => c.PriceId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<MemoryRam>()
-                .HasOne(c => c.Price)
-                .WithMany(p => p.MemoriesRam)
-                .HasForeignKey(c => c.PriceId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

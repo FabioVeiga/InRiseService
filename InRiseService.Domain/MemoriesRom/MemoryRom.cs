@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using InRiseService.Domain.Prices;
 
 namespace InRiseService.Domain.MemoriesRom
 {
@@ -31,5 +32,8 @@ namespace InRiseService.Domain.MemoriesRom
         [Display(Name = "Potência/Consumo W")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int Potency { get; set; }
+
+        public int PriceId { get; set; }
+        public Price? Price { get; set; }
     }
 }

@@ -6,6 +6,9 @@ namespace InRiseService.Domain.Enums
         cooler = 1,
 
         [Description("memoryRam")]
-        memoryRam = 2
+        memoryRam = 2,
+
+        [Description("memoryRom")]
+        memoryRom = 3
     }
 }

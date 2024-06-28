@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using InRiseService.Domain.Coolers;
 using InRiseService.Domain.MemoriesRam;
+using InRiseService.Domain.MemoriesRom;
 
 namespace InRiseService.Domain.ImagesSite
 {
@@ -15,14 +16,17 @@ namespace InRiseService.Domain.ImagesSite
 
         [ForeignKey("Cooler")]
         public int? CoolerId { get; set; }
-        
         [JsonIgnore]
         public Cooler? Cooler { get; set; }
 
         [ForeignKey("MemoryRam")]
         public int? MemoryRamId { get; set; }
-        
         [JsonIgnore]
         public MemoryRam? MemoryRam { get; set; }
+
+        [ForeignKey("MemoryRom")]
+        public int? MemoryRomId { get; set; }
+        [JsonIgnore]
+        public MemoryRom? MemoryRom { get; set; }
     }
 }
