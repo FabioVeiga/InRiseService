@@ -4,6 +4,7 @@ using InRiseService.Application.DTOs.MemoryRamDto;
 using InRiseService.Application.DTOs.MemoryRomDto;
 using InRiseService.Application.DTOs.MotherBoardDto;
 using InRiseService.Application.DTOs.PowerSupplyDto;
+using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.DTOs.ProcessorDto;
 using InRiseService.Application.DTOs.UserAddressDto;
 using InRiseService.Application.DTOs.UserAutenticationDto;
@@ -17,6 +18,7 @@ using InRiseService.Domain.MemoriesRam;
 using InRiseService.Domain.MemoriesRom;
 using InRiseService.Domain.MotherBoards;
 using InRiseService.Domain.PowerSupplies;
+using InRiseService.Domain.Prices;
 using InRiseService.Domain.Processors;
 using InRiseService.Domain.Users;
 using InRiseService.Domain.UsersAddress;
@@ -43,8 +45,12 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<MemoryRom, MemoryRomInsertDto>().ReverseMap();
             CreateMap<VideoBoard, VideoBoardInsertDto>().ReverseMap();
             CreateMap<PowerSupply, PowerSupplyInsertDto>().ReverseMap();
+            CreateMap<CoolerInsertDto,Cooler>().ForMember(dest => dest.Price, opt => opt.Ignore());
             CreateMap<Cooler, CoolerInsertDto>().ReverseMap();
-            CreateMap<Cooler, CoolerResponseDto>().ReverseMap();
+            CreateMap<Cooler,CoolerResponseDto>().ForMember(dest => dest.Price, opt => opt.Ignore());
+            CreateMap<CoolerResponseDto, Cooler>().ForMember(dest => dest.Price, opt => opt.Ignore());
+            CreateMap<Price, PriceRequestDto>().ReverseMap();
+            CreateMap<Price, PriceResponseDto>().ReverseMap();
         }
     }
 }

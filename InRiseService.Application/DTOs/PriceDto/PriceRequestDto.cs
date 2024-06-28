@@ -1,14 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-using InRiseService.Domain.Coolers;
-using InRiseService.Domain.MemoriesRam;
 
-namespace InRiseService.Domain.Prices
+namespace InRiseService.Application.DTOs.PriceDto
 {
-    public class Price
+    public class PriceRequestDto
     {
-        [Key]
-        public int Id { get; set; }
-        
         [Required(ErrorMessage = "{0} é obrigatório!")]
         [Display(Name = "Preço de Custo")]
         [Range(0.0, double.MaxValue, ErrorMessage = "{0} precisa ser maior que {1}")]
@@ -48,8 +43,5 @@ namespace InRiseService.Domain.Prices
         [Display(Name = "Preço de Venda")]
         [Range(0.0, double.MaxValue, ErrorMessage = "{0} precisa ser maior que {1}")]
         public decimal FinalPrice { get; set; }
-
-        public ICollection<Cooler>? Coolers { get; set; }
-        public ICollection<MemoryRam>? MemoriesRam { get; set; }
     }
 }

@@ -2,10 +2,10 @@ using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.DTOs.CoolerDto;
 using InRiseService.Application.DTOs.MemoryRamDto;
+using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Domain.Coolers;
-using InRiseService.Domain.ImagesSite;
-using InRiseService.Util;
+using InRiseService.Domain.Prices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +19,6 @@ namespace InRiseService.Presentation.Controllers
         private readonly IMapper _mapper;
         private readonly ICoolerService _coolerService;
         private readonly IImageService _imageService;
-        private readonly IBlobFileAzureService _blobFileAzureService;
 
         public CoolerController(
             ILogger<CoolerController> logger,
@@ -33,7 +32,6 @@ namespace InRiseService.Presentation.Controllers
             _mapper = mapper;
             _coolerService = coolerService;
             _imageService = imageService;
-            _blobFileAzureService = blobFileAzureService;
         }
 
         [HttpPost]
@@ -44,8 +42,10 @@ namespace InRiseService.Presentation.Controllers
             {
                 if (!ModelState.IsValid) return BadRequest();
                 var mapped = _mapper.Map<Cooler>(request);
+                mapped.Price = _mapper.Map<Price>(request.Price);
                 var result = await _coolerService.InsertAsync(mapped);
                 var mappedResponse = _mapper.Map<CoolerResponseDto>(result);
+                mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
