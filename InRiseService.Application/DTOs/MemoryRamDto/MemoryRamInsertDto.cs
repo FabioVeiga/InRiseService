@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.MemoryRamDto
 {
@@ -23,5 +24,7 @@ namespace InRiseService.Application.DTOs.MemoryRamDto
         [Display(Name = "Capacidade Gb")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int Capacity { get; set; }
+
+        public PriceRequestDto Price { get; set; } = default!;
     }
 }

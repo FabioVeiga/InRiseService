@@ -1,8 +1,10 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.DTOs.MemoryRamDto;
+using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Domain.MemoriesRam;
+using InRiseService.Domain.Prices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,16 +37,19 @@ namespace InRiseService.Presentation.Controllers
             {
                 if(!ModelState.IsValid) return BadRequest();
                 var mapped = _mapper.Map<MemoryRam>(request);
+                mapped.Price = _mapper.Map<Price>(request.Price);
                 var result = await _memoryRamService.InsertAsync(mapped);
+                var mappedResponse = _mapper.Map<MemoryRamResponseDto>(result);
+                mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
-                    result
+                    mappedResponse
                 );
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao inserir"
