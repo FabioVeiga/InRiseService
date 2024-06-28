@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using InRiseService.Domain.Prices;
 
 namespace InRiseService.Domain.MemoriesRam
 {
@@ -23,5 +25,8 @@ namespace InRiseService.Domain.MemoriesRam
         [Display(Name = "Capacidade Gb")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int Capacity { get; set; }
+
+        public int PriceId { get; set; }
+        public Price? Price { get; set; }
     }
 }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240620171653_Initial_02")]
-    partial class Initial_02
+    [Migration("20240628000716_Initial_01")]
+    partial class Initial_01
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -106,6 +106,9 @@ namespace InRiseService.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Refrigeration")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -115,6 +118,8 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PriceId");
 
                     b.ToTable("Coolers");
                 });
@@ -169,6 +174,9 @@ namespace InRiseService.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Socket")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -178,6 +186,8 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PriceId");
 
                     b.ToTable("MemoriesRam");
                 });
@@ -363,6 +373,41 @@ namespace InRiseService.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PowerSupplies");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Prices.Price", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("CostPrice")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("FinalPrice")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("IVA")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("PorcentageADMCost")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("PorcentageDiscount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("PorcentageFixedCost")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("PorcentageProfit")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Prices");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Processors.Processor", b =>
@@ -666,6 +711,17 @@ namespace InRiseService.Data.Migrations
                     b.ToTable("VideosBoard");
                 });
 
+            modelBuilder.Entity("InRiseService.Domain.Coolers.Cooler", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany("Coolers")
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
+                });
+
             modelBuilder.Entity("InRiseService.Domain.ImagesSite.ImagensProduct", b =>
                 {
                     b.HasOne("InRiseService.Domain.Coolers.Cooler", "Cooler")
@@ -673,6 +729,17 @@ namespace InRiseService.Data.Migrations
                         .HasForeignKey("CoolerId");
 
                     b.Navigation("Cooler");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.MemoriesRam.MemoryRam", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany("MemoriesRam")
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.UsersAddress.UserAddress", b =>
@@ -708,6 +775,13 @@ namespace InRiseService.Data.Migrations
             modelBuilder.Entity("InRiseService.Domain.Addressed.Address", b =>
                 {
                     b.Navigation("UserAddresses");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Prices.Price", b =>
+                {
+                    b.Navigation("Coolers");
+
+                    b.Navigation("MemoriesRam");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Users.User", b =>

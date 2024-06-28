@@ -6,6 +6,7 @@ using InRiseService.Domain.MemoriesRom;
 using InRiseService.Domain.MonitorsScreen;
 using InRiseService.Domain.MotherBoards;
 using InRiseService.Domain.PowerSupplies;
+using InRiseService.Domain.Prices;
 using InRiseService.Domain.Processors;
 using InRiseService.Domain.Towers;
 using InRiseService.Domain.Users;
@@ -34,10 +35,21 @@ namespace InRiseService.Data.Context
         public DbSet<Tower> Towers { get; set; }
         public DbSet<MonitorScreen> MonitorsScreen { get; set; }
         public DbSet<ImagensProduct> ImagensProducts { get; set; }
+        public DbSet<Price> Prices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            modelBuilder.Entity<Cooler>()
+                .HasOne(c => c.Price)
+                .WithMany(p => p.Coolers)
+                .HasForeignKey(c => c.PriceId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<MemoryRam>()
+                .HasOne(c => c.Price)
+                .WithMany(p => p.MemoriesRam)
+                .HasForeignKey(c => c.PriceId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
