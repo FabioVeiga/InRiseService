@@ -158,6 +158,7 @@ namespace InRiseService.Presentation.Controllers
 
                 var mappedResponse = _mapper.Map<CoolerResponseDto>(result);
                 mappedResponse.Images = await _imageService.GetByCoolerIdAsync(result.Id);
+                mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
