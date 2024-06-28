@@ -8,6 +8,7 @@ using InRiseService.Domain.Coolers;
 using InRiseService.Domain.Prices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace InRiseService.Presentation.Controllers
 {
@@ -71,17 +72,19 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var Cooler = await _coolerService.GetByIdAsync(id);
-                if (Cooler is null) return NotFound();
+                var model = await _coolerService.GetByIdAsync(id);
+                if (model is null) return NotFound();
                 if (!ModelState.IsValid) return BadRequest();
-                Cooler.Name = request.Name;
-                Cooler.Air = request.Air;
-                Cooler.Refrigeration = request.Refrigeration;
-                Cooler.FanQuantity = request.FanQuantity;
-                Cooler.FanDiametric = request.FanDiametric;
-                Cooler.MaxVelocit = request.MaxVelocit;
-                Cooler.Dimension = request.Dimension;
-                await _coolerService.UpdateAsync(Cooler);
+                model.Name = request.Name;
+                model.Air = request.Air;
+                model.Refrigeration = request.Refrigeration;
+                model.FanQuantity = request.FanQuantity;
+                model.FanDiametric = request.FanDiametric;
+                model.MaxVelocit = request.MaxVelocit;
+                model.Dimension = request.Dimension;
+                model.Price = _mapper.Map<Price>(request.Price);
+                model.Price.Id = model.PriceId;
+                await _coolerService.UpdateAsync(model);
                 return Ok();
             }
             catch (Exception ex)
