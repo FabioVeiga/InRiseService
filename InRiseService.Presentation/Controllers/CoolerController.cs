@@ -74,13 +74,9 @@ namespace InRiseService.Presentation.Controllers
                 var model = await _coolerService.GetByIdAsync(id);
                 if (model is null) return NotFound();
                 if (!ModelState.IsValid) return BadRequest();
-                model.Name = request.Name;
-                model.Air = request.Air;
-                model.Refrigeration = request.Refrigeration;
-                model.FanQuantity = request.FanQuantity;
-                model.FanDiametric = request.FanDiametric;
-                model.MaxVelocit = request.MaxVelocit;
-                model.Dimension = request.Dimension;
+                var idModel = model.Id;
+                model = _mapper.Map<Cooler>(request);
+                model.Id = idModel;
                 model.Price = _mapper.Map<Price>(request.Price);
                 model.Price.Id = model.PriceId;
                 await _coolerService.UpdateAsync(model);

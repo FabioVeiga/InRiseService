@@ -47,10 +47,10 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<MemoryRam,MemoryRamResponseDto>().ReverseMap();
             CreateMap<MemoryRamResponseDto,MemoryRam>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
-            CreateMap<MemoryRom, MemoryRamInsertDto>().ReverseMap();
-            CreateMap<MemoryRamInsertDto,MemoryRom>().ForMember(dest => dest.Price, opt => opt.Ignore());
-            CreateMap<MemoryRom,MemoryRamResponseDto>().ReverseMap();
-            CreateMap<MemoryRamResponseDto,MemoryRom>().ForMember(dest => dest.Price, opt => opt.Ignore());
+            CreateMap<MemoryRom, MemoryRomRequestDto>().ReverseMap();
+            CreateMap<MemoryRomRequestDto,MemoryRom>().ForMember(dest => dest.Price, opt => opt.Ignore());
+            CreateMap<MemoryRom,MemoryRomResponseDto>().ReverseMap();
+            CreateMap<MemoryRomResponseDto,MemoryRom>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
 
             CreateMap<VideoBoard, VideoBoardInsertDto>().ReverseMap();

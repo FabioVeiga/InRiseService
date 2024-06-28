@@ -1,8 +1,10 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.DTOs.MemoryRomDto;
+using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Domain.MemoriesRom;
+using InRiseService.Domain.Prices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,16 +17,19 @@ namespace InRiseService.Presentation.Controllers
         private readonly ILogger<MemoryRomController> _logger;
         private readonly IMapper _mapper;
         private readonly IMemoryRomService _memoryRomService;
+        private readonly IImageService _imageService;
 
         public MemoryRomController(
             ILogger<MemoryRomController> logger,
             IMapper mapper,
-            IMemoryRomService memoryRomService
+            IMemoryRomService memoryRomService,
+            IImageService imageService
             )
         {
             _logger = logger;
             _mapper = mapper;
             _memoryRomService = memoryRomService;
+            _imageService = imageService;
         }
 
         [HttpPost]
@@ -35,10 +40,11 @@ namespace InRiseService.Presentation.Controllers
             {
                 if(!ModelState.IsValid) return BadRequest();
                 var mapped = _mapper.Map<MemoryRom>(request);
+                mapped.Price = _mapper.Map<Price>(request.Price);
                 var result = await _memoryRomService.InsertAsync(mapped);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
-                    result
+                    mapped
                 );
                 return Ok(response);
             }
@@ -60,16 +66,15 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var MemoryRom = await _memoryRomService.GetByIdAsync(id);
-                if(MemoryRom is null) return NotFound();
+                var model = await _memoryRomService.GetByIdAsync(id);
+                if(model is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
-                MemoryRom.Name = request.Name;
-                MemoryRom.Socket = request.Socket;
-                MemoryRom.Capacity = request.Capacity;
-                MemoryRom.Potency = request.Potency;
-                MemoryRom.VelocityRead = request.VelocityRead;
-                MemoryRom.VelocityWrite = request.VelocityWrite;
-                await _memoryRomService.UpdateAsync(MemoryRom);
+                var idModel = model.Id;
+                model = _mapper.Map<MemoryRom>(request);
+                model.Id = idModel;
+                model.Price = _mapper.Map<Price>(request.Price);
+                model.Price.Id = model.PriceId;
+                await _memoryRomService.UpdateAsync(model);
                 return Ok();
             }
             catch (Exception ex)
@@ -92,6 +97,10 @@ namespace InRiseService.Presentation.Controllers
             {
                 var result = await _memoryRomService.GetByIdAsync(id);
                 if(result == null) return NotFound();
+
+                var mappedResponse = _mapper.Map<MemoryRomResponseDto>(result);
+                mappedResponse.Images = await _imageService.GetByCoolerIdAsync(result.Id);
+                mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
@@ -160,6 +169,54 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
-    
+
+        [HttpPut]
+        [Route("Activate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Activate(int id)
+        {
+            try
+            {
+                var Cooler = await _memoryRomService.GetByIdAsync(id);
+                if (Cooler is null) return NotFound();
+                Cooler.Active = true;
+                await _memoryRomService.UpdateAsync(Cooler);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao ativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpPut]
+        [Route("Deactivate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Deactivate(int id)
+        {
+            try
+            {
+                var Cooler = await _memoryRomService.GetByIdAsync(id);
+                if (Cooler is null) return NotFound();
+                Cooler.Active = false;
+                await _memoryRomService.UpdateAsync(Cooler);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao desativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
     }
 }

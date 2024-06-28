@@ -1,4 +1,5 @@
-using System.ComponentModel.DataAnnotations;
+
+using InRiseService.Application.DTOs.ImageProductDto;
 using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.MemoryRomDto
@@ -12,6 +13,7 @@ namespace InRiseService.Application.DTOs.MemoryRomDto
         public double VelocityWrite { get; set; } = default!;
         public int Capacity { get; set; }
         public int Potency { get; set; }
-        public PriceRequestDto Price { get; set; } = default!;
+        public ICollection<ImageProductResponseDto>? Images { get; set; }
+        public PriceResponseDto Price { get; set; } = default!;
     }
 }
