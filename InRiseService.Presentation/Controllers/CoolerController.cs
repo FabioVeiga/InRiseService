@@ -8,7 +8,6 @@ using InRiseService.Domain.Coolers;
 using InRiseService.Domain.Prices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace InRiseService.Presentation.Controllers
 {

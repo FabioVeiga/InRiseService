@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using InRiseService.Domain.Coolers;
+using InRiseService.Domain.MemoriesRam;
 
 namespace InRiseService.Domain.ImagesSite
 {
@@ -17,5 +18,11 @@ namespace InRiseService.Domain.ImagesSite
         
         [JsonIgnore]
         public Cooler? Cooler { get; set; }
+
+        [ForeignKey("MemoryRam")]
+        public int? MemoryRamId { get; set; }
+        
+        [JsonIgnore]
+        public MemoryRam? MemoryRam { get; set; }
     }
 }

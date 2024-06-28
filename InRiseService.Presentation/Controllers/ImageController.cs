@@ -1,10 +1,7 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
-using InRiseService.Application.DTOs.CoolerDto;
 using InRiseService.Application.DTOs.ImageProductDto;
-using InRiseService.Application.DTOs.MemoryRamDto;
 using InRiseService.Application.Interfaces;
-using InRiseService.Domain.Coolers;
 using InRiseService.Domain.ImagesSite;
 using InRiseService.Util;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +16,7 @@ namespace InRiseService.Presentation.Controllers
         private readonly ILogger<ImageController> _logger;
         private readonly IMapper _mapper;
         private readonly ICoolerService _coolerService;
+        private readonly IMemoryRamService _memoryRamService;
         private readonly IImageService _imageService;
         private readonly IBlobFileAzureService _blobFileAzureService;
 
@@ -27,7 +25,8 @@ namespace InRiseService.Presentation.Controllers
             IMapper mapper,
             ICoolerService coolerService,
             IImageService imageService,
-            IBlobFileAzureService blobFileAzureService
+            IBlobFileAzureService blobFileAzureService,
+            IMemoryRamService memoryRamService
             )
         {
             _logger = logger;
@@ -35,6 +34,7 @@ namespace InRiseService.Presentation.Controllers
             _coolerService = coolerService;
             _imageService = imageService;
             _blobFileAzureService = blobFileAzureService;
+            _memoryRamService = memoryRamService;
         }
 
         [HttpGet]
@@ -186,6 +186,7 @@ namespace InRiseService.Presentation.Controllers
             var result = imageCategoryDto.Name.ToLower() switch
             {
                 "cooler" => await _coolerService.GetByIdAsync(imagensProduct.CoolerId ?? 0) is null ? false : true,
+                "memoryRam" => await _memoryRamService.GetByIdAsync(imagensProduct.MemoryRamId ?? 0) is null ? false : true,
                 _ => throw new NotImplementedException()
             };
             return result;

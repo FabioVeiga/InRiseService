@@ -83,8 +83,7 @@ namespace InRiseService.Presentation.Controllers
             {
                 var result = _userProfileService.GetAllProfile();
 
-                if (result is null)
-                    return NotFound();
+                if (result is null) return NotFound();
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
@@ -102,5 +101,6 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
+    
     }
 }
