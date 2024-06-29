@@ -2,6 +2,7 @@ using AutoMapper;
 using InRiseService.Application.DTOs.CoolerDto;
 using InRiseService.Application.DTOs.MemoryRamDto;
 using InRiseService.Application.DTOs.MemoryRomDto;
+using InRiseService.Application.DTOs.MonitorScreenDto;
 using InRiseService.Application.DTOs.MotherBoardDto;
 using InRiseService.Application.DTOs.PowerSupplyDto;
 using InRiseService.Application.DTOs.PriceDto;
@@ -16,6 +17,7 @@ using InRiseService.Domain.Addressed;
 using InRiseService.Domain.Coolers;
 using InRiseService.Domain.MemoriesRam;
 using InRiseService.Domain.MemoriesRom;
+using InRiseService.Domain.MonitorsScreen;
 using InRiseService.Domain.MotherBoards;
 using InRiseService.Domain.PowerSupplies;
 using InRiseService.Domain.Prices;
@@ -51,6 +53,11 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<MemoryRomRequestDto,MemoryRom>().ForMember(dest => dest.Price, opt => opt.Ignore());
             CreateMap<MemoryRom,MemoryRomResponseDto>().ReverseMap();
             CreateMap<MemoryRomResponseDto,MemoryRom>().ForMember(dest => dest.Price, opt => opt.Ignore());
+
+            CreateMap<MonitorScreen, MonitorScreenRequestDto>().ReverseMap();
+            CreateMap<MonitorScreen,MonitorScreenResponseDto>().ReverseMap();
+            CreateMap<MonitorScreenRequestDto,MonitorScreen>().ForMember(dest => dest.Price, opt => opt.Ignore());
+            CreateMap<MonitorScreenResponseDto,MemoryRom>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
 
             CreateMap<VideoBoard, VideoBoardInsertDto>().ReverseMap();

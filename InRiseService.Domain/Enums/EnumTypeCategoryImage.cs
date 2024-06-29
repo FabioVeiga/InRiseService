@@ -4,11 +4,11 @@ namespace InRiseService.Domain.Enums
     {
         [Description("cooler")]
         cooler = 1,
-
         [Description("memoryRam")]
         memoryRam = 2,
-
         [Description("memoryRom")]
-        memoryRom = 3
+        memoryRom = 3,
+        [Description("monitorScreen")]
+        monitorScreen = 4
     }
 }

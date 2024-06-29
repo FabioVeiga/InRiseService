@@ -3,6 +3,7 @@ using System;
 using InRiseService.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240628185009_Initial_03")]
+    partial class Initial_03
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,9 +143,6 @@ namespace InRiseService.Data.Migrations
                     b.Property<int?>("MemoryRomId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MonitorScreenId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Pathkey")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -154,8 +154,6 @@ namespace InRiseService.Data.Migrations
                     b.HasIndex("MemoryRamId");
 
                     b.HasIndex("MemoryRomId");
-
-                    b.HasIndex("MonitorScreenId");
 
                     b.ToTable("ImagensProducts");
                 });
@@ -758,17 +756,11 @@ namespace InRiseService.Data.Migrations
                         .WithMany()
                         .HasForeignKey("MemoryRomId");
 
-                    b.HasOne("InRiseService.Domain.MonitorsScreen.MonitorScreen", "MonitorScreen")
-                        .WithMany()
-                        .HasForeignKey("MonitorScreenId");
-
                     b.Navigation("Cooler");
 
                     b.Navigation("MemoryRam");
 
                     b.Navigation("MemoryRom");
-
-                    b.Navigation("MonitorScreen");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.MemoriesRam.MemoryRam", b =>

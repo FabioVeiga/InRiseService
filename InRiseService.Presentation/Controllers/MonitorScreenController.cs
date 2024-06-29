@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using InRiseService.Application.DTOs.MonitorScreenDto;
 using InRiseService.Domain.MonitorsScreen;
+using InRiseService.Domain.Prices;
+using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Presentation.Controllers
 {
@@ -14,31 +16,35 @@ namespace InRiseService.Presentation.Controllers
     {
         private readonly ILogger<MonitorScreenController> _logger;
         private readonly IMapper _mapper;
-        private readonly IMonitorScreenService _MonitorScreenService;
+        private readonly IMonitorScreenService _monitorScreenService;
+        private readonly IImageService _imageService;
 
         public MonitorScreenController(
             ILogger<MonitorScreenController> logger,
             IMapper mapper,
-            IMonitorScreenService monitorScreenService
+            IMonitorScreenService monitorScreenService,
+            IImageService imageService
             )
         {
             _logger = logger;
             _mapper = mapper;
-            _MonitorScreenService = monitorScreenService;
+            _monitorScreenService = monitorScreenService;
+            _imageService = imageService;
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] MonitorScreenInsertDto request)
+        public async Task<IActionResult> Create([FromBody] MonitorScreenRequestDto request)
         {
             try
             {
                 if(!ModelState.IsValid) return BadRequest();
                 var mapped = _mapper.Map<MonitorScreen>(request);
-                var result = await _MonitorScreenService.InsertAsync(mapped);
+                mapped.Price = _mapper.Map<Price>(request.Price);
+                var result = await _monitorScreenService.InsertAsync(mapped);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
-                    result
+                    mapped
                 );
                 return Ok(response);
             }
@@ -56,17 +62,17 @@ namespace InRiseService.Presentation.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update([FromBody] MonitorScreenInsertDto request, int id)
+        public async Task<IActionResult> Update([FromBody] MonitorScreenRequestDto request, int id)
         {
             try
             {
-                var MonitorScreen = await _MonitorScreenService.GetByIdAsync(id);
+                var MonitorScreen = await _monitorScreenService.GetByIdAsync(id);
                 if(MonitorScreen is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
                 MonitorScreen.Name = request.Name;
                 MonitorScreen.Dimesion = request.Dimesion;
                 MonitorScreen.Quality = request.Quality;
-                await _MonitorScreenService.UpdateAsync(MonitorScreen);
+                await _monitorScreenService.UpdateAsync(MonitorScreen);
                 return Ok();
             }
             catch (Exception ex)
@@ -87,12 +93,16 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var result = await _MonitorScreenService.GetByIdAsync(id);
+                var result = await _monitorScreenService.GetByIdAsync(id);
                 if(result == null) return NotFound();
+
+                var mappedResponse = _mapper.Map<MonitorScreenResponseDto>(result);
+                mappedResponse.Images = await _imageService.GetByMonitorScreenIdAsync(result.Id);
+                mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
-                    result
+                    mappedResponse
                 );
                 return Ok(response);
             }
@@ -114,10 +124,10 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var result = await _MonitorScreenService.GetByIdAsync(id);
+                var result = await _monitorScreenService.GetByIdAsync(id);
                 if(result == null) return NotFound();
 
-                await _MonitorScreenService.DeleteAsync(result);
+                await _monitorScreenService.DeleteAsync(result);
                 return Ok();
             }
             catch (Exception ex)
@@ -137,7 +147,7 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-               var result = await _MonitorScreenService.GetByFilterAsync(request);
+               var result = await _monitorScreenService.GetByFilterAsync(request);
                 if(result.TotalItems == 0)
                     return NotFound();
 

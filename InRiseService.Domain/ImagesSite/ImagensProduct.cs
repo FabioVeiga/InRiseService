@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 using InRiseService.Domain.Coolers;
 using InRiseService.Domain.MemoriesRam;
 using InRiseService.Domain.MemoriesRom;
+using InRiseService.Domain.MonitorsScreen;
 
 namespace InRiseService.Domain.ImagesSite
 {
@@ -28,5 +29,10 @@ namespace InRiseService.Domain.ImagesSite
         public int? MemoryRomId { get; set; }
         [JsonIgnore]
         public MemoryRom? MemoryRom { get; set; }
+
+        [ForeignKey("MonitorScreen")]
+        public int? MonitorScreenId { get; set; }
+        [JsonIgnore]
+        public MonitorScreen? MonitorScreen { get; set; }
     }
 }

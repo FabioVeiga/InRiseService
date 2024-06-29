@@ -17,9 +17,10 @@ namespace InRiseService.Presentation.Controllers
         private readonly IMapper _mapper;
         private readonly ICoolerService _coolerService;
         private readonly IMemoryRamService _memoryRamService;
+        private readonly IBlobFileAzureService _blobFileAzureService;
         private readonly IMemoryRomService _memoryRomService;
         private readonly IImageService _imageService;
-        private readonly IBlobFileAzureService _blobFileAzureService;
+        private readonly IMonitorScreenService _monitorScreenService;
 
         public ImageController(
             ILogger<ImageController> logger,
@@ -28,7 +29,8 @@ namespace InRiseService.Presentation.Controllers
             IImageService imageService,
             IBlobFileAzureService blobFileAzureService,
             IMemoryRamService memoryRamService,
-            IMemoryRomService memoryRomService
+            IMemoryRomService memoryRomService,
+            IMonitorScreenService monitorScreenService
             )
         {
             _logger = logger;
@@ -38,6 +40,7 @@ namespace InRiseService.Presentation.Controllers
             _blobFileAzureService = blobFileAzureService;
             _memoryRamService = memoryRamService;
             _memoryRomService = memoryRomService;
+            _monitorScreenService = monitorScreenService;
         }
 
         [HttpGet]
@@ -189,6 +192,11 @@ namespace InRiseService.Presentation.Controllers
                     ImageName = file.FileName,
                     Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
                 },
+                { Id: 4 } => new ImagensProduct(){
+                    MonitorScreenId = idProduct,
+                    ImageName = file.FileName,
+                    Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
+                },
                 _ => throw new NotImplementedException()
             };
             return model;
@@ -200,7 +208,8 @@ namespace InRiseService.Presentation.Controllers
             {
                 "cooler" => await _coolerService.GetByIdAsync(imagensProduct.CoolerId ?? 0) is null ? false : true,
                 "memoryram" => await _memoryRamService.GetByIdAsync(imagensProduct.MemoryRamId ?? 0) is null ? false : true,
-                "memoryrom" => await _memoryRomService.GetByIdAsync(imagensProduct.MemoryRamId ?? 0) is null ? false : true,
+                "memoryrom" => await _memoryRomService.GetByIdAsync(imagensProduct.MemoryRomId ?? 0) is null ? false : true,
+                "monitorscreen" => await _monitorScreenService.GetByIdAsync(imagensProduct.MonitorScreenId ?? 0) is null ? false : true,
                 _ => throw new NotImplementedException()
             };
             return result;

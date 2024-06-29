@@ -62,6 +62,7 @@ namespace InRiseService.Application.Services
             try
             {
                 return await _context.MonitorsScreen
+                .Include(x => x.Price)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
             }

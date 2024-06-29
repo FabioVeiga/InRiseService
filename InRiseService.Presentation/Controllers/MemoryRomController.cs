@@ -99,7 +99,7 @@ namespace InRiseService.Presentation.Controllers
                 if(result == null) return NotFound();
 
                 var mappedResponse = _mapper.Map<MemoryRomResponseDto>(result);
-                mappedResponse.Images = await _imageService.GetByCoolerIdAsync(result.Id);
+                mappedResponse.Images = await _imageService.GetByMemoryRomIdAsync(result.Id);
                 mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
 
                 var response = new ApiResponse<dynamic>(
@@ -177,10 +177,10 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var Cooler = await _memoryRomService.GetByIdAsync(id);
-                if (Cooler is null) return NotFound();
-                Cooler.Active = true;
-                await _memoryRomService.UpdateAsync(Cooler);
+                var model = await _memoryRomService.GetByIdAsync(id);
+                if (model is null) return NotFound();
+                model.Active = true;
+                await _memoryRomService.UpdateAsync(model);
                 return Ok();
             }
             catch (Exception ex)
@@ -201,10 +201,10 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var Cooler = await _memoryRomService.GetByIdAsync(id);
-                if (Cooler is null) return NotFound();
-                Cooler.Active = false;
-                await _memoryRomService.UpdateAsync(Cooler);
+                var model = await _memoryRomService.GetByIdAsync(id);
+                if (model is null) return NotFound();
+                model.Active = false;
+                await _memoryRomService.UpdateAsync(model);
                 return Ok();
             }
             catch (Exception ex)
