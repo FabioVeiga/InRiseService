@@ -1,8 +1,10 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.DTOs.MotherBoardDto;
+using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Domain.MotherBoards;
+using InRiseService.Domain.Prices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,16 +17,19 @@ namespace InRiseService.Presentation.Controllers
         private readonly ILogger<MotherBoardController> _logger;
         private readonly IMapper _mapper;
         private readonly IMotherBoardService _motherBoardService;
+        private readonly IImageService _imageService;
 
         public MotherBoardController(
             ILogger<MotherBoardController> logger,
             IMapper mapper,
-            IMotherBoardService motherBoardService
+            IMotherBoardService motherBoardService,
+            IImageService imageService
             )
         {
             _logger = logger;
             _mapper = mapper;
             _motherBoardService = motherBoardService;
+            _imageService = imageService;
         }
 
         [HttpPost]
@@ -35,6 +40,7 @@ namespace InRiseService.Presentation.Controllers
             {
                 if(!ModelState.IsValid) return BadRequest();
                 var mapped = _mapper.Map<MotherBoard>(request);
+                mapped.Price = _mapper.Map<Price>(request.Price);
                 var result = await _motherBoardService.InsertAsync(mapped);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
@@ -60,16 +66,14 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var motherBoard = await _motherBoardService.GetByIdAsync(id);
-                if(motherBoard is null) return NotFound();
+                var model = await _motherBoardService.GetByIdAsync(id);
+                if(model is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
-                motherBoard.Name = request.Name;
-                motherBoard.Socket = request.Socket;
-                motherBoard.SocketM2 = request.SocketM2;
-                motherBoard.SocketMemory = request.SocketMemory;
-                motherBoard.SocketMemoryVideo = request.SocketMemoryVideo;
-                motherBoard.SocketSSD = request.SocketSSD;
-                await _motherBoardService.UpdateAsync(motherBoard);
+                model = _mapper.Map<MotherBoard>(request);
+                model.Id = id;
+                model.Price = _mapper.Map<Price>(request.Price);
+                model.Price.Id = model.PriceId;
+                await _motherBoardService.UpdateAsync(model);
                 return Ok();
             }
             catch (Exception ex)
@@ -93,11 +97,15 @@ namespace InRiseService.Presentation.Controllers
                 var result = await _motherBoardService.GetByIdAsync(id);
                 if(result == null) return NotFound();
 
+                var mappedResponse = _mapper.Map<MotherBoardDtoResponse>(result);
+                mappedResponse.Images = await _imageService.GetByMotherBoardIdAsync(result.Id);
+                mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
+
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
                     result
                 );
-                return Ok(response);
+                return Ok(mappedResponse);
             }
             catch (Exception ex)
             {

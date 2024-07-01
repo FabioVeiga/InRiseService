@@ -61,7 +61,10 @@ namespace InRiseService.Application.Services
         {
             try
             {
-                return await _context.MotherBoards.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+                return await _context.MotherBoards
+                .Include(x => x.Price)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
             }
             catch (Exception ex)
             {

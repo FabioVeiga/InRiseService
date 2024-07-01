@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using InRiseService.Application.DTOs.ApiSettingDto;
 using InRiseService.Application.DTOs.ImageProductDto;
 using InRiseService.Application.Interfaces;
@@ -120,23 +121,7 @@ namespace InRiseService.Application.Services
 
         public async Task<ICollection<ImageProductResponseDto>> GetByCoolerIdAsync(int id)
         {
-            try
-            {
-                var result = _context.ImagensProducts
-                .Include(x => x.Cooler)
-                .Where(x => x.CoolerId == id)
-                .Select(x => new ImageProductResponseDto(){
-                    Id = x.Id,
-                    Url = _setting.BaseUrl + "/" + x.Pathkey + "/" + x.ImageName
-                });
-                return await result.ToListAsync();
-                
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(ImageService),nameof(GetByCoolerIdAsync),ex);
-                throw;
-            }
+            return await GetImagesByNavigationPropertyAsync(id, x => x.Cooler);
         }
 
         public async Task<ICollection<ImageProductResponseDto>> GetByMemoryRamIdAsync(int id)
@@ -152,6 +137,11 @@ namespace InRiseService.Application.Services
         public async Task<ICollection<ImageProductResponseDto>> GetByMonitorScreenIdAsync(int id)
         {
             return await GetImagesByNavigationPropertyAsync(id, x => x.MonitorScreen);
+        }
+
+        public async Task<ICollection<ImageProductResponseDto>> GetByMotherBoardIdAsync(int id)
+        {
+            return await GetImagesByNavigationPropertyAsync(id, x => x.MotherBoard);
         }
 
         private async Task<ICollection<ImageProductResponseDto>> GetImagesByNavigationPropertyAsync<T>(
@@ -178,5 +168,6 @@ namespace InRiseService.Application.Services
                 throw;
             }
         }
+
     }
 }
