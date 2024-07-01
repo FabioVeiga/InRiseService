@@ -5,6 +5,7 @@ using InRiseService.Domain.Coolers;
 using InRiseService.Domain.MemoriesRam;
 using InRiseService.Domain.MemoriesRom;
 using InRiseService.Domain.MonitorsScreen;
+using InRiseService.Domain.MotherBoards;
 
 namespace InRiseService.Domain.ImagesSite
 {
@@ -34,5 +35,10 @@ namespace InRiseService.Domain.ImagesSite
         public int? MonitorScreenId { get; set; }
         [JsonIgnore]
         public MonitorScreen? MonitorScreen { get; set; }
+
+        [ForeignKey("MotherBoard")]
+        public int? MotherBoardId { get; set; }
+        [JsonIgnore]
+        public MotherBoard? MotherBoard { get; set; }
     }
 }

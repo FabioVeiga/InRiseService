@@ -1,6 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using InRiseService.Domain.Coolers;
-using InRiseService.Domain.MemoriesRam;
 
 namespace InRiseService.Domain.Prices
 {

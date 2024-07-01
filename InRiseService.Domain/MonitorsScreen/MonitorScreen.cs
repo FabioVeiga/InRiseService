@@ -20,7 +20,6 @@ namespace InRiseService.Domain.MonitorsScreen
         [Display(Name = "Taxa de Atualização")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
-        [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public int UpdateVolume { get; set; } = default!;
 
         [Display(Name = "Qualidade")]

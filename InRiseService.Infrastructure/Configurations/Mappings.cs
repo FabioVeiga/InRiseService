@@ -59,7 +59,6 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<MonitorScreenRequestDto,MonitorScreen>().ForMember(dest => dest.Price, opt => opt.Ignore());
             CreateMap<MonitorScreenResponseDto,MemoryRom>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
-
             CreateMap<VideoBoard, VideoBoardInsertDto>().ReverseMap();
             CreateMap<PowerSupply, PowerSupplyInsertDto>().ReverseMap();
             
