@@ -7,6 +7,9 @@ using InRiseService.Domain.MemoriesRom;
 using InRiseService.Domain.MonitorsScreen;
 using InRiseService.Domain.MotherBoards;
 using InRiseService.Domain.PowerSupplies;
+using InRiseService.Domain.Processors;
+using InRiseService.Domain.Towers;
+using InRiseService.Domain.VideoBoards;
 
 namespace InRiseService.Domain.ImagesSite
 {
@@ -46,5 +49,20 @@ namespace InRiseService.Domain.ImagesSite
         public int? PowerSupplyId { get; set; }
         [JsonIgnore]
         public PowerSupply? PowerSupply { get; set; }
+
+        [ForeignKey("Processor")]
+        public int? ProcessorId { get; set; }
+        [JsonIgnore]
+        public Processor? Processor { get; set; }
+
+        [ForeignKey("VideoBoard")]
+        public int? VideoBoardId { get; set; }
+        [JsonIgnore]
+        public VideoBoard? VideoBoard { get; set; }
+
+        [ForeignKey("Tower")]
+        public int? TowerId { get; set; }
+        [JsonIgnore]
+        public Tower? Tower { get; set; }
     }
 }

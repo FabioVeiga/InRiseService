@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using InRiseService.Domain.Prices;
 
 namespace InRiseService.Domain.Processors
 {
@@ -57,5 +58,8 @@ namespace InRiseService.Domain.Processors
         [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public string SuportVideo { get; set; } = default!;
+
+        public int PriceId { get; set; }
+        public Price? Price { get; set; }
     }
 }

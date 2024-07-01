@@ -49,7 +49,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao inserir"
@@ -77,7 +77,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao alterar"
@@ -108,7 +108,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao buscar"

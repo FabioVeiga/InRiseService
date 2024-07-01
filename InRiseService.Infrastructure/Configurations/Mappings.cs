@@ -41,7 +41,6 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<Address, UserAddressDtoInsertRequest>().ReverseMap();
             CreateMap<UserAddress, AddressDtoResponse>().ReverseMap();
             CreateMap<Address, UserAddress>().ReverseMap();
-            CreateMap<Processor, ProcessorDtoInsertRequest>().ReverseMap();
 
             CreateMap<MemoryRam, MemoryRamInsertDto>().ReverseMap();
             CreateMap<MemoryRam,MemoryRamResponseDto>().ReverseMap();
@@ -50,22 +49,23 @@ namespace InRiseService.Infrastructure.Configurations
 
             CreateMap<MemoryRom, MemoryRomRequestDto>().ReverseMap();
             CreateMap<MemoryRom,MemoryRomResponseDto>().ReverseMap();
-            CreateMap<MemoryRomRequestDto,MemoryRom>().ForMember(dest => dest.Price, opt => opt.Ignore());
             CreateMap<MemoryRomResponseDto,MemoryRom>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
             CreateMap<MonitorScreen, MonitorScreenRequestDto>().ReverseMap();
             CreateMap<MonitorScreen,MonitorScreenResponseDto>().ReverseMap();
-            CreateMap<MonitorScreenRequestDto,MonitorScreen>().ForMember(dest => dest.Price, opt => opt.Ignore());
             CreateMap<MonitorScreenResponseDto,MonitorScreen>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
             CreateMap<MotherBoard, MotherBoardDtoRequest>().ReverseMap();
             CreateMap<MotherBoard,MotherBoardDtoResponse>().ReverseMap();
             CreateMap<MotherBoardDtoResponse,MotherBoard>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
-
             CreateMap<PowerSupply, PowerSupplyDtoRequest>().ReverseMap();
             CreateMap<PowerSupply, PowerSupplyDtoResponse>().ReverseMap();
             CreateMap<PowerSupplyDtoResponse,PowerSupply>().ForMember(dest => dest.Price, opt => opt.Ignore());
+
+            CreateMap<Processor, ProcessorDtoRequest>().ReverseMap();
+            CreateMap<Processor, ProcessorDtoResponse>().ReverseMap();
+            CreateMap<ProcessorDtoResponse,Processor>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
             CreateMap<VideoBoard, VideoBoardInsertDto>().ReverseMap();
             

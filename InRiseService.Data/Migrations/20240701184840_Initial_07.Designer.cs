@@ -3,6 +3,7 @@ using System;
 using InRiseService.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240701184840_Initial_07")]
+    partial class Initial_07
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,15 +156,6 @@ namespace InRiseService.Data.Migrations
                     b.Property<int?>("PowerSupplyId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProcessorId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TowerId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("VideoBoardId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CoolerId");
@@ -175,12 +169,6 @@ namespace InRiseService.Data.Migrations
                     b.HasIndex("MotherBoardId");
 
                     b.HasIndex("PowerSupplyId");
-
-                    b.HasIndex("ProcessorId");
-
-                    b.HasIndex("TowerId");
-
-                    b.HasIndex("VideoBoardId");
 
                     b.ToTable("ImagensProducts");
                 });
@@ -807,18 +795,6 @@ namespace InRiseService.Data.Migrations
                         .WithMany()
                         .HasForeignKey("PowerSupplyId");
 
-                    b.HasOne("InRiseService.Domain.Processors.Processor", "Processor")
-                        .WithMany()
-                        .HasForeignKey("ProcessorId");
-
-                    b.HasOne("InRiseService.Domain.Towers.Tower", "Tower")
-                        .WithMany()
-                        .HasForeignKey("TowerId");
-
-                    b.HasOne("InRiseService.Domain.VideoBoards.VideoBoard", "VideoBoard")
-                        .WithMany()
-                        .HasForeignKey("VideoBoardId");
-
                     b.Navigation("Cooler");
 
                     b.Navigation("MemoryRam");
@@ -830,12 +806,6 @@ namespace InRiseService.Data.Migrations
                     b.Navigation("MotherBoard");
 
                     b.Navigation("PowerSupply");
-
-                    b.Navigation("Processor");
-
-                    b.Navigation("Tower");
-
-                    b.Navigation("VideoBoard");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.MemoriesRam.MemoryRam", b =>
