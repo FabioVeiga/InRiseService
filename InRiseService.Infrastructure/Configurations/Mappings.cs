@@ -73,7 +73,9 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<Tower, TowerDtoResponse>().ReverseMap();
             CreateMap<TowerDtoResponse,Tower>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
-            CreateMap<VideoBoard, VideoBoardInsertDto>().ReverseMap();
+            CreateMap<VideoBoard, VideoBoardDtoResquest>().ReverseMap();
+            CreateMap<VideoBoard, VideoBoardDtoResponse>().ReverseMap();
+            CreateMap<VideoBoardDtoResponse,VideoBoard>().ForMember(dest => dest.Price, opt => opt.Ignore());
             
             CreateMap<CoolerInsertDto,Cooler>().ForMember(dest => dest.Price, opt => opt.Ignore());
             CreateMap<Cooler, CoolerInsertDto>().ReverseMap();

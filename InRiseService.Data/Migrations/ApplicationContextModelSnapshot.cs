@@ -59,7 +59,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Coolers.Cooler", b =>
@@ -118,7 +118,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("Coolers");
+                    b.ToTable("Coolers", (string)null);
                 });
 
             modelBuilder.Entity("InRiseService.Domain.ImagesSite.ImagensProduct", b =>
@@ -182,7 +182,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("VideoBoardId");
 
-                    b.ToTable("ImagensProducts");
+                    b.ToTable("ImagensProducts", (string)null);
                 });
 
             modelBuilder.Entity("InRiseService.Domain.MemoriesRam.MemoryRam", b =>
@@ -226,7 +226,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("MemoriesRam");
+                    b.ToTable("MemoriesRam", (string)null);
                 });
 
             modelBuilder.Entity("InRiseService.Domain.MemoriesRom.MemoryRom", b =>
@@ -276,7 +276,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("MemoriesRom");
+                    b.ToTable("MemoriesRom", (string)null);
                 });
 
             modelBuilder.Entity("InRiseService.Domain.MonitorsScreen.MonitorScreen", b =>
@@ -322,7 +322,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("MonitorsScreen");
+                    b.ToTable("MonitorsScreen", (string)null);
                 });
 
             modelBuilder.Entity("InRiseService.Domain.MotherBoards.MotherBoard", b =>
@@ -380,7 +380,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("MotherBoards");
+                    b.ToTable("MotherBoards", (string)null);
                 });
 
             modelBuilder.Entity("InRiseService.Domain.PowerSupplies.PowerSupply", b =>
@@ -426,7 +426,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("PowerSupplies");
+                    b.ToTable("PowerSupplies", (string)null);
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Prices.Price", b =>
@@ -461,7 +461,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Prices");
+                    b.ToTable("Prices", (string)null);
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Processors.Processor", b =>
@@ -531,7 +531,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("Processors");
+                    b.ToTable("Processors", (string)null);
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Towers.Tower", b =>
@@ -572,7 +572,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("Towers");
+                    b.ToTable("Towers", (string)null);
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Users.User", b =>
@@ -632,7 +632,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("InRiseService.Domain.UsersAddress.UserAddress", b =>
@@ -682,7 +682,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserAddresses");
+                    b.ToTable("UserAddresses", (string)null);
                 });
 
             modelBuilder.Entity("InRiseService.Domain.ValidationCodes.ValidationCode", b =>
@@ -723,7 +723,7 @@ namespace InRiseService.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("ValidationCodes");
+                    b.ToTable("ValidationCodes", (string)null);
                 });
 
             modelBuilder.Entity("InRiseService.Domain.VideoBoards.VideoBoard", b =>
@@ -771,7 +771,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VideosBoard");
+                    b.ToTable("VideosBoard", (string)null);
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Coolers.Cooler", b =>

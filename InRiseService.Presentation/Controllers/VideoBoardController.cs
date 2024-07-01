@@ -1,7 +1,9 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
+using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.DTOs.VideoBoardDto;
 using InRiseService.Application.Interfaces;
+using InRiseService.Domain.Prices;
 using InRiseService.Domain.VideoBoards;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,21 +17,23 @@ namespace InRiseService.Presentation.Controllers
         private readonly ILogger<VideoBoardController> _logger;
         private readonly IMapper _mapper;
         private readonly IVideoBoardService _videoBoardService;
+        private readonly IImageService _imageService;
 
         public VideoBoardController(
             ILogger<VideoBoardController> logger,
             IMapper mapper,
-            IVideoBoardService videoBoardService
-            )
+            IVideoBoardService videoBoardService,
+            IImageService imageService)
         {
             _logger = logger;
             _mapper = mapper;
             _videoBoardService = videoBoardService;
+            _imageService = imageService;
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] VideoBoardInsertDto request)
+        public async Task<IActionResult> Create([FromBody] VideoBoardDtoResquest request)
         {
             try
             {
@@ -44,7 +48,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao inserir"
@@ -56,25 +60,23 @@ namespace InRiseService.Presentation.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update([FromBody] VideoBoardInsertDto request, int id)
+        public async Task<IActionResult> Update([FromBody] VideoBoardDtoResquest request, int id)
         {
             try
             {
-                var videoBoard = await _videoBoardService.GetByIdAsync(id);
-                if(videoBoard is null) return NotFound();
+                var model = await _videoBoardService.GetByIdAsync(id);
+                if(model is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
-                videoBoard.Name = request.Name;
-                videoBoard.Socket = request.Socket;
-                videoBoard.Bits = request.Bits;
-                videoBoard.Dimension = request.Dimension;
-                videoBoard.Capacity = request.Capacity;
-                videoBoard.Potency = request.Potency;
-                await _videoBoardService.UpdateAsync(videoBoard);
+                model = _mapper.Map<VideoBoard>(request);
+                model.Id = id;
+                model.Price = _mapper.Map<Price>(request.Price);
+                model.Price.Id = model.PriceId;
+                await _videoBoardService.UpdateAsync(model);
                 return Ok();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao alterar"
@@ -93,15 +95,19 @@ namespace InRiseService.Presentation.Controllers
                 var result = await _videoBoardService.GetByIdAsync(id);
                 if(result == null) return NotFound();
 
+                var mappedResponse = _mapper.Map<VideoBoardDtoResponse>(result);
+                mappedResponse.Images = await _imageService.GetByPowerSupplyIdAsync(result.Id);
+                mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
+
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
-                    result
+                    mappedResponse
                 );
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao buscar"
@@ -125,7 +131,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao deletar"
@@ -152,7 +158,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao buscar"
@@ -160,5 +166,54 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
+
+        [HttpPut]
+        [Route("Activate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Activate(int id)
+        {
+            try
+            {
+                var model = await _videoBoardService.GetByIdAsync(id);
+                if (model is null) return NotFound();
+                model.Active = true;
+                await _videoBoardService.UpdateAsync(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao ativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpPut]
+        [Route("Deactivate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Deactivate(int id)
+        {
+            try
+            {
+                var model = await _videoBoardService.GetByIdAsync(id);
+                if (model is null) return NotFound();
+                model.Active = false;
+                await _videoBoardService.UpdateAsync(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao desativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
     }
 }
