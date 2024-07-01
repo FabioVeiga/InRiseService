@@ -1,8 +1,10 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.DTOs.MemoryRamDto;
+using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Domain.MemoriesRam;
+using InRiseService.Domain.Prices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,16 +17,19 @@ namespace InRiseService.Presentation.Controllers
         private readonly ILogger<MemoryRamController> _logger;
         private readonly IMapper _mapper;
         private readonly IMemoryRamService _memoryRamService;
+        private readonly IImageService _imageService;
 
         public MemoryRamController(
             ILogger<MemoryRamController> logger,
             IMapper mapper,
-            IMemoryRamService pmemoryRamService
+            IMemoryRamService memoryRamService,
+            IImageService imageService
             )
         {
             _logger = logger;
             _mapper = mapper;
-            _memoryRamService = pmemoryRamService;
+            _memoryRamService = memoryRamService;
+            _imageService = imageService;
         }
 
         [HttpPost]
@@ -35,16 +40,19 @@ namespace InRiseService.Presentation.Controllers
             {
                 if(!ModelState.IsValid) return BadRequest();
                 var mapped = _mapper.Map<MemoryRam>(request);
+                mapped.Price = _mapper.Map<Price>(request.Price);
                 var result = await _memoryRamService.InsertAsync(mapped);
+                var mappedResponse = _mapper.Map<MemoryRamResponseDto>(result);
+                mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
-                    result
+                    mappedResponse
                 );
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao inserir"
@@ -60,14 +68,14 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var memoryRam = await _memoryRamService.GetByIdAsync(id);
-                if(memoryRam is null) return NotFound();
+                var model = await _memoryRamService.GetByIdAsync(id);
+                if(model is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
-                memoryRam.Frequency = request.Frequency;
-                memoryRam.Name = request.Name;
-                memoryRam.Socket = request.Socket;
-                memoryRam.Capacity = request.Capacity;
-                await _memoryRamService.UpdateAsync(memoryRam);
+                model = _mapper.Map<MemoryRam>(request);
+                model.Id = id;
+                model.Price = _mapper.Map<Price>(request.Price);
+                model.Price.Id = model.PriceId;
+                await _memoryRamService.UpdateAsync(model);
                 return Ok();
             }
             catch (Exception ex)
@@ -91,9 +99,13 @@ namespace InRiseService.Presentation.Controllers
                 var result = await _memoryRamService.GetByIdAsync(id);
                 if(result == null) return NotFound();
 
+                var mappedResponse = _mapper.Map<MemoryRamResponseDto>(result);
+                mappedResponse.Images = await _imageService.GetByMemoryRamIdAsync(result.Id);
+                mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
+
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
-                    result
+                    mappedResponse
                 );
                 return Ok(response);
             }
@@ -158,5 +170,54 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
+    
+        [HttpPut]
+        [Route("Activate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Activate(int id)
+        {
+            try
+            {
+                var Cooler = await _memoryRamService.GetByIdAsync(id);
+                if (Cooler is null) return NotFound();
+                Cooler.Active = true;
+                await _memoryRamService.UpdateAsync(Cooler);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao ativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpPut]
+        [Route("Deactivate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Deactivate(int id)
+        {
+            try
+            {
+                var Cooler = await _memoryRamService.GetByIdAsync(id);
+                if (Cooler is null) return NotFound();
+                Cooler.Active = false;
+                await _memoryRamService.UpdateAsync(Cooler);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao desativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
     }
 }

@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.MotherBoardDto
 {
-    public class MotherBoardDtoInsertRequest
+    public class MotherBoardDtoRequest
     {
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
@@ -39,5 +40,8 @@ namespace InRiseService.Application.DTOs.MotherBoardDto
         [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public string SocketM2 { get; set; } = default!;
+
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public PriceRequestDto Price { get; set; } = default!;
     }
 }

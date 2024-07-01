@@ -43,56 +43,6 @@ namespace InRiseService.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Coolers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Air = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Refrigeration = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    FanQuantity = table.Column<int>(type: "int", maxLength: 100, nullable: false),
-                    FanDiametric = table.Column<int>(type: "int", maxLength: 100, nullable: false),
-                    MaxVelocit = table.Column<int>(type: "int", maxLength: 100, nullable: false),
-                    Dimension = table.Column<int>(type: "int", maxLength: 100, nullable: false),
-                    Active = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    InsertIn = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdateIn = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    DeleteIn = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Coolers", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "MemoriesRam",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Socket = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Frequency = table.Column<double>(type: "double", nullable: false),
-                    Capacity = table.Column<int>(type: "int", nullable: false),
-                    Active = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    InsertIn = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdateIn = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    DeleteIn = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MemoriesRam", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "MemoriesRom",
                 columns: table => new
                 {
@@ -191,6 +141,27 @@ namespace InRiseService.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PowerSupplies", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Prices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CostPrice = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    PorcentageProfit = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    PorcentageFixedCost = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    PorcentageADMCost = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    PorcentageDiscount = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    Subtotal = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    IVA = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    FinalPrice = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Prices", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -307,6 +278,70 @@ namespace InRiseService.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Coolers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Air = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Refrigeration = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FanQuantity = table.Column<int>(type: "int", maxLength: 100, nullable: false),
+                    FanDiametric = table.Column<int>(type: "int", maxLength: 100, nullable: false),
+                    MaxVelocit = table.Column<int>(type: "int", maxLength: 100, nullable: false),
+                    Dimension = table.Column<int>(type: "int", maxLength: 100, nullable: false),
+                    PriceId = table.Column<int>(type: "int", nullable: false),
+                    Active = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    InsertIn = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdateIn = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    DeleteIn = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Coolers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Coolers_Prices_PriceId",
+                        column: x => x.PriceId,
+                        principalTable: "Prices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "MemoriesRam",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Socket = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Frequency = table.Column<double>(type: "double", nullable: false),
+                    Capacity = table.Column<int>(type: "int", nullable: false),
+                    PriceId = table.Column<int>(type: "int", nullable: false),
+                    Active = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    InsertIn = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdateIn = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    DeleteIn = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MemoriesRam", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MemoriesRam_Prices_PriceId",
+                        column: x => x.PriceId,
+                        principalTable: "Prices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "UserAddresses",
                 columns: table => new
                 {
@@ -372,6 +407,44 @@ namespace InRiseService.Data.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "ImagensProducts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Pathkey = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ImageName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CoolerId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImagensProducts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ImagensProducts_Coolers_CoolerId",
+                        column: x => x.CoolerId,
+                        principalTable: "Coolers",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Coolers_PriceId",
+                table: "Coolers",
+                column: "PriceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ImagensProducts_CoolerId",
+                table: "ImagensProducts",
+                column: "CoolerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MemoriesRam_PriceId",
+                table: "MemoriesRam",
+                column: "PriceId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_UserAddresses_AddressId",
                 table: "UserAddresses",
@@ -393,7 +466,7 @@ namespace InRiseService.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Coolers");
+                name: "ImagensProducts");
 
             migrationBuilder.DropTable(
                 name: "MemoriesRam");
@@ -426,10 +499,16 @@ namespace InRiseService.Data.Migrations
                 name: "VideosBoard");
 
             migrationBuilder.DropTable(
+                name: "Coolers");
+
+            migrationBuilder.DropTable(
                 name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Prices");
         }
     }
 }

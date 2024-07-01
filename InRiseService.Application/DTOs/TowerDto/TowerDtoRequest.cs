@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.TowerDto
 {
-    public class TowerInsertDto
+    public class TowerDtoRequest
     {
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
@@ -18,7 +19,9 @@ namespace InRiseService.Application.DTOs.TowerDto
 
         [Display(Name = "Numero Max Fans")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
-        [MinLength(1,ErrorMessage = "{0} de ter no mínimo {1}")]
         public int MaxFans { get; set; } = default!;
+
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public PriceRequestDto Price { get; set; } = default!;
     }
 }

@@ -1,8 +1,10 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.DTOs.PowerSupplyDto;
+using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Domain.PowerSupplies;
+using InRiseService.Domain.Prices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,21 +17,24 @@ namespace InRiseService.Presentation.Controllers
         private readonly ILogger<PowerSupplyController> _logger;
         private readonly IMapper _mapper;
         private readonly IPowerSupplyService _powerSupplyService;
+        private readonly IImageService _imageService;
 
         public PowerSupplyController(
             ILogger<PowerSupplyController> logger,
             IMapper mapper,
-            IPowerSupplyService powerSupplyService
+            IPowerSupplyService powerSupplyService,
+            IImageService imageService
             )
         {
             _logger = logger;
             _mapper = mapper;
             _powerSupplyService = powerSupplyService;
+            _imageService = imageService;
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] PowerSupplyInsertDto request)
+        public async Task<IActionResult> Create([FromBody] PowerSupplyDtoRequest request)
         {
             try
             {
@@ -44,7 +49,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao inserir"
@@ -56,24 +61,23 @@ namespace InRiseService.Presentation.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update([FromBody] PowerSupplyInsertDto request, int id)
+        public async Task<IActionResult> Update([FromBody] PowerSupplyDtoRequest request, int id)
         {
             try
             {
-                var PowerSupply = await _powerSupplyService.GetByIdAsync(id);
-                if(PowerSupply is null) return NotFound();
+                var model = await _powerSupplyService.GetByIdAsync(id);
+                if(model is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
-                PowerSupply.Name = request.Name;
-                PowerSupply.Potency = request.Potency;
-                PowerSupply.PotencyReal = request.PotencyReal;
-                PowerSupply.Stamp = request.Stamp;
-                PowerSupply.Modular = request.Modular;
-                await _powerSupplyService.UpdateAsync(PowerSupply);
+                model = _mapper.Map<PowerSupply>(request);
+                model.Id = id;
+                model.Price = _mapper.Map<Price>(request.Price);
+                model.Price.Id = model.PriceId;
+                await _powerSupplyService.UpdateAsync(model);
                 return Ok();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao alterar"
@@ -92,15 +96,19 @@ namespace InRiseService.Presentation.Controllers
                 var result = await _powerSupplyService.GetByIdAsync(id);
                 if(result == null) return NotFound();
 
+                var mappedResponse = _mapper.Map<PowerSupplyDtoResponse>(result);
+                mappedResponse.Images = await _imageService.GetByPowerSupplyIdAsync(result.Id);
+                mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
+
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
-                    result
+                    mappedResponse
                 );
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao buscar"
@@ -159,5 +167,54 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
+    
+        [HttpPut]
+        [Route("Activate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Activate(int id)
+        {
+            try
+            {
+                var model = await _powerSupplyService.GetByIdAsync(id);
+                if (model is null) return NotFound();
+                model.Active = true;
+                await _powerSupplyService.UpdateAsync(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao ativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpPut]
+        [Route("Deactivate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Deactivate(int id)
+        {
+            try
+            {
+                var model = await _powerSupplyService.GetByIdAsync(id);
+                if (model is null) return NotFound();
+                model.Active = false;
+                await _powerSupplyService.UpdateAsync(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao desativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
     }
 }

@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.MemoryRomDto
 {
-    public class MemoryRomInsertDto
+    public class MemoryRomRequestDto
     {
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
@@ -31,5 +32,7 @@ namespace InRiseService.Application.DTOs.MemoryRomDto
         [Display(Name = "Potência/Consumo W")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int Potency { get; set; }
+
+        public PriceRequestDto Price { get; set; } = default!;
     }
 }

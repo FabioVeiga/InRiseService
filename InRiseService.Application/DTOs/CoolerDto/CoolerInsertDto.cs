@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.MemoryRamDto
 {
@@ -37,5 +38,7 @@ namespace InRiseService.Application.DTOs.MemoryRamDto
         [Display(Name = "Dimensões (mm)")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int Dimension { get; set; } = default!;
+
+        public PriceRequestDto Price { get; set; } = default!;
     }
 }

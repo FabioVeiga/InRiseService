@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240620171653_Initial_02")]
-    partial class Initial_02
+    [Migration("20240701125409_Initial_05")]
+    partial class Initial_05
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -106,6 +106,9 @@ namespace InRiseService.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Refrigeration")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -115,6 +118,8 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PriceId");
 
                     b.ToTable("Coolers");
                 });
@@ -132,6 +137,18 @@ namespace InRiseService.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("MemoryRamId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MemoryRomId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MonitorScreenId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MotherBoardId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Pathkey")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -139,6 +156,14 @@ namespace InRiseService.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CoolerId");
+
+                    b.HasIndex("MemoryRamId");
+
+                    b.HasIndex("MemoryRomId");
+
+                    b.HasIndex("MonitorScreenId");
+
+                    b.HasIndex("MotherBoardId");
 
                     b.ToTable("ImagensProducts");
                 });
@@ -169,6 +194,9 @@ namespace InRiseService.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Socket")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -178,6 +206,8 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PriceId");
 
                     b.ToTable("MemoriesRam");
                 });
@@ -208,6 +238,9 @@ namespace InRiseService.Data.Migrations
                     b.Property<int>("Potency")
                         .HasColumnType("int");
 
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Socket")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -223,6 +256,8 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("double");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PriceId");
 
                     b.ToTable("MemoriesRom");
                 });
@@ -252,6 +287,9 @@ namespace InRiseService.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Quality")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -261,10 +299,11 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("UpdateVolume")
-                        .HasMaxLength(100)
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PriceId");
 
                     b.ToTable("MonitorsScreen");
                 });
@@ -288,6 +327,9 @@ namespace InRiseService.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
+
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Socket")
                         .IsRequired()
@@ -318,6 +360,8 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PriceId");
 
                     b.ToTable("MotherBoards");
                 });
@@ -363,6 +407,41 @@ namespace InRiseService.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PowerSupplies");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Prices.Price", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("CostPrice")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("FinalPrice")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("IVA")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("PorcentageADMCost")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("PorcentageDiscount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("PorcentageFixedCost")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("PorcentageProfit")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Prices");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Processors.Processor", b =>
@@ -666,13 +745,92 @@ namespace InRiseService.Data.Migrations
                     b.ToTable("VideosBoard");
                 });
 
+            modelBuilder.Entity("InRiseService.Domain.Coolers.Cooler", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
+                });
+
             modelBuilder.Entity("InRiseService.Domain.ImagesSite.ImagensProduct", b =>
                 {
                     b.HasOne("InRiseService.Domain.Coolers.Cooler", "Cooler")
                         .WithMany()
                         .HasForeignKey("CoolerId");
 
+                    b.HasOne("InRiseService.Domain.MemoriesRam.MemoryRam", "MemoryRam")
+                        .WithMany()
+                        .HasForeignKey("MemoryRamId");
+
+                    b.HasOne("InRiseService.Domain.MemoriesRom.MemoryRom", "MemoryRom")
+                        .WithMany()
+                        .HasForeignKey("MemoryRomId");
+
+                    b.HasOne("InRiseService.Domain.MonitorsScreen.MonitorScreen", "MonitorScreen")
+                        .WithMany()
+                        .HasForeignKey("MonitorScreenId");
+
+                    b.HasOne("InRiseService.Domain.MotherBoards.MotherBoard", "MotherBoard")
+                        .WithMany()
+                        .HasForeignKey("MotherBoardId");
+
                     b.Navigation("Cooler");
+
+                    b.Navigation("MemoryRam");
+
+                    b.Navigation("MemoryRom");
+
+                    b.Navigation("MonitorScreen");
+
+                    b.Navigation("MotherBoard");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.MemoriesRam.MemoryRam", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.MemoriesRom.MemoryRom", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.MonitorsScreen.MonitorScreen", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.MotherBoards.MotherBoard", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.UsersAddress.UserAddress", b =>

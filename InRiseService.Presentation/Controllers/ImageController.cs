@@ -1,10 +1,7 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
-using InRiseService.Application.DTOs.CoolerDto;
 using InRiseService.Application.DTOs.ImageProductDto;
-using InRiseService.Application.DTOs.MemoryRamDto;
 using InRiseService.Application.Interfaces;
-using InRiseService.Domain.Coolers;
 using InRiseService.Domain.ImagesSite;
 using InRiseService.Util;
 using Microsoft.AspNetCore.Authorization;
@@ -19,15 +16,32 @@ namespace InRiseService.Presentation.Controllers
         private readonly ILogger<ImageController> _logger;
         private readonly IMapper _mapper;
         private readonly ICoolerService _coolerService;
-        private readonly IImageService _imageService;
+        private readonly IMemoryRamService _memoryRamService;
         private readonly IBlobFileAzureService _blobFileAzureService;
+        private readonly IMemoryRomService _memoryRomService;
+        private readonly IImageService _imageService;
+        private readonly IMonitorScreenService _monitorScreenService;
+        private readonly IMotherBoardService _motherBoardService;
+        private readonly IPowerSupplyService _powerSupplyService;
+        private readonly IProcessorService _processorService;
+        private readonly ITowerService _towerService;
+        private readonly IVideoBoardService _videoBoardService;
+
 
         public ImageController(
             ILogger<ImageController> logger,
             IMapper mapper,
             ICoolerService coolerService,
             IImageService imageService,
-            IBlobFileAzureService blobFileAzureService
+            IBlobFileAzureService blobFileAzureService,
+            IMemoryRamService memoryRamService,
+            IMemoryRomService memoryRomService,
+            IMonitorScreenService monitorScreenService,
+            IMotherBoardService motherBoardService,
+            IPowerSupplyService powerSupplyService,
+            IProcessorService processorService,
+            ITowerService towerService,
+            IVideoBoardService videoBoardService
             )
         {
             _logger = logger;
@@ -35,6 +49,14 @@ namespace InRiseService.Presentation.Controllers
             _coolerService = coolerService;
             _imageService = imageService;
             _blobFileAzureService = blobFileAzureService;
+            _memoryRamService = memoryRamService;
+            _memoryRomService = memoryRomService;
+            _monitorScreenService = monitorScreenService;
+            _motherBoardService = motherBoardService;
+            _powerSupplyService = powerSupplyService;
+            _processorService = processorService;
+            _towerService = towerService;
+            _videoBoardService = videoBoardService;
         }
 
         [HttpGet]
@@ -169,10 +191,50 @@ namespace InRiseService.Presentation.Controllers
 
         private static ImagensProduct GenerateModel(ImageCategoryDto imageCategoryDto, int idProduct, IFormFile file)
         {
-            var model = imageCategoryDto switch
+           var model = imageCategoryDto switch
             {
                 { Id: 1 } => new ImagensProduct(){
                     CoolerId = idProduct,
+                    ImageName = file.FileName,
+                    Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
+                },
+                { Id: 2 } => new ImagensProduct(){
+                    MemoryRamId = idProduct,
+                    ImageName = file.FileName,
+                    Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
+                },
+                { Id: 3 } => new ImagensProduct(){
+                    MemoryRomId = idProduct,
+                    ImageName = file.FileName,
+                    Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
+                },
+                { Id: 4 } => new ImagensProduct(){
+                    MonitorScreenId = idProduct,
+                    ImageName = file.FileName,
+                    Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
+                },
+                { Id: 5 } => new ImagensProduct(){
+                    MotherBoardId = idProduct,
+                    ImageName = file.FileName,
+                    Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
+                },
+                { Id: 6 } => new ImagensProduct(){
+                    PowerSupplyId = idProduct,
+                    ImageName = file.FileName,
+                    Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
+                },
+                { Id: 7 } => new ImagensProduct(){
+                    ProcessorId = idProduct,
+                    ImageName = file.FileName,
+                    Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
+                },
+                { Id: 8 } => new ImagensProduct(){
+                    TowerId = idProduct,
+                    ImageName = file.FileName,
+                    Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
+                },
+                { Id: 9 } => new ImagensProduct(){
+                    VideoBoardId = idProduct,
                     ImageName = file.FileName,
                     Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
                 },
@@ -186,6 +248,14 @@ namespace InRiseService.Presentation.Controllers
             var result = imageCategoryDto.Name.ToLower() switch
             {
                 "cooler" => await _coolerService.GetByIdAsync(imagensProduct.CoolerId ?? 0) is null ? false : true,
+                "memoryram" => await _memoryRamService.GetByIdAsync(imagensProduct.MemoryRamId ?? 0) is null ? false : true,
+                "memoryrom" => await _memoryRomService.GetByIdAsync(imagensProduct.MemoryRomId ?? 0) is null ? false : true,
+                "monitorscreen" => await _monitorScreenService.GetByIdAsync(imagensProduct.MonitorScreenId ?? 0) is null ? false : true,
+                "motherboard" => await _motherBoardService.GetByIdAsync(imagensProduct.MonitorScreenId ?? 0) is null ? false : true,
+                "powersupply" => await _powerSupplyService.GetByIdAsync(imagensProduct.PowerSupplyId ?? 0) is null ? false : true,
+                "processor" => await _processorService.GetByIdAsync(imagensProduct.ProcessorId ?? 0) is null ? false : true,
+                "tower" => await _towerService.GetByIdAsync(imagensProduct.TowerId ?? 0) is null ? false : true,
+                "videoboard" => await _videoBoardService.GetByIdAsync(imagensProduct.VideoBoardId ?? 0) is null ? false : true,
                 _ => throw new NotImplementedException()
             };
             return result;

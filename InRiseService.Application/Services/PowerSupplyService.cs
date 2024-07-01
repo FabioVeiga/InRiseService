@@ -61,7 +61,10 @@ namespace InRiseService.Application.Services
         {
             try
             {
-                return await _context.PowerSupplies.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+                return await _context.PowerSupplies
+                .Include(x => x.Price)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
             }
             catch (Exception ex)
             {

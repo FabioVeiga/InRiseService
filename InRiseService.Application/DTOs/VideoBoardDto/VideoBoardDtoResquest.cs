@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.VideoBoardDto
 {
-    public class VideoBoardInsertDto
+    public class VideoBoardDtoResquest
     {
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
@@ -33,5 +34,8 @@ namespace InRiseService.Application.DTOs.VideoBoardDto
         [Display(Name = "Potência/Consumo")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int Potency { get; set; } = default!;
+
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public PriceRequestDto Price { get; set; } = default!;
     }
 }
