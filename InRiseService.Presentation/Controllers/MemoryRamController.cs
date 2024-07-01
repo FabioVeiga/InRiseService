@@ -71,10 +71,8 @@ namespace InRiseService.Presentation.Controllers
                 var model = await _memoryRamService.GetByIdAsync(id);
                 if(model is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
-                model.Frequency = request.Frequency;
-                model.Name = request.Name;
-                model.Socket = request.Socket;
-                model.Capacity = request.Capacity;
+                model = _mapper.Map<MemoryRam>(request);
+                model.Id = id;
                 model.Price = _mapper.Map<Price>(request.Price);
                 model.Price.Id = model.PriceId;
                 await _memoryRamService.UpdateAsync(model);

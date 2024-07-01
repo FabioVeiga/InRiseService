@@ -66,13 +66,15 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var MonitorScreen = await _monitorScreenService.GetByIdAsync(id);
-                if(MonitorScreen is null) return NotFound();
+                var model = await _monitorScreenService.GetByIdAsync(id);
+                if(model is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
-                MonitorScreen.Name = request.Name;
-                MonitorScreen.Dimesion = request.Dimesion;
-                MonitorScreen.Quality = request.Quality;
-                await _monitorScreenService.UpdateAsync(MonitorScreen);
+                
+                model = _mapper.Map<MonitorScreen>(request);
+                model.Id = id;
+                model.Price = _mapper.Map<Price>(request.Price);
+                model.Price.Id = model.PriceId;
+                await _monitorScreenService.UpdateAsync(model);
                 return Ok();
             }
             catch (Exception ex)
@@ -168,6 +170,53 @@ namespace InRiseService.Presentation.Controllers
             }
         }
 
-    
+        [HttpPut]
+        [Route("Activate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Activate(int id)
+        {
+            try
+            {
+                var model = await _monitorScreenService.GetByIdAsync(id);
+                if (model is null) return NotFound();
+                model.Active = true;
+                await _monitorScreenService.UpdateAsync(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao ativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpPut]
+        [Route("Deactivate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Deactivate(int id)
+        {
+            try
+            {
+                var model = await _monitorScreenService.GetByIdAsync(id);
+                if (model is null) return NotFound();
+                model.Active = false;
+                await _monitorScreenService.UpdateAsync(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao desativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
     }
 }

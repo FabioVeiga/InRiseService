@@ -69,9 +69,8 @@ namespace InRiseService.Presentation.Controllers
                 var model = await _memoryRomService.GetByIdAsync(id);
                 if(model is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
-                var idModel = model.Id;
                 model = _mapper.Map<MemoryRom>(request);
-                model.Id = idModel;
+                model.Id = id;
                 model.Price = _mapper.Map<Price>(request.Price);
                 model.Price.Id = model.PriceId;
                 await _memoryRomService.UpdateAsync(model);

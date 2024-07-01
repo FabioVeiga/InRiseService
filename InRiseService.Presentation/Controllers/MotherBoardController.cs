@@ -168,5 +168,53 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
+    
+        [HttpPut]
+        [Route("Activate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Activate(int id)
+        {
+            try
+            {
+                var model = await _motherBoardService.GetByIdAsync(id);
+                if (model is null) return NotFound();
+                model.Active = true;
+                await _motherBoardService.UpdateAsync(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao ativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpPut]
+        [Route("Deactivate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Deactivate(int id)
+        {
+            try
+            {
+                var model = await _motherBoardService.GetByIdAsync(id);
+                if (model is null) return NotFound();
+                model.Active = false;
+                await _motherBoardService.UpdateAsync(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao desativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
     }
 }
