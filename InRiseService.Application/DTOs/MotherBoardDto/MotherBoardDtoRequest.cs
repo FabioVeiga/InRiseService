@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace InRiseService.Application.DTOs.MotherBoardDto
 {
-    public class MotherBoardDtoInsertRequest
+    public class MotherBoardDtoRequest
     {
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "{0} é obrigatório!")]

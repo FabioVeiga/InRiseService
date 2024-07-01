@@ -42,7 +42,6 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<UserAddress, AddressDtoResponse>().ReverseMap();
             CreateMap<Address, UserAddress>().ReverseMap();
             CreateMap<Processor, ProcessorDtoInsertRequest>().ReverseMap();
-            CreateMap<MotherBoard, MotherBoardDtoInsertRequest>().ReverseMap();
 
             CreateMap<MemoryRam, MemoryRamInsertDto>().ReverseMap();
             CreateMap<MemoryRamInsertDto,MemoryRam>().ForMember(dest => dest.Price, opt => opt.Ignore());
@@ -57,7 +56,12 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<MonitorScreen, MonitorScreenRequestDto>().ReverseMap();
             CreateMap<MonitorScreen,MonitorScreenResponseDto>().ReverseMap();
             CreateMap<MonitorScreenRequestDto,MonitorScreen>().ForMember(dest => dest.Price, opt => opt.Ignore());
-            CreateMap<MonitorScreenResponseDto,MemoryRom>().ForMember(dest => dest.Price, opt => opt.Ignore());
+            CreateMap<MonitorScreenResponseDto,MonitorScreen>().ForMember(dest => dest.Price, opt => opt.Ignore());
+
+            CreateMap<MotherBoard, MotherBoardDtoRequest>().ReverseMap();
+            CreateMap<MotherBoard,MotherBoardDtoResponse>().ReverseMap();
+            CreateMap<MotherBoardDtoRequest,MotherBoard>().ForMember(dest => dest.Price, opt => opt.Ignore());
+            CreateMap<MotherBoardDtoResponse,MotherBoard>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
             CreateMap<VideoBoard, VideoBoardInsertDto>().ReverseMap();
             CreateMap<PowerSupply, PowerSupplyInsertDto>().ReverseMap();

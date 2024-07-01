@@ -29,7 +29,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] MotherBoardDtoInsertRequest request)
+        public async Task<IActionResult> Create([FromBody] MotherBoardDtoRequest request)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace InRiseService.Presentation.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update([FromBody] MotherBoardDtoInsertRequest request, int id)
+        public async Task<IActionResult> Update([FromBody] MotherBoardDtoRequest request, int id)
         {
             try
             {
