@@ -103,9 +103,9 @@ namespace InRiseService.Presentation.Controllers
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
-                    result
+                    mappedResponse
                 );
-                return Ok(mappedResponse);
+                return Ok(response);
             }
             catch (Exception ex)
             {

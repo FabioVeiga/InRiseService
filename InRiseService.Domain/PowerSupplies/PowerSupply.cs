@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using InRiseService.Domain.Prices;
 
 namespace InRiseService.Domain.PowerSupplies
 {
@@ -13,13 +14,11 @@ namespace InRiseService.Domain.PowerSupplies
         [Display(Name = "Potência/Consumo W")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
-        [MaxLength(10, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public int Potency { get; set; }
 
         [Display(Name = "Potência Real")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
-        [MaxLength(10, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public int PotencyReal { get; set; }
 
         [Display(Name = "Selo")]
@@ -30,6 +29,9 @@ namespace InRiseService.Domain.PowerSupplies
         [Display(Name = "Modular")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool Modular { get; set; }
+
+        public int PriceId { get; set; }
+        public Price? Price { get; set; }
 
 
     }

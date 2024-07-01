@@ -6,6 +6,7 @@ using InRiseService.Domain.MemoriesRam;
 using InRiseService.Domain.MemoriesRom;
 using InRiseService.Domain.MonitorsScreen;
 using InRiseService.Domain.MotherBoards;
+using InRiseService.Domain.PowerSupplies;
 
 namespace InRiseService.Domain.ImagesSite
 {
@@ -40,5 +41,10 @@ namespace InRiseService.Domain.ImagesSite
         public int? MotherBoardId { get; set; }
         [JsonIgnore]
         public MotherBoard? MotherBoard { get; set; }
+
+        [ForeignKey("PowerSupply")]
+        public int? PowerSupplyId { get; set; }
+        [JsonIgnore]
+        public PowerSupply? PowerSupply { get; set; }
     }
 }

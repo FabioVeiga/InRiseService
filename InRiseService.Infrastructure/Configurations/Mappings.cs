@@ -44,13 +44,13 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<Processor, ProcessorDtoInsertRequest>().ReverseMap();
 
             CreateMap<MemoryRam, MemoryRamInsertDto>().ReverseMap();
-            CreateMap<MemoryRamInsertDto,MemoryRam>().ForMember(dest => dest.Price, opt => opt.Ignore());
             CreateMap<MemoryRam,MemoryRamResponseDto>().ReverseMap();
+            CreateMap<MemoryRamInsertDto,MemoryRam>().ForMember(dest => dest.Price, opt => opt.Ignore());
             CreateMap<MemoryRamResponseDto,MemoryRam>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
             CreateMap<MemoryRom, MemoryRomRequestDto>().ReverseMap();
-            CreateMap<MemoryRomRequestDto,MemoryRom>().ForMember(dest => dest.Price, opt => opt.Ignore());
             CreateMap<MemoryRom,MemoryRomResponseDto>().ReverseMap();
+            CreateMap<MemoryRomRequestDto,MemoryRom>().ForMember(dest => dest.Price, opt => opt.Ignore());
             CreateMap<MemoryRomResponseDto,MemoryRom>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
             CreateMap<MonitorScreen, MonitorScreenRequestDto>().ReverseMap();
@@ -60,11 +60,14 @@ namespace InRiseService.Infrastructure.Configurations
 
             CreateMap<MotherBoard, MotherBoardDtoRequest>().ReverseMap();
             CreateMap<MotherBoard,MotherBoardDtoResponse>().ReverseMap();
-            CreateMap<MotherBoardDtoRequest,MotherBoard>().ForMember(dest => dest.Price, opt => opt.Ignore());
             CreateMap<MotherBoardDtoResponse,MotherBoard>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
+
+            CreateMap<PowerSupply, PowerSupplyDtoRequest>().ReverseMap();
+            CreateMap<PowerSupply, PowerSupplyDtoResponse>().ReverseMap();
+            CreateMap<PowerSupplyDtoResponse,PowerSupply>().ForMember(dest => dest.Price, opt => opt.Ignore());
+
             CreateMap<VideoBoard, VideoBoardInsertDto>().ReverseMap();
-            CreateMap<PowerSupply, PowerSupplyInsertDto>().ReverseMap();
             
             CreateMap<CoolerInsertDto,Cooler>().ForMember(dest => dest.Price, opt => opt.Ignore());
             CreateMap<Cooler, CoolerInsertDto>().ReverseMap();

@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.PowerSupplyDto
 {
-    public class PowerSupplyInsertDto
+    public class PowerSupplyDtoRequest
     {
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
@@ -26,5 +27,8 @@ namespace InRiseService.Application.DTOs.PowerSupplyDto
         [Display(Name = "Modular")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool Modular { get; set; }
+
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public PriceRequestDto Price { get; set; } = default!;
     }
 }
