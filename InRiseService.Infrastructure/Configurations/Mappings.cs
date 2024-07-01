@@ -7,6 +7,7 @@ using InRiseService.Application.DTOs.MotherBoardDto;
 using InRiseService.Application.DTOs.PowerSupplyDto;
 using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.DTOs.ProcessorDto;
+using InRiseService.Application.DTOs.TowerDto;
 using InRiseService.Application.DTOs.UserAddressDto;
 using InRiseService.Application.DTOs.UserAutenticationDto;
 using InRiseService.Application.DTOs.UserDto;
@@ -22,6 +23,7 @@ using InRiseService.Domain.MotherBoards;
 using InRiseService.Domain.PowerSupplies;
 using InRiseService.Domain.Prices;
 using InRiseService.Domain.Processors;
+using InRiseService.Domain.Towers;
 using InRiseService.Domain.Users;
 using InRiseService.Domain.UsersAddress;
 using InRiseService.Domain.VideoBoards;
@@ -66,6 +68,10 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<Processor, ProcessorDtoRequest>().ReverseMap();
             CreateMap<Processor, ProcessorDtoResponse>().ReverseMap();
             CreateMap<ProcessorDtoResponse,Processor>().ForMember(dest => dest.Price, opt => opt.Ignore());
+
+            CreateMap<Tower, TowerDtoRequest>().ReverseMap();
+            CreateMap<Tower, TowerDtoResponse>().ReverseMap();
+            CreateMap<TowerDtoResponse,Tower>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
             CreateMap<VideoBoard, VideoBoardInsertDto>().ReverseMap();
             
