@@ -28,6 +28,9 @@ namespace InRiseService.Application.DTOs.PowerSupplyDto
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool Modular { get; set; }
 
+        [Display(Name = "Descrição")]
+        public string Description { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public PriceRequestDto Price { get; set; } = default!;
     }

@@ -53,6 +53,9 @@ namespace InRiseService.Application.DTOs.ProcessorDto
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public string SuportVideo { get; set; } = default!;
 
+        [Display(Name = "Descrição")]
+        public string Description { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public PriceRequestDto Price { get; set; } = default!;
     }

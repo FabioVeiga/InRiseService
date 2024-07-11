@@ -11,6 +11,7 @@ namespace InRiseService.Application.DTOs.PowerSupplyDto
         public int PotencyReal { get; set; }
         public string Stamp { get; set; } = default!;
         public bool Modular { get; set; }
+        public string Description { get; set; } = string.Empty;
         public ICollection<ImageProductResponseDto>? Images { get; set; }
         public PriceResponseDto Price { get; set; } = default!;
     }

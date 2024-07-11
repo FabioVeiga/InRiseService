@@ -21,6 +21,9 @@ namespace InRiseService.Application.DTOs.TowerDto
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int MaxFans { get; set; } = default!;
 
+        [Display(Name = "Descrição")]
+        public string Description { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public PriceRequestDto Price { get; set; } = default!;
     }

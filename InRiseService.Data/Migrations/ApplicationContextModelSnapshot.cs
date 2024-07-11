@@ -59,7 +59,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Coolers.Cooler", b =>
@@ -78,6 +78,10 @@ namespace InRiseService.Data.Migrations
 
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int>("Dimension")
                         .HasMaxLength(100)
@@ -118,7 +122,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("Coolers", (string)null);
+                    b.ToTable("Coolers");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.ImagesSite.ImagensProduct", b =>
@@ -182,7 +186,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("VideoBoardId");
 
-                    b.ToTable("ImagensProducts", (string)null);
+                    b.ToTable("ImagensProducts");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.MemoriesRam.MemoryRam", b =>
@@ -199,6 +203,10 @@ namespace InRiseService.Data.Migrations
 
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<double>("Frequency")
                         .HasColumnType("double");
@@ -226,7 +234,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("MemoriesRam", (string)null);
+                    b.ToTable("MemoriesRam");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.MemoriesRom.MemoryRom", b =>
@@ -244,8 +252,21 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("InsertIn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsHHD")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsSSD")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsSSDM2")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -276,7 +297,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("MemoriesRom", (string)null);
+                    b.ToTable("MemoriesRom");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.MonitorsScreen.MonitorScreen", b =>
@@ -290,6 +311,10 @@ namespace InRiseService.Data.Migrations
 
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Dimesion")
                         .IsRequired()
@@ -322,7 +347,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("MonitorsScreen", (string)null);
+                    b.ToTable("MonitorsScreen");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.MotherBoards.MotherBoard", b =>
@@ -336,6 +361,10 @@ namespace InRiseService.Data.Migrations
 
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("InsertIn")
                         .HasColumnType("datetime(6)");
@@ -380,7 +409,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("MotherBoards", (string)null);
+                    b.ToTable("MotherBoards");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.PowerSupplies.PowerSupply", b =>
@@ -394,6 +423,10 @@ namespace InRiseService.Data.Migrations
 
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("InsertIn")
                         .HasColumnType("datetime(6)");
@@ -426,7 +459,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("PowerSupplies", (string)null);
+                    b.ToTable("PowerSupplies");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Prices.Price", b =>
@@ -461,7 +494,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Prices", (string)null);
+                    b.ToTable("Prices");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Processors.Processor", b =>
@@ -479,6 +512,10 @@ namespace InRiseService.Data.Migrations
 
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<double>("Frequency")
                         .HasMaxLength(100)
@@ -531,7 +568,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("Processors", (string)null);
+                    b.ToTable("Processors");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Towers.Tower", b =>
@@ -545,6 +582,10 @@ namespace InRiseService.Data.Migrations
 
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Dimesion")
                         .IsRequired()
@@ -572,7 +613,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("PriceId");
 
-                    b.ToTable("Towers", (string)null);
+                    b.ToTable("Towers");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Users.User", b =>
@@ -632,7 +673,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.UsersAddress.UserAddress", b =>
@@ -682,7 +723,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserAddresses", (string)null);
+                    b.ToTable("UserAddresses");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.ValidationCodes.ValidationCode", b =>
@@ -723,7 +764,7 @@ namespace InRiseService.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("ValidationCodes", (string)null);
+                    b.ToTable("ValidationCodes");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.VideoBoards.VideoBoard", b =>
@@ -744,6 +785,10 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Dimension")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -761,6 +806,9 @@ namespace InRiseService.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("int");
 
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Socket")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -771,7 +819,9 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VideosBoard", (string)null);
+                    b.HasIndex("PriceId");
+
+                    b.ToTable("VideosBoard");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Coolers.Cooler", b =>
@@ -947,6 +997,17 @@ namespace InRiseService.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.VideoBoards.VideoBoard", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Addressed.Address", b =>

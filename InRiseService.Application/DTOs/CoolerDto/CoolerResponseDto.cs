@@ -12,6 +12,7 @@ namespace InRiseService.Application.DTOs.CoolerDto
         public int FanDiametric { get; set; } = default!;
         public int MaxVelocit { get; set; } = default!;
         public int Dimension { get; set; } = default!;
+        public string Description { get; set; } = default!;
         public ICollection<ImageProductResponseDto>? Images { get; set; }
         public PriceResponseDto Price { get; set; } = default!;
     }

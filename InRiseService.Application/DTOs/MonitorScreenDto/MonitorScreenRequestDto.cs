@@ -24,6 +24,9 @@ namespace InRiseService.Application.DTOs.MonitorScreenDto
         [Display(Name = "Qualidade")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public string Quality { get; set; } = default!;
+        
+        [Display(Name = "Descrição")]
+        public string Description { get; set; } = string.Empty;
 
         public PriceRequestDto Price { get; set; } = default!;
     }

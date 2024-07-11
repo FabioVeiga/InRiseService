@@ -30,6 +30,9 @@ namespace InRiseService.Domain.PowerSupplies
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public bool Modular { get; set; }
 
+        [Display(Name = "Descrição")]
+        public string Description { get; set; } = string.Empty;
+
         public int PriceId { get; set; }
         public Price? Price { get; set; }
 

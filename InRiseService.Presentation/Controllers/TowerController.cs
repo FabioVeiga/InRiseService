@@ -68,10 +68,12 @@ namespace InRiseService.Presentation.Controllers
                 var model = await _towerService.GetByIdAsync(id);
                 if(model is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
+                var modelPrice = model.Price;
                 model = _mapper.Map<Tower>(request);
                 model.Id = id;
                 model.Price = _mapper.Map<Price>(request.Price);
-                model.Price.Id = model.PriceId;
+                model.Price.Id = modelPrice.Id;
+                model.PriceId = modelPrice.Id;
                 await _towerService.UpdateAsync(model);
                 return Ok();
             }
