@@ -9,6 +9,7 @@ namespace InRiseService.Application.DTOs.TowerDto
         public string Name { get; set; } = default!;
         public string Dimesion { get; set; } = default!;
         public int MaxFans { get; set; } = default!;
+        public string Description { get; set; } = string.Empty;
         public ICollection<ImageProductResponseDto>? Images { get; set; }
         public PriceResponseDto Price { get; set; } = default!;
     }

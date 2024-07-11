@@ -35,6 +35,9 @@ namespace InRiseService.Application.DTOs.VideoBoardDto
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int Potency { get; set; } = default!;
 
+        [Display(Name = "Descrição")]
+        public string Description { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public PriceRequestDto Price { get; set; } = default!;
     }

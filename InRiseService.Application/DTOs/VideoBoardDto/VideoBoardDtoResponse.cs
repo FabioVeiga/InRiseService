@@ -11,6 +11,7 @@ namespace InRiseService.Application.DTOs.VideoBoardDto
         public int Capacity { get; set; } = default!;
         public string Dimension { get; set; } = default!;
         public int Potency { get; set; } = default!;
+        public string Description { get; set; } = string.Empty;
         public ICollection<ImageProductResponseDto>? Images { get; set; }
         public PriceResponseDto Price { get; set; } = default!;
     }

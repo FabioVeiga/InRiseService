@@ -25,6 +25,9 @@ namespace InRiseService.Application.DTOs.MemoryRamDto
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int Capacity { get; set; }
 
+        [Display(Name = "Dimensões (mm)")]
+        public string Description { get; set; } = string.Empty;
+
         public PriceRequestDto Price { get; set; } = default!;
     }
 }
