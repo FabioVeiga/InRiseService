@@ -22,6 +22,9 @@ namespace InRiseService.Domain.Towers
         [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         public int MaxFans { get; set; } = default!;
 
+        [Display(Name = "Descrição")]
+        public string Description { get; set; } = string.Empty;
+
         public int PriceId { get; set; }
         public Price? Price { get; set; }
     }

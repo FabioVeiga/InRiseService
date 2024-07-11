@@ -26,6 +26,9 @@ namespace InRiseService.Domain.MemoriesRam
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int Capacity { get; set; }
 
+        [Display(Name = "Dimensões (mm)")]
+        public string Description { get; set; } = string.Empty;
+
         public int PriceId { get; set; }
         public Price? Price { get; set; }
     }
