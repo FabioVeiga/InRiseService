@@ -28,5 +28,8 @@ namespace InRiseService.Domain.Enums
         
         [Description("videoBoard")]
         videoBoard = 9,
+
+        [Description("computer")]
+        computer = 10,
     }
 }

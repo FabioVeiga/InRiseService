@@ -3,6 +3,7 @@ using System;
 using InRiseService.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240717122938_Initial_02")]
+    partial class Initial_02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,9 +201,6 @@ namespace InRiseService.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("ComputerId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CoolerId")
                         .HasColumnType("int");
 
@@ -237,8 +237,6 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ComputerId");
 
                     b.HasIndex("CoolerId");
 
@@ -909,10 +907,6 @@ namespace InRiseService.Data.Migrations
 
             modelBuilder.Entity("InRiseService.Domain.ImagesSite.ImagensProduct", b =>
                 {
-                    b.HasOne("InRiseService.Domain.Computers.Computer", "Computer")
-                        .WithMany()
-                        .HasForeignKey("ComputerId");
-
                     b.HasOne("InRiseService.Domain.Coolers.Cooler", "Cooler")
                         .WithMany()
                         .HasForeignKey("CoolerId");
@@ -948,8 +942,6 @@ namespace InRiseService.Data.Migrations
                     b.HasOne("InRiseService.Domain.VideoBoards.VideoBoard", "VideoBoard")
                         .WithMany()
                         .HasForeignKey("VideoBoardId");
-
-                    b.Navigation("Computer");
 
                     b.Navigation("Cooler");
 

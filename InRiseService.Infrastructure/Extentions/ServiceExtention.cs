@@ -33,6 +33,7 @@ namespace InRiseService.Infrastructure.Extentions
             services.AddScoped<IImageService,ImageService>();
             services.AddScoped<IMonitorScreenService,MonitorScreenService>();
             services.AddScoped<ITowerService,TowerService>();
+            services.AddScoped<IComputerService,ComputerService>();
         }
 
         public static void RegisterConfigurationDependencies(this IServiceCollection services, IConfiguration configuration)

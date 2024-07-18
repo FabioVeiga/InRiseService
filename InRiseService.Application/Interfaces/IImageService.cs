@@ -10,6 +10,7 @@ namespace InRiseService.Application.Interfaces
         Task<ImagensProduct?> GetByIdAsync(int id);
 
         Task<ICollection<ImageProductResponseDto>> GetByCoolerIdAsync(int id);
+        Task<ICollection<ImageProductResponseDto>> GetByComputerIdAsync(int id);
         Task<ICollection<ImageProductResponseDto>> GetByMemoryRamIdAsync(int id);
         Task<ICollection<ImageProductResponseDto>> GetByMemoryRomIdAsync(int id);
         Task<ICollection<ImageProductResponseDto>> GetByMonitorScreenIdAsync(int id);
