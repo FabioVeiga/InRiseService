@@ -1,3 +1,4 @@
+using InRiseService.Application.DTOs.ComputerDto;
 using InRiseService.Application.DTOs.PaginationDto;
 using InRiseService.Domain.Computers;
 
@@ -9,5 +10,6 @@ namespace InRiseService.Application.Interfaces
         Task UpdateAsync(Computer Computer);
         Task DeleteAsync(Computer Computer);
         Task<Computer?> GetByIdAsync(int id);
+        Task<Pagination<Computer>> GetByFilterAsync(ComputerFilterDto filter);
     }
 }

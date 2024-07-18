@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using InRiseService.Domain.Computers;
 using InRiseService.Domain.Coolers;
 using InRiseService.Domain.MemoriesRam;
 using InRiseService.Domain.MemoriesRom;
@@ -64,5 +65,10 @@ namespace InRiseService.Domain.ImagesSite
         public int? TowerId { get; set; }
         [JsonIgnore]
         public Tower? Tower { get; set; }
+
+        [ForeignKey("Computer")]
+        public int? ComputerId { get; set; }
+        [JsonIgnore]
+        public Computer? Computer { get; set; }
     }
 }

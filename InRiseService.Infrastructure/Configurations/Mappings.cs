@@ -1,4 +1,5 @@
 using AutoMapper;
+using InRiseService.Application.DTOs.ComputerDto;
 using InRiseService.Application.DTOs.CoolerDto;
 using InRiseService.Application.DTOs.MemoryRamDto;
 using InRiseService.Application.DTOs.MemoryRomDto;
@@ -15,6 +16,7 @@ using InRiseService.Application.DTOs.VideoBoardDto;
 using InRiseService.Application.DTOs.ZipCodeBaseDto;
 using InRiseService.Application.UserDto;
 using InRiseService.Domain.Addressed;
+using InRiseService.Domain.Computers;
 using InRiseService.Domain.Coolers;
 using InRiseService.Domain.MemoriesRam;
 using InRiseService.Domain.MemoriesRom;
@@ -84,6 +86,9 @@ namespace InRiseService.Infrastructure.Configurations
             
             CreateMap<Price, PriceRequestDto>().ReverseMap();
             CreateMap<Price, PriceResponseDto>().ReverseMap();
+
+            CreateMap<Computer, ComputerRequestDto>().ReverseMap();
+            CreateMap<Computer, ComputerResponseDto>().ReverseMap();
         }
     }
 }

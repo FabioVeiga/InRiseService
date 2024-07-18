@@ -1,3 +1,6 @@
+using InRiseService.Application.DTOs.ComputerDto;
+using InRiseService.Application.DTOs.PaginationDto;
+using InRiseService.Application.Extentions;
 using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
 using InRiseService.Domain.Computers;
@@ -28,6 +31,28 @@ namespace InRiseService.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError("[{ComputerService}::{DeleteAsync}] - Exception: {Ex}", nameof(ComputerService), nameof(DeleteAsync), ex);
+                throw;
+            }
+        }
+
+        public async Task<Pagination<Computer>> GetByFilterAsync(ComputerFilterDto filter)
+        {
+            try
+            {
+                var query = _context.Computers
+                .AsNoTracking()
+                .Where(p => p.Name.ToUpper().Contains(filter.Name)
+                );
+
+                if(filter.IsDeleted.HasValue)
+                    query = query.Where(x => x.DeleteIn != null);
+                
+                var finalListResult = await query.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);
+                return finalListResult;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(GetByFilterAsync)}] - Exception: {ex}");
                 throw;
             }
         }

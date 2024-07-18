@@ -26,6 +26,7 @@ namespace InRiseService.Presentation.Controllers
         private readonly IProcessorService _processorService;
         private readonly ITowerService _towerService;
         private readonly IVideoBoardService _videoBoardService;
+        private readonly IComputerService _computerService;
 
 
         public ImageController(
@@ -41,8 +42,8 @@ namespace InRiseService.Presentation.Controllers
             IPowerSupplyService powerSupplyService,
             IProcessorService processorService,
             ITowerService towerService,
-            IVideoBoardService videoBoardService
-            )
+            IVideoBoardService videoBoardService,
+            IComputerService computerService)
         {
             _logger = logger;
             _mapper = mapper;
@@ -57,6 +58,7 @@ namespace InRiseService.Presentation.Controllers
             _processorService = processorService;
             _towerService = towerService;
             _videoBoardService = videoBoardService;
+            _computerService = computerService;
         }
 
         [HttpGet]
@@ -238,6 +240,11 @@ namespace InRiseService.Presentation.Controllers
                     ImageName = file.FileName,
                     Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
                 },
+                { Id: 10 } => new ImagensProduct(){
+                    ComputerId = idProduct,
+                    ImageName = file.FileName,
+                    Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
+                },
                 _ => throw new NotImplementedException()
             };
             return model;
@@ -247,20 +254,19 @@ namespace InRiseService.Presentation.Controllers
         {
             var result = imageCategoryDto.Name.ToLower() switch
             {
-                "cooler" => await _coolerService.GetByIdAsync(imagensProduct.CoolerId ?? 0) is null ? false : true,
-                "memoryram" => await _memoryRamService.GetByIdAsync(imagensProduct.MemoryRamId ?? 0) is null ? false : true,
-                "memoryrom" => await _memoryRomService.GetByIdAsync(imagensProduct.MemoryRomId ?? 0) is null ? false : true,
-                "monitorscreen" => await _monitorScreenService.GetByIdAsync(imagensProduct.MonitorScreenId ?? 0) is null ? false : true,
-                "motherboard" => await _motherBoardService.GetByIdAsync(imagensProduct.MonitorScreenId ?? 0) is null ? false : true,
-                "powersupply" => await _powerSupplyService.GetByIdAsync(imagensProduct.PowerSupplyId ?? 0) is null ? false : true,
-                "processor" => await _processorService.GetByIdAsync(imagensProduct.ProcessorId ?? 0) is null ? false : true,
-                "tower" => await _towerService.GetByIdAsync(imagensProduct.TowerId ?? 0) is null ? false : true,
-                "videoboard" => await _videoBoardService.GetByIdAsync(imagensProduct.VideoBoardId ?? 0) is null ? false : true,
+                "cooler" => await _coolerService.GetByIdAsync(imagensProduct.CoolerId ?? 0) is not null,
+                "memoryram" => await _memoryRamService.GetByIdAsync(imagensProduct.MemoryRamId ?? 0) is not null,
+                "memoryrom" => await _memoryRomService.GetByIdAsync(imagensProduct.MemoryRomId ?? 0) is not null,
+                "monitorscreen" => await _monitorScreenService.GetByIdAsync(imagensProduct.MonitorScreenId ?? 0) is not null,
+                "motherboard" => await _motherBoardService.GetByIdAsync(imagensProduct.MonitorScreenId ?? 0) is not null,
+                "powersupply" => await _powerSupplyService.GetByIdAsync(imagensProduct.PowerSupplyId ?? 0) is not null,
+                "processor" => await _processorService.GetByIdAsync(imagensProduct.ProcessorId ?? 0) is not null,
+                "tower" => await _towerService.GetByIdAsync(imagensProduct.TowerId ?? 0) is not null,
+                "videoboard" => await _videoBoardService.GetByIdAsync(imagensProduct.VideoBoardId ?? 0) is not null,
+                "computer" => await _computerService.GetByIdAsync(imagensProduct.ComputerId ?? 0) is not null,
                 _ => throw new NotImplementedException()
             };
             return result;
         }
-
-
     }
 }
