@@ -34,6 +34,7 @@ namespace InRiseService.Infrastructure.Extentions
             services.AddScoped<IMonitorScreenService,MonitorScreenService>();
             services.AddScoped<ITowerService,TowerService>();
             services.AddScoped<IComputerService,ComputerService>();
+            services.AddScoped<ILandingPageService,LandingPageService>();
         }
 
         public static void RegisterConfigurationDependencies(this IServiceCollection services, IConfiguration configuration)
