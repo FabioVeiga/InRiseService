@@ -1,6 +1,7 @@
 using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
 using InRiseService.Domain.LandingPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace InRiseService.Application.Services
@@ -14,6 +15,19 @@ namespace InRiseService.Application.Services
         {
             _context = context;
             _logger = logger;
+        }
+
+        public async Task<IList<LandingPage>> GetAll()
+        {
+            try
+            {
+                return await _context.LandingPages.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(LandingPageService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                throw;
+            }
         }
 
         public async Task<LandingPage> InsertAsync(LandingPage model)

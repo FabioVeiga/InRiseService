@@ -24,7 +24,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public  async Task<ActionResult> Teste01([FromHeader] string secret, [FromBody] LandingPage request)
+        public  async Task<ActionResult> Insert([FromHeader] string secret, [FromBody] LandingPage request)
         {
             try
             {
@@ -33,6 +33,28 @@ namespace InRiseService.Presentation.Controllers
                 var model = await _service.InsertAsync(request);
                 if(model is null) return BadRequest(); 
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao gerar código de validação!"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public  async Task<ActionResult> GetAll([FromHeader] string secret)
+        {
+            try
+            {
+                if(!ModelState.IsValid) return BadRequest();
+                if(secret  != "naf9uafjh_+mcdsaIFD023") return Unauthorized();
+                var lista = await _service.GetAll();
+                return Ok(lista);
             }
             catch (Exception ex)
             {
