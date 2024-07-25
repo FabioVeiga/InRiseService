@@ -2,6 +2,7 @@ using InRiseService.Domain.Addressed;
 using InRiseService.Domain.Computers;
 using InRiseService.Domain.Coolers;
 using InRiseService.Domain.ImagesSite;
+using InRiseService.Domain.LandingPages;
 using InRiseService.Domain.MemoriesRam;
 using InRiseService.Domain.MemoriesRom;
 using InRiseService.Domain.MonitorsScreen;
@@ -38,6 +39,7 @@ namespace InRiseService.Data.Context
         public DbSet<ImagensProduct> ImagensProducts { get; set; }
         public DbSet<Price> Prices { get; set; }
         public DbSet<Computer> Computers { get; set; }
+        public DbSet<LandingPage> LandingPages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
