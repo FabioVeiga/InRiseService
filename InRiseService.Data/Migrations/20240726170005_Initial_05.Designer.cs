@@ -3,6 +3,7 @@ using System;
 using InRiseService.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240726170005_Initial_05")]
+    partial class Initial_05
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -560,7 +563,7 @@ namespace InRiseService.Data.Migrations
                     b.Property<int>("Performace")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalValue")
@@ -573,8 +576,6 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("StatusId");
 
                     b.HasIndex("UserId");
 
@@ -1113,19 +1114,11 @@ namespace InRiseService.Data.Migrations
 
             modelBuilder.Entity("InRiseService.Domain.Orders.Order", b =>
                 {
-                    b.HasOne("InRiseService.Domain.OrderStatuses.OrderStatus", "Status")
-                        .WithMany()
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("InRiseService.Domain.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Status");
 
                     b.Navigation("User");
                 });
