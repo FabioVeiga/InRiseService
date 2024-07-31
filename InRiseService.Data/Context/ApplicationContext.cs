@@ -44,6 +44,8 @@ namespace InRiseService.Data.Context
         public DbSet<LandingPage> LandingPages { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
+        public DbSet<OrderItems> OrderItems { get; set; }
+        public DbSet<OrderHistoric> OrderHistorics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

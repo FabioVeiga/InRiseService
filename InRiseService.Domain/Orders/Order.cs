@@ -28,9 +28,11 @@ namespace InRiseService.Domain.Orders
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int Performace { get; set; }
 
-        [Display(Name = "Status")]
-        [Required(ErrorMessage = "{0} é obrigatório!")]
+        [JsonIgnore]
         public OrderStatus Status { get; set; } = default!;
+
+        [ForeignKey("OrderStatus")]
+        public int OrderStatusId { get; set; } = default!;
         
         [Display(Name = "Valor Total")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
@@ -41,6 +43,8 @@ namespace InRiseService.Domain.Orders
         
         [JsonIgnore]
         public User User { get; set; } = default!;
-        
+
+        [JsonIgnore]
+        public ICollection<OrderItems> OrderItems { get; set; } = new List<OrderItems>();
     }
 }
