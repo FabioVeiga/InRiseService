@@ -1,6 +1,7 @@
 using InRiseService.Application.DTOs.OrderDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
+using InRiseService.Domain.Enums;
 using InRiseService.Domain.Orders;
 using InRiseService.Domain.OrderStatuses;
 using InRiseService.Util;
@@ -119,5 +120,48 @@ namespace InRiseService.Application.Services
             }
         }
 
+        public async Task<OrderDtoResponse> GetOrdersById(int id)
+        {
+            try
+            {
+                var result = new OrderDtoResponse();
+                var model = await _context.Orders
+                .AsNoTracking()
+                .Include(x => x.OrderItems)
+                .Include(x => x.Status)
+                .FirstOrDefaultAsync(x => x.Id == id);
+                if (model == null) return result;
+
+                result.Id = model.Id;
+                result.Number = model.Number;
+                result.Date = model.Date;
+                result.DateEstimated = model.DateEstimated;
+                result.DateDelivered = model.DateDelivered;
+                result.StatusId = model.Status.Id;
+                result.Status = model.Status.Name;
+                result.TotalPrice = model.TotalValue;
+
+                foreach (var item in model.OrderItems)
+                {
+                    var orderItem = new OrderItemDtoResponse
+                    {
+                        Price = item.Price,
+                        Nome = item.ProductType switch
+                        {
+                            EnumTypeCategoryImage.cooler => _context.Coolers.FirstOrDefault(x => x.Id == item.ProductId).Name ?? string.Empty,
+                            EnumTypeCategoryImage.memoryRam => _context.MemoriesRam.FirstOrDefault(x => x.Id == item.ProductId).Name ?? string.Empty,
+                            _ => string.Empty,
+                        }
+                    };
+                    result.OrderItems.Add(orderItem);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(OrderService), nameof(CreateItemsAsync), ex);
+                throw;
+            }
+        }
     }
 }

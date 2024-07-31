@@ -70,6 +70,32 @@ namespace InRiseService.Presentation.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        [Authorize(Roles = "Admin,User")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+               var result = await _orderService.GetOrdersById(id);
+               if(result == null) return NotFound();
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status200OK,
+                    result
+                );
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao buscar"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
         private async Task Validate(OrderDtoRequest request)
         {
             if (request is null)

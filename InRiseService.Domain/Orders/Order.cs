@@ -17,12 +17,10 @@ namespace InRiseService.Domain.Orders
         public DateTime Date { get; set; }
 
         [Display(Name = "Data Estimada")]
-        [Required(ErrorMessage = "{0} é obrigatório!")]
-        public DateTime DateEstimated { get; set; }
+        public DateTime? DateEstimated { get; set; }
 
         [Display(Name = "Data Entrega")]
-        [Required(ErrorMessage = "{0} é obrigatório!")]
-        public DateTime DateDelivered { get; set; }
+        public DateTime? DateDelivered { get; set; }
 
         [Display(Name = "Desempenho")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
