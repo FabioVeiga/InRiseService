@@ -210,6 +210,26 @@ namespace InRiseService.Application.Services
                     return string.Empty;
             }
         }
-    
+
+        public async Task<bool> UpdateAsync(int id, int orderStatusId)
+        {
+            try
+            {
+                var model = await _context.Orders.FirstOrDefaultAsync(x => x.Id ==id);
+                if (model != null)
+                {
+                    model.UpdateIn = DateTime.Now;
+                    model.OrderStatusId = orderStatusId;
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(OrderService), nameof(UpdateAsync), ex);
+                throw;
+            }
+        }
     }
 }

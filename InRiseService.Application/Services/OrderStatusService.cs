@@ -29,5 +29,18 @@ namespace InRiseService.Application.Services
                 throw;
             }
         }
+
+        public async Task<OrderStatus?> GetByIdAsync(int id)
+        {
+            try
+            {
+                return await _context.OrderStatuses.FirstOrDefaultAsync(x => x.Id == id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[{OrderStatusService}::{Get}] - Exception: {Ex}", nameof(OrderStatusService), nameof(GetByIdAsync), ex);
+                throw;
+            }
+        }
     }
 }

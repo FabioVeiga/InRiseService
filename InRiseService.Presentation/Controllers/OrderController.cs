@@ -13,12 +13,11 @@ namespace InRiseService.Presentation.Controllers
     public class OrderController : ControllerBase
     {
         private readonly ILogger<OrderController> _logger;
-        private readonly IMapper _mapper;
+        private readonly IOrderStatusService _orderStatusService;
         private readonly IOrderService _orderService;
         private readonly IUserService _userService;
         private readonly ICoolerService _coolerService;
         private readonly IMemoryRamService _memoryRamService;
-        //private readonly IBlobFileAzureService _blobFileAzureService;
         //private readonly IMemoryRomService _memoryRomService;
         //private readonly IImageService _imageService;
         //private readonly IMonitorScreenService _monitorScreenService;
@@ -27,14 +26,13 @@ namespace InRiseService.Presentation.Controllers
         //private readonly IProcessorService _processorService;
         //private readonly ITowerService _towerService;
         //private readonly IVideoBoardService _videoBoardService;
-        //private readonly IComputerService _computerService;
 
-        public OrderController(ILogger<OrderController> logger, IMapper mapper, IUserService userService, IOrderService orderService, ICoolerService coolerService
+        public OrderController(ILogger<OrderController> logger, IUserService userService, IOrderStatusService orderStatusService, IOrderService orderService, ICoolerService coolerService
         ,IMemoryRamService memoryRamService)
         {
             _logger = logger;
-            _mapper = mapper;
             _userService = userService;
+            _orderStatusService = orderStatusService;
             _orderService = orderService;
             _coolerService = coolerService;
             _memoryRamService = memoryRamService;
@@ -121,6 +119,41 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
+
+        [HttpPut]
+        [Route("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Update(int id, [FromBody] int statusId)
+        {
+            try
+            {
+               var model = await _orderService.GetOrdersById(id);
+               if(model == null) return NotFound();
+               var modelStatus = await _orderStatusService.GetByIdAsync(statusId);
+               if(modelStatus == null) return NotFound();
+               model.StatusId = statusId;
+               var result = await _orderService.UpdateAsync(id, statusId);
+               if(!result) return BadRequest();
+               if(modelStatus.IsVisibleToUser)
+               {
+                await _orderService.CreateHistoricAsync(id, statusId);
+               }
+               
+               return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao buscar"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        
+
 
         private async Task Validate(OrderDtoRequest request)
         {
