@@ -10,6 +10,9 @@ namespace InRiseService.Application.DTOs.OrderDto
 
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public IEnumerable<ProductDtoRequest> ProductDtoRequests { get; set; } = new List<ProductDtoRequest>();
+
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public decimal TotalPrice { get; set; }
     }
 
     public class ProductDtoRequest

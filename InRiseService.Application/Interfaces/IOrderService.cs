@@ -6,7 +6,7 @@ namespace InRiseService.Application.Interfaces
 {
     public interface IOrderService
     {
-        Task<Order> CreateAsync(int userId);
+        Task<Order> CreateAsync(int userId, decimal Price);
         Task CreateItemsAsync(int orderId, IEnumerable<ProductDtoRequest> itemsRequest);
         Task CreateHistoricAsync(int orderId, int orderStatusId);
         Task<OrderStatus> GetOrderStatusById(int id);

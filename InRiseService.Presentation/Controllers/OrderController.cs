@@ -49,7 +49,7 @@ namespace InRiseService.Presentation.Controllers
                 await Validate(request);
                 if (!ModelState.IsValid) return BadRequest(new ValidationProblemDetails(ModelState));
 
-                var model = await _orderService.CreateAsync(request.Userid);
+                var model = await _orderService.CreateAsync(request.Userid, request.TotalPrice);
                 await _orderService.CreateItemsAsync(model.Id, request.ProductDtoRequests);
                 await _orderService.CreateHistoricAsync(model.Id, model.OrderStatusId);
 

@@ -20,7 +20,7 @@ namespace InRiseService.Application.Services
             _logger = logger;
         }
         
-        public async Task<Order> CreateAsync(int userId)
+        public async Task<Order> CreateAsync(int userId, decimal Price)
         {
             try
             {
@@ -29,7 +29,8 @@ namespace InRiseService.Application.Services
                     OrderStatusId = 1,
                     Date =  DateTime.Now,
                     Number = await GetNumberOrder(),
-                    InsertIn = DateTime.Now
+                    InsertIn = DateTime.Now,
+                    TotalValue = Price
                 };
                 _context.Orders.Add(model);
                 await _context.SaveChangesAsync();
