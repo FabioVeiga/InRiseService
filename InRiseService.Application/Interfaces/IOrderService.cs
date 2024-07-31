@@ -12,5 +12,6 @@ namespace InRiseService.Application.Interfaces
         Task<OrderStatus> GetOrderStatusById(int id);
         
         Task<OrderDtoResponse> GetOrdersById(int id);
+        Task<IEnumerable<OrderDtoResponse>> GetOrdersByUserId(int id);
     }
 }

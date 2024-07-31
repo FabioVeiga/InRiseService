@@ -146,12 +146,7 @@ namespace InRiseService.Application.Services
                     var orderItem = new OrderItemDtoResponse
                     {
                         Price = item.Price,
-                        Nome = item.ProductType switch
-                        {
-                            EnumTypeCategoryImage.cooler => _context.Coolers.FirstOrDefault(x => x.Id == item.ProductId).Name ?? string.Empty,
-                            EnumTypeCategoryImage.memoryRam => _context.MemoriesRam.FirstOrDefault(x => x.Id == item.ProductId).Name ?? string.Empty,
-                            _ => string.Empty,
-                        }
+                        Nome = GetProductName(item.ProductId, item.ProductType)
                     };
                     result.OrderItems.Add(orderItem);
                 }
@@ -159,9 +154,62 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(OrderService), nameof(CreateItemsAsync), ex);
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(OrderService), nameof(GetOrdersById), ex);
                 throw;
             }
         }
+
+        public async Task<IEnumerable<OrderDtoResponse>> GetOrdersByUserId(int id)
+        {
+            
+            try
+            {
+                var result = new List<OrderDtoResponse>();
+                var model = await _context.Orders
+                .AsNoTracking()
+                .Include(x => x.OrderItems)
+                .Include(x => x.Status)
+                .Where(x => x.UserId == id)
+                .ToListAsync();
+                
+                var orders = model.Select(order => new OrderDtoResponse
+                {
+                    Id = order.Id,
+                    Number = order.Number,
+                    Date = order.Date,
+                    DateEstimated = order.DateEstimated,
+                    DateDelivered = order.DateDelivered,
+                    StatusId = order.Status.Id,
+                    Status = order.Status.Name,
+                    TotalPrice = order.TotalValue,
+                    OrderItems = order.OrderItems.Select(item => new OrderItemDtoResponse
+                    {
+                        Price = item.Price,
+                        Nome = GetProductName(item.ProductId, item.ProductType)
+                    }).ToList()
+                });
+
+                return orders;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(OrderService), nameof(GetOrdersById), ex);
+                throw;
+            }
+        }
+
+        private string GetProductName(int productId, EnumTypeCategoryImage productType)
+        {
+            switch (productType)
+            {
+                case EnumTypeCategoryImage.cooler:
+                    return _context.Coolers.FirstOrDefault(x => x.Id == productId)?.Name ?? string.Empty;
+                case EnumTypeCategoryImage.memoryRam:
+                    return _context.MemoriesRam.FirstOrDefault(x => x.Id == productId)?.Name ?? string.Empty;
+                default:
+                    return string.Empty;
+            }
+        }
+    
     }
 }
