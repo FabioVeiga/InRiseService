@@ -120,7 +120,7 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task<OrderDtoResponse> GetOrdersById(int id)
+        public async Task<OrderDtoResponse> GetOrdersById(int id, string role)
         {
             try
             {
@@ -137,8 +137,8 @@ namespace InRiseService.Application.Services
                 result.Date = model.Date;
                 result.DateEstimated = model.DateEstimated;
                 result.DateDelivered = model.DateDelivered;
-                result.StatusId = model.Status.Id;
-                result.Status = model.Status.Name;
+                result.StatusId = ViewStatusByRole(role, model.Status).Id;
+                result.Status = ViewStatusByRole(role, model.Status).Name;
                 result.TotalPrice = model.TotalValue;
 
                 foreach (var item in model.OrderItems)
@@ -159,7 +159,7 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task<IEnumerable<OrderDtoResponse>> GetOrdersByUserId(int id)
+        public async Task<IEnumerable<OrderDtoResponse>> GetOrdersByUserId(int id, string role)
         {
             
             try
@@ -179,8 +179,8 @@ namespace InRiseService.Application.Services
                     Date = order.Date,
                     DateEstimated = order.DateEstimated,
                     DateDelivered = order.DateDelivered,
-                    StatusId = order.Status.Id,
-                    Status = order.Status.Name,
+                    StatusId = ViewStatusByRole(role, order.Status).Id,
+                    Status = ViewStatusByRole(role, order.Status).Name,
                     TotalPrice = order.TotalValue,
                     OrderItems = order.OrderItems.Select(item => new OrderItemDtoResponse
                     {
@@ -196,6 +196,18 @@ namespace InRiseService.Application.Services
                 _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(OrderService), nameof(GetOrdersById), ex);
                 throw;
             }
+        }
+
+        private OrderStatus ViewStatusByRole(string role, OrderStatus current){
+            if(role == "User")
+            {
+                if(!current.IsVisibleToUser){
+                    return _context.OrderStatuses
+                    .OrderByDescending(x => x.Id)
+                    .FirstOrDefault(x => x.IsVisibleToUser && current.Id > x.Id);
+                }
+            }
+            return current;
         }
 
         private string GetProductName(int productId, EnumTypeCategoryImage productType)

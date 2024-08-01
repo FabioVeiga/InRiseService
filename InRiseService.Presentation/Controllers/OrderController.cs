@@ -1,4 +1,4 @@
-using AutoMapper;
+using System.Security.Claims;
 using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.DTOs.OrderDto;
 using InRiseService.Application.Interfaces;
@@ -18,6 +18,7 @@ namespace InRiseService.Presentation.Controllers
         private readonly IUserService _userService;
         private readonly ICoolerService _coolerService;
         private readonly IMemoryRamService _memoryRamService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         //private readonly IMemoryRomService _memoryRomService;
         //private readonly IImageService _imageService;
         //private readonly IMonitorScreenService _monitorScreenService;
@@ -28,7 +29,7 @@ namespace InRiseService.Presentation.Controllers
         //private readonly IVideoBoardService _videoBoardService;
 
         public OrderController(ILogger<OrderController> logger, IUserService userService, IOrderStatusService orderStatusService, IOrderService orderService, ICoolerService coolerService
-        ,IMemoryRamService memoryRamService)
+        ,IMemoryRamService memoryRamService, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _userService = userService;
@@ -36,6 +37,7 @@ namespace InRiseService.Presentation.Controllers
             _orderService = orderService;
             _coolerService = coolerService;
             _memoryRamService = memoryRamService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]
@@ -75,13 +77,14 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-               var result = await _orderService.GetOrdersById(id);
-               if(result == null) return NotFound();
-                var response = new ApiResponse<dynamic>(
-                    StatusCodes.Status200OK,
-                    result
-                );
-                return Ok(response);
+                var role = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Role) ?? "User";
+                var result = await _orderService.GetOrdersById(id, role);
+                if(result == null) return NotFound();
+                 var response = new ApiResponse<dynamic>(
+                     StatusCodes.Status200OK,
+                     result
+                 );
+                 return Ok(response);
             }
             catch (Exception ex)
             {
@@ -101,7 +104,8 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-               var result = await _orderService.GetOrdersByUserId(userId);
+               var role = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Role) ?? "User";
+               var result = await _orderService.GetOrdersByUserId(userId, role);
                if(result == null) return NotFound();
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
@@ -121,13 +125,13 @@ namespace InRiseService.Presentation.Controllers
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("status/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, [FromBody] int statusId)
         {
             try
             {
-               var model = await _orderService.GetOrdersById(id);
+               var model = await _orderService.GetOrdersById(id, "Admin");
                if(model == null) return NotFound();
                var modelStatus = await _orderStatusService.GetByIdAsync(statusId);
                if(modelStatus == null) return NotFound();
@@ -152,7 +156,7 @@ namespace InRiseService.Presentation.Controllers
             }
         }
 
-        
+
 
 
         private async Task Validate(OrderDtoRequest request)

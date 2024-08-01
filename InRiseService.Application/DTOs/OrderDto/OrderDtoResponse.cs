@@ -1,3 +1,5 @@
+using InRiseService.Domain.OrderStatuses;
+
 namespace InRiseService.Application.DTOs.OrderDto
 {
     public class OrderDtoResponse

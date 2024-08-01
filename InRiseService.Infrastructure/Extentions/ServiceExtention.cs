@@ -37,6 +37,7 @@ namespace InRiseService.Infrastructure.Extentions
             services.AddScoped<ILandingPageService,LandingPageService>();
             services.AddScoped<IOrderStatusService,OrderStatusService>();
             services.AddScoped<IOrderService,OrderService>();
+            services.AddHttpContextAccessor();
         }
 
         public static void RegisterConfigurationDependencies(this IServiceCollection services, IConfiguration configuration)
