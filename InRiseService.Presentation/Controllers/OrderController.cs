@@ -79,13 +79,12 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [Authorize(Roles = "Admin,User")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetById(int id)
         {
             try
             {
-                var role = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Role) ?? "User";
-                var result = await _orderService.GetOrdersById(id, role);
+                var result = await _orderService.GetOrdersById(id);
                 if (result == null) return NotFound();
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
@@ -106,13 +105,12 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("user/{userId}")]
-        [Authorize(Roles = "Admin,User")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetByUserId(int userId)
         {
             try
             {
-                var role = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Role) ?? "User";
-                var result = await _orderService.GetOrdersByUserId(userId, role);
+                var result = await _orderService.GetOrdersByUserId(userId);
                 if (result == null) return NotFound();
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
@@ -138,7 +136,7 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var model = await _orderService.GetOrdersById(id, "Admin");
+                var model = await _orderService.GetOrdersById(id);
                 if (model == null) return NotFound();
                 var modelStatus = await _orderStatusService.GetByIdAsync(statusId);
                 if (modelStatus == null) return NotFound();
@@ -150,6 +148,58 @@ namespace InRiseService.Presentation.Controllers
                     await _orderService.CreateHistoricAsync(id, statusId);
                 }
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}", ex);
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao buscar"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpGet]
+        [Route("historic-by-orderid/{orderId}")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetByHistoricOrderId(int orderId)
+        {
+            try
+            {
+                var result = await _orderService.GetOrderHistoricByOrderId(orderId);
+                if (result == null) return NotFound();
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status200OK,
+                    result
+                );
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}", ex);
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao buscar"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpGet]
+        [Route("historic-by-number/{number}")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetByHistoricNumber(int number)
+        {
+            try
+            {
+                var result = await _orderService.GetOrderHistoricByNumber(number);
+                if (result == null) return NotFound();
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status200OK,
+                    result
+                );
+                return Ok(response);
             }
             catch (Exception ex)
             {

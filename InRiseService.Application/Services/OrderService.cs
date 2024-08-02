@@ -120,7 +120,7 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task<OrderDtoResponse> GetOrdersById(int id, string role)
+        public async Task<OrderDtoResponse> GetOrdersById(int id)
         {
             try
             {
@@ -137,8 +137,8 @@ namespace InRiseService.Application.Services
                 result.Date = model.Date;
                 result.DateEstimated = model.DateEstimated;
                 result.DateDelivered = model.DateDelivered;
-                result.StatusId = ViewStatusByRole(role, model.Status).Id;
-                result.Status = ViewStatusByRole(role, model.Status).Name;
+                result.StatusId = model.Status.Id;
+                result.Status = model.Status.Name;
                 result.TotalPrice = model.TotalValue;
 
                 foreach (var item in model.OrderItems)
@@ -159,7 +159,7 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task<IEnumerable<OrderDtoResponse>> GetOrdersByUserId(int id, string role)
+        public async Task<IEnumerable<OrderDtoResponse>> GetOrdersByUserId(int id)
         {
             
             try
@@ -179,8 +179,8 @@ namespace InRiseService.Application.Services
                     Date = order.Date,
                     DateEstimated = order.DateEstimated,
                     DateDelivered = order.DateDelivered,
-                    StatusId = ViewStatusByRole(role, order.Status).Id,
-                    Status = ViewStatusByRole(role, order.Status).Name,
+                    StatusId = order.Status.Id,
+                    Status = order.Status.Name,
                     TotalPrice = order.TotalValue,
                     OrderItems = order.OrderItems.Select(item => new OrderItemDtoResponse
                     {
@@ -196,18 +196,6 @@ namespace InRiseService.Application.Services
                 _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(OrderService), nameof(GetOrdersById), ex);
                 throw;
             }
-        }
-
-        private OrderStatus ViewStatusByRole(string role, OrderStatus current){
-            if(role == "User")
-            {
-                if(!current.IsVisibleToUser){
-                    return _context.OrderStatuses
-                    .OrderByDescending(x => x.Id)
-                    .FirstOrDefault(x => x.IsVisibleToUser && current.Id > x.Id);
-                }
-            }
-            return current;
         }
 
         private string GetProductName(int productId, EnumTypeCategoryImage productType)
@@ -240,6 +228,50 @@ namespace InRiseService.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(OrderService), nameof(UpdateAsync), ex);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<OrderHistoricDto?>> GetOrderHistoricByNumber(int numberOrder)
+        {
+            try
+            {
+                return await _context.OrderHistorics
+                .Include(x => x.Order)
+                .Include(x => x.Status)
+                .Where(x => x.Order.Number == numberOrder)
+                .Select(x => new OrderHistoricDto(){
+                    Data = x.Date,
+                    Number = x.Order.Number,
+                    Status = x.Status.Name
+                })
+                .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(OrderService), nameof(GetOrderHistoricByNumber), ex);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<OrderHistoricDto?>> GetOrderHistoricByOrderId(int orderId)
+        {
+            try
+            {
+                return await _context.OrderHistorics
+                .Include(x => x.Order)
+                .Include(x => x.Status)
+                .Where(x => x.Order.Id == orderId)
+                .Select(x => new OrderHistoricDto(){
+                    Data = x.Date,
+                    Number = x.Order.Number,
+                    Status = x.Status.Name
+                })
+                .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(OrderService), nameof(GetOrderHistoricByNumber), ex);
                 throw;
             }
         }

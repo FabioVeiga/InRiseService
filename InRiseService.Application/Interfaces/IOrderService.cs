@@ -11,7 +11,9 @@ namespace InRiseService.Application.Interfaces
         Task CreateItemsAsync(int orderId, IEnumerable<ProductDtoRequest> itemsRequest);
         Task CreateHistoricAsync(int orderId, int orderStatusId);
         Task<OrderStatus> GetOrderStatusById(int id);
-        Task<OrderDtoResponse> GetOrdersById(int id, string role);
-        Task<IEnumerable<OrderDtoResponse>> GetOrdersByUserId(int id, string role);
+        Task<OrderDtoResponse> GetOrdersById(int id);
+        Task<IEnumerable<OrderDtoResponse>> GetOrdersByUserId(int id);
+        Task<IEnumerable<OrderHistoricDto?>> GetOrderHistoricByNumber(int numberOrder);
+        Task<IEnumerable<OrderHistoricDto?>> GetOrderHistoricByOrderId(int orderIdid);
     }
 }
