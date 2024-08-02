@@ -3,6 +3,7 @@ using System;
 using InRiseService.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240802001315_Initial_14")]
+    partial class Initial_14
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -598,10 +601,6 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("OrderStatusId");
-
                     b.ToTable("OrderHistorics");
                 });
 
@@ -1177,25 +1176,6 @@ namespace InRiseService.Data.Migrations
                     b.Navigation("Status");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("InRiseService.Domain.Orders.OrderHistoric", b =>
-                {
-                    b.HasOne("InRiseService.Domain.Orders.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("InRiseService.Domain.OrderStatuses.OrderStatus", "Status")
-                        .WithMany()
-                        .HasForeignKey("OrderStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Orders.OrderItems", b =>

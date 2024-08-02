@@ -83,6 +83,19 @@ app.UseSwaggerUI(options =>
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
 });
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+    try
+    {
+        SeedingData.Start(context, InRiseService.Util.PasswordHelper.EncryptPassword("123"));
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Um erro ocorreu durante a inicialização de dados.");
+    }
+}
 
 app.UseHttpsRedirection();
 

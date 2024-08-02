@@ -3,6 +3,7 @@ using System;
 using InRiseService.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240726170005_Initial_05")]
+    partial class Initial_05
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -542,10 +545,10 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("DateDelivered")
+                    b.Property<DateTime>("DateDelivered")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("DateEstimated")
+                    b.Property<DateTime>("DateEstimated")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("DeleteIn")
@@ -557,10 +560,10 @@ namespace InRiseService.Data.Migrations
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
-                    b.Property<int>("OrderStatusId")
+                    b.Property<int>("Performace")
                         .HasColumnType("int");
 
-                    b.Property<int>("Performace")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalValue")
@@ -574,60 +577,9 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderStatusId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("InRiseService.Domain.Orders.OrderHistoric", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderStatusId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("OrderStatusId");
-
-                    b.ToTable("OrderHistorics");
-                });
-
-            modelBuilder.Entity("InRiseService.Domain.Orders.OrderItems", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.PowerSupplies.PowerSupply", b =>
@@ -1162,49 +1114,13 @@ namespace InRiseService.Data.Migrations
 
             modelBuilder.Entity("InRiseService.Domain.Orders.Order", b =>
                 {
-                    b.HasOne("InRiseService.Domain.OrderStatuses.OrderStatus", "Status")
-                        .WithMany()
-                        .HasForeignKey("OrderStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("InRiseService.Domain.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Status");
-
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("InRiseService.Domain.Orders.OrderHistoric", b =>
-                {
-                    b.HasOne("InRiseService.Domain.Orders.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("InRiseService.Domain.OrderStatuses.OrderStatus", "Status")
-                        .WithMany()
-                        .HasForeignKey("OrderStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Status");
-                });
-
-            modelBuilder.Entity("InRiseService.Domain.Orders.OrderItems", b =>
-                {
-                    b.HasOne("InRiseService.Domain.Orders.Order", null)
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("InRiseService.Domain.PowerSupplies.PowerSupply", b =>
@@ -1284,11 +1200,6 @@ namespace InRiseService.Data.Migrations
             modelBuilder.Entity("InRiseService.Domain.Addressed.Address", b =>
                 {
                     b.Navigation("UserAddresses");
-                });
-
-            modelBuilder.Entity("InRiseService.Domain.Orders.Order", b =>
-                {
-                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Users.User", b =>

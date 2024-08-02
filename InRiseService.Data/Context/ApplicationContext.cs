@@ -7,6 +7,8 @@ using InRiseService.Domain.MemoriesRam;
 using InRiseService.Domain.MemoriesRom;
 using InRiseService.Domain.MonitorsScreen;
 using InRiseService.Domain.MotherBoards;
+using InRiseService.Domain.Orders;
+using InRiseService.Domain.OrderStatuses;
 using InRiseService.Domain.PowerSupplies;
 using InRiseService.Domain.Prices;
 using InRiseService.Domain.Processors;
@@ -40,6 +42,10 @@ namespace InRiseService.Data.Context
         public DbSet<Price> Prices { get; set; }
         public DbSet<Computer> Computers { get; set; }
         public DbSet<LandingPage> LandingPages { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
+        public DbSet<OrderItems> OrderItems { get; set; }
+        public DbSet<OrderHistoric> OrderHistorics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
