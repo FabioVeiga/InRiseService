@@ -27,23 +27,15 @@ namespace InRiseService.Presentation.Controllers
         private readonly ITowerService _towerService;
         private readonly IVideoBoardService _videoBoardService;
         private readonly IComputerService _computerService;
+        private readonly ICategoryService _categoryService;
 
 
         public ImageController(
-            ILogger<ImageController> logger,
-            IMapper mapper,
-            ICoolerService coolerService,
-            IImageService imageService,
-            IBlobFileAzureService blobFileAzureService,
-            IMemoryRamService memoryRamService,
-            IMemoryRomService memoryRomService,
-            IMonitorScreenService monitorScreenService,
-            IMotherBoardService motherBoardService,
-            IPowerSupplyService powerSupplyService,
-            IProcessorService processorService,
-            ITowerService towerService,
-            IVideoBoardService videoBoardService,
-            IComputerService computerService)
+            ILogger<ImageController> logger, IMapper mapper, ICoolerService coolerService, IImageService imageService,
+            IBlobFileAzureService blobFileAzureService, IMemoryRamService memoryRamService, IMemoryRomService memoryRomService,
+            IMonitorScreenService monitorScreenService, IMotherBoardService motherBoardService, IPowerSupplyService powerSupplyService,
+            IProcessorService processorService, ITowerService towerService, IVideoBoardService videoBoardService,
+            IComputerService computerService, ICategoryService categoryService)
         {
             _logger = logger;
             _mapper = mapper;
@@ -59,6 +51,7 @@ namespace InRiseService.Presentation.Controllers
             _towerService = towerService;
             _videoBoardService = videoBoardService;
             _computerService = computerService;
+            _categoryService = categoryService;
         }
 
         [HttpGet]
@@ -245,6 +238,12 @@ namespace InRiseService.Presentation.Controllers
                     ImageName = file.FileName,
                     Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
                 },
+                { Id: 11 } => new ImagensProduct()
+                {
+                    ComputerId = idProduct,
+                    ImageName = file.FileName,
+                    Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
+                },
                 _ => throw new NotImplementedException()
             };
             return model;
@@ -264,6 +263,7 @@ namespace InRiseService.Presentation.Controllers
                 "tower" => await _towerService.GetByIdAsync(imagensProduct.TowerId ?? 0) is not null,
                 "videoboard" => await _videoBoardService.GetByIdAsync(imagensProduct.VideoBoardId ?? 0) is not null,
                 "computer" => await _computerService.GetByIdAsync(imagensProduct.ComputerId ?? 0) is not null,
+                "category" => await _categoryService.GetByIdAsync(imagensProduct.CategoryId ?? 0) is not null,
                 _ => throw new NotImplementedException()
             };
             return result;

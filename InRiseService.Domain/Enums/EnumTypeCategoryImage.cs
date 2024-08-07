@@ -31,5 +31,8 @@ namespace InRiseService.Domain.Enums
 
         [Description("computer")]
         computer = 10,
+
+        [Description("category")]
+        category = 11,
     }
 }
