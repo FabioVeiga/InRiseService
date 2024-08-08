@@ -3,6 +3,7 @@ using System;
 using InRiseService.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240807002812_Initial_18")]
+    partial class Initial_18
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,9 +231,6 @@ namespace InRiseService.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("ComputerId")
                         .HasColumnType("int");
 
@@ -270,8 +270,6 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.HasIndex("ComputerId");
 
@@ -1114,10 +1112,6 @@ namespace InRiseService.Data.Migrations
 
             modelBuilder.Entity("InRiseService.Domain.ImagesSite.ImagensProduct", b =>
                 {
-                    b.HasOne("InRiseService.Domain.Categories.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
                     b.HasOne("InRiseService.Domain.Computers.Computer", "Computer")
                         .WithMany()
                         .HasForeignKey("ComputerId");
@@ -1157,8 +1151,6 @@ namespace InRiseService.Data.Migrations
                     b.HasOne("InRiseService.Domain.VideoBoards.VideoBoard", "VideoBoard")
                         .WithMany()
                         .HasForeignKey("VideoBoardId");
-
-                    b.Navigation("Category");
 
                     b.Navigation("Computer");
 

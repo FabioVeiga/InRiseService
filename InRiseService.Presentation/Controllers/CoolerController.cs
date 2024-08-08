@@ -1,5 +1,6 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
+using InRiseService.Application.DTOs.CategoryDto;
 using InRiseService.Application.DTOs.CoolerDto;
 using InRiseService.Application.DTOs.MemoryRamDto;
 using InRiseService.Application.DTOs.PriceDto;

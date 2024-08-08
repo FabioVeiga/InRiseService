@@ -1,4 +1,5 @@
 using InRiseService.Domain.Addressed;
+using InRiseService.Domain.Categories;
 using InRiseService.Domain.Computers;
 using InRiseService.Domain.Coolers;
 using InRiseService.Domain.ImagesSite;
@@ -46,6 +47,7 @@ namespace InRiseService.Data.Context
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<OrderItems> OrderItems { get; set; }
         public DbSet<OrderHistoric> OrderHistorics { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
