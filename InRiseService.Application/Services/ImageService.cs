@@ -154,6 +154,11 @@ namespace InRiseService.Application.Services
             return await GetImagesByNavigationPropertyAsync(id, x => x.PowerSupply);
         }
 
+        public async Task<ICollection<ImageProductResponseDto>> GetByCategoryIdAsync(int id)
+        {
+            return await GetImagesByNavigationPropertyAsync(id, x => x.PowerSupply);
+        }
+
         private async Task<ICollection<ImageProductResponseDto>> GetImagesByNavigationPropertyAsync<T>(
             int id,
             Expression<Func<ImagensProduct, T>> navigationProperty)

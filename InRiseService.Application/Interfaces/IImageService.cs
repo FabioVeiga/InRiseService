@@ -16,6 +16,7 @@ namespace InRiseService.Application.Interfaces
         Task<ICollection<ImageProductResponseDto>> GetByMonitorScreenIdAsync(int id);
         Task<ICollection<ImageProductResponseDto>> GetByMotherBoardIdAsync(int id);
         Task<ICollection<ImageProductResponseDto>> GetByPowerSupplyIdAsync(int id);
+        Task<ICollection<ImageProductResponseDto>> GetByCategoryIdAsync(int id);
         
 
         ICollection<ImageCategoryDto> GetImageCategories();
