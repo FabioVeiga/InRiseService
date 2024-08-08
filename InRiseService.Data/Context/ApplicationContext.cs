@@ -13,6 +13,7 @@ using InRiseService.Domain.OrderStatuses;
 using InRiseService.Domain.PowerSupplies;
 using InRiseService.Domain.Prices;
 using InRiseService.Domain.Processors;
+using InRiseService.Domain.Softwares;
 using InRiseService.Domain.Towers;
 using InRiseService.Domain.Users;
 using InRiseService.Domain.UsersAddress;
@@ -48,6 +49,7 @@ namespace InRiseService.Data.Context
         public DbSet<OrderItems> OrderItems { get; set; }
         public DbSet<OrderHistoric> OrderHistorics { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Software> Softwares { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
