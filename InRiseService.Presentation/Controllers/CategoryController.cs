@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using InRiseService.Application.DTOs.CategoryDto;
 using InRiseService.Domain.Categories;
+using InRiseService.Application.DTOs.SoftwareDto;
 
 namespace InRiseService.Presentation.Controllers
 {

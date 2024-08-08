@@ -95,7 +95,7 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<Computer, ComputerResponseDto>().ReverseMap();
 
             CreateMap<Software, SoftwareRequestDto>().ReverseMap();
-            CreateMap<Computer, SoftwareResponseDto>().ReverseMap();
+            CreateMap<Software, SoftwareResponseDto>().ReverseMap();
 
             CreateMap<Category, CategoryRequestDto>().ReverseMap();
             CreateMap<Category, CategoryResponseDto>().ReverseMap();

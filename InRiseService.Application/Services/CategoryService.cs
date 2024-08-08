@@ -39,6 +39,7 @@ namespace InRiseService.Application.Services
             try
             {
                 return await _context.Categories
+                .Include(x => x.Softwares)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
             }

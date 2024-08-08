@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using InRiseService.Domain.Categories;
 
 namespace InRiseService.Domain.Softwares
@@ -29,6 +30,8 @@ namespace InRiseService.Domain.Softwares
 
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
+
+        [JsonIgnore]
         public Category Category { get; set; } = default!;
 
     }
