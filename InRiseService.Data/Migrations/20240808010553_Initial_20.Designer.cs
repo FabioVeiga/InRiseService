@@ -3,6 +3,7 @@ using System;
 using InRiseService.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240808010553_Initial_20")]
+    partial class Initial_20
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,9 +266,6 @@ namespace InRiseService.Data.Migrations
                     b.Property<int?>("ProcessorId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SoftwareId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("TowerId")
                         .HasColumnType("int");
 
@@ -291,8 +291,6 @@ namespace InRiseService.Data.Migrations
                     b.HasIndex("PowerSupplyId");
 
                     b.HasIndex("ProcessorId");
-
-                    b.HasIndex("SoftwareId");
 
                     b.HasIndex("TowerId");
 
@@ -856,9 +854,6 @@ namespace InRiseService.Data.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
 
@@ -892,8 +887,6 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Softwares");
                 });
@@ -1206,10 +1199,6 @@ namespace InRiseService.Data.Migrations
                         .WithMany()
                         .HasForeignKey("ProcessorId");
 
-                    b.HasOne("InRiseService.Domain.Softwares.Software", "Software")
-                        .WithMany()
-                        .HasForeignKey("SoftwareId");
-
                     b.HasOne("InRiseService.Domain.Towers.Tower", "Tower")
                         .WithMany()
                         .HasForeignKey("TowerId");
@@ -1235,8 +1224,6 @@ namespace InRiseService.Data.Migrations
                     b.Navigation("PowerSupply");
 
                     b.Navigation("Processor");
-
-                    b.Navigation("Software");
 
                     b.Navigation("Tower");
 
@@ -1356,17 +1343,6 @@ namespace InRiseService.Data.Migrations
                     b.Navigation("Price");
                 });
 
-            modelBuilder.Entity("InRiseService.Domain.Softwares.Software", b =>
-                {
-                    b.HasOne("InRiseService.Domain.Categories.Category", "Category")
-                        .WithMany("Softwares")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("InRiseService.Domain.Towers.Tower", b =>
                 {
                     b.HasOne("InRiseService.Domain.Prices.Price", "Price")
@@ -1422,11 +1398,6 @@ namespace InRiseService.Data.Migrations
             modelBuilder.Entity("InRiseService.Domain.Addressed.Address", b =>
                 {
                     b.Navigation("UserAddresses");
-                });
-
-            modelBuilder.Entity("InRiseService.Domain.Categories.Category", b =>
-                {
-                    b.Navigation("Softwares");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Orders.Order", b =>

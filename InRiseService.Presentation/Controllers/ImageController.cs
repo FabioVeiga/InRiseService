@@ -28,6 +28,7 @@ namespace InRiseService.Presentation.Controllers
         private readonly IVideoBoardService _videoBoardService;
         private readonly IComputerService _computerService;
         private readonly ICategoryService _categoryService;
+        private readonly ISoftwareService _softwareService;
 
 
         public ImageController(
@@ -35,7 +36,7 @@ namespace InRiseService.Presentation.Controllers
             IBlobFileAzureService blobFileAzureService, IMemoryRamService memoryRamService, IMemoryRomService memoryRomService,
             IMonitorScreenService monitorScreenService, IMotherBoardService motherBoardService, IPowerSupplyService powerSupplyService,
             IProcessorService processorService, ITowerService towerService, IVideoBoardService videoBoardService,
-            IComputerService computerService, ICategoryService categoryService)
+            IComputerService computerService, ICategoryService categoryService, ISoftwareService softwareService)
         {
             _logger = logger;
             _mapper = mapper;
@@ -52,6 +53,7 @@ namespace InRiseService.Presentation.Controllers
             _videoBoardService = videoBoardService;
             _computerService = computerService;
             _categoryService = categoryService;
+            _softwareService = softwareService;
         }
 
         [HttpGet]
@@ -240,7 +242,13 @@ namespace InRiseService.Presentation.Controllers
                 },
                 { Id: 11 } => new ImagensProduct()
                 {
-                    ComputerId = idProduct,
+                    CategoryId = idProduct,
+                    ImageName = file.FileName,
+                    Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
+                },
+                { Id: 12 } => new ImagensProduct()
+                {
+                    SoftwareId = idProduct,
                     ImageName = file.FileName,
                     Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
                 },
@@ -264,6 +272,7 @@ namespace InRiseService.Presentation.Controllers
                 "videoboard" => await _videoBoardService.GetByIdAsync(imagensProduct.VideoBoardId ?? 0) is not null,
                 "computer" => await _computerService.GetByIdAsync(imagensProduct.ComputerId ?? 0) is not null,
                 "category" => await _categoryService.GetByIdAsync(imagensProduct.CategoryId ?? 0) is not null,
+                "software" => await _softwareService.GetByIdAsync(imagensProduct.SoftwareId ?? 0) is not null,
                 _ => throw new NotImplementedException()
             };
             return result;

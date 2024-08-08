@@ -10,6 +10,7 @@ using InRiseService.Domain.MonitorsScreen;
 using InRiseService.Domain.MotherBoards;
 using InRiseService.Domain.PowerSupplies;
 using InRiseService.Domain.Processors;
+using InRiseService.Domain.Softwares;
 using InRiseService.Domain.Towers;
 using InRiseService.Domain.VideoBoards;
 
@@ -76,5 +77,10 @@ namespace InRiseService.Domain.ImagesSite
         public int? CategoryId { get; set; }
         [JsonIgnore]
         public Category? Category { get; set; }
+
+        [ForeignKey("Software")]
+        public int? SoftwareId { get; set; }
+        [JsonIgnore]
+        public Software? Software { get; set; }
     }
 }

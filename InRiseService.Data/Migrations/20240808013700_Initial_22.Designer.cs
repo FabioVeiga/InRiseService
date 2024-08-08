@@ -3,6 +3,7 @@ using System;
 using InRiseService.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20240808013700_Initial_22")]
+    partial class Initial_22
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1359,7 +1362,7 @@ namespace InRiseService.Data.Migrations
             modelBuilder.Entity("InRiseService.Domain.Softwares.Software", b =>
                 {
                     b.HasOne("InRiseService.Domain.Categories.Category", "Category")
-                        .WithMany("Softwares")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1422,11 +1425,6 @@ namespace InRiseService.Data.Migrations
             modelBuilder.Entity("InRiseService.Domain.Addressed.Address", b =>
                 {
                     b.Navigation("UserAddresses");
-                });
-
-            modelBuilder.Entity("InRiseService.Domain.Categories.Category", b =>
-                {
-                    b.Navigation("Softwares");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Orders.Order", b =>

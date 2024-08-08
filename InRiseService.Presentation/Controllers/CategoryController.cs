@@ -1,13 +1,11 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.Interfaces;
-using InRiseService.Domain.Towers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using InRiseService.Application.DTOs.TowerDto;
-using InRiseService.Domain.Prices;
 using InRiseService.Application.DTOs.CategoryDto;
 using InRiseService.Domain.Categories;
+using InRiseService.Application.DTOs.SoftwareDto;
 
 namespace InRiseService.Presentation.Controllers
 {
@@ -96,7 +94,7 @@ namespace InRiseService.Presentation.Controllers
                 if(result == null) return NotFound();
 
                 var mappedResponse = _mapper.Map<CategoryResponseDto>(result);
-                mappedResponse.Images = await _imageService.GetByPowerSupplyIdAsync(result.Id);
+                mappedResponse.Images = await _imageService.GetByCategoryIdAsync(result.Id);
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
