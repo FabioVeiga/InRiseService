@@ -1,31 +1,32 @@
-﻿using InRiseService.Application.DTOs.CategoryDto;
 using InRiseService.Application.DTOs.PaginationDto;
+using InRiseService.Application.DTOs.SoftwareDto;
 using InRiseService.Application.Extentions;
 using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
-using InRiseService.Domain.Categories;
+using InRiseService.Domain.Softwares;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace InRiseService.Application.Services
 {
-    public class CategoryService : ICategoryService
+    public class SoftwareService : ISoftwareService
     {
         private readonly ApplicationContext _context;
-        private readonly ILogger<CategoryService> _logger;
+        private readonly ILogger<SoftwareService> _logger;
 
-        public CategoryService(ApplicationContext context, ILogger<CategoryService> logger)
+        public SoftwareService(ApplicationContext context,  ILogger<SoftwareService> logger)
         {
             _context = context;
             _logger = logger;
         }
-        public async Task DeleteAsync(Category category)
+        
+        public async Task DeleteAsync(Software software)
         {
             try
             {
-                category.DeleteIn = DateTime.Now;
-                _context.Categories.Update(category);
-                await UpdateAsync(category);
+                software.DeleteIn = DateTime.Now;
+                _context.Softwares.Remove(software);
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -34,11 +35,11 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task<Category?> GetByIdAsync(int id)
+        public async Task<Software?> GetByIdAsync(int id)
         {
             try
             {
-                return await _context.Categories
+                return await _context.Softwares
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
             }
@@ -49,15 +50,14 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task<Category> InsertAsync(Category category)
+        public async Task<Software> InsertAsync(Software software)
         {
             try
             {
-                category.InsertIn = DateTime.Now;
-                category.Active = true;
-                _context.Add(category);
+                software.InsertIn = DateTime.Now;
+                _context.Add(software);
                 await _context.SaveChangesAsync();
-                return category;
+                return software;
             }
             catch (Exception ex)
             {
@@ -66,35 +66,14 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task UpdateAsync(Category category)
+        public async Task<Pagination<Software>> GetByFilterAsync(SoftwareFilterDto filter)
         {
             try
             {
-                category.UpdateIn = DateTime.Now;
-                _context.Categories.Update(category);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(CategoryService), nameof(UpdateAsync), ex);
-                throw;
-            }
-        }
-
-        public async Task<Pagination<Category>> GetByFilterAsync(CategoryFilterDto filter)
-        {
-            try
-            {
-                var query = _context.Categories
+                var query = _context.Softwares
                 .AsNoTracking()
                 .Where(p => p.Name.ToUpper().Contains(filter.Name.ToUpper())
                 );
-
-                if (filter.IsDeleted.HasValue)
-                    if(filter.IsDeleted.Value)
-                        query = query.Where(x => x.DeleteIn != null);
-                    else
-                        query = query.Where(x => x.DeleteIn == null);
 
                 var finalListResult = await query.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);
                 return finalListResult;
