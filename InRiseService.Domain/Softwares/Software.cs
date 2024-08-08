@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using InRiseService.Domain.Categories;
 
 namespace InRiseService.Domain.Softwares
 {
@@ -24,6 +26,10 @@ namespace InRiseService.Domain.Softwares
         public int VideoBoardMinId { get; set; }
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int VideoBoardIdealId { get; set; }
+
+        [ForeignKey("Category")]
+        public int CategoryId { get; set; }
+        public Category Category { get; set; } = default!;
 
     }
 }
