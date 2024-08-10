@@ -50,9 +50,9 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<UserAddress, AddressDtoResponse>().ReverseMap();
             CreateMap<Address, UserAddress>().ReverseMap();
 
-            CreateMap<MemoryRam, MemoryRamInsertDto>().ReverseMap();
+            CreateMap<MemoryRam, MemoryRamRequestDto>().ReverseMap();
             CreateMap<MemoryRam,MemoryRamResponseDto>().ReverseMap();
-            CreateMap<MemoryRamInsertDto,MemoryRam>().ForMember(dest => dest.Price, opt => opt.Ignore());
+            CreateMap<MemoryRamRequestDto,MemoryRam>().ForMember(dest => dest.Price, opt => opt.Ignore());
             CreateMap<MemoryRamResponseDto,MemoryRam>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
             CreateMap<MemoryRom, MemoryRomRequestDto>().ReverseMap();

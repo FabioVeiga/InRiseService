@@ -34,7 +34,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] MemoryRamInsertDto request)
+        public async Task<IActionResult> Create([FromBody] MemoryRamRequestDto request)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace InRiseService.Presentation.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update([FromBody] MemoryRamInsertDto request, int id)
+        public async Task<IActionResult> Update([FromBody] MemoryRamRequestDto request, int id)
         {
             try
             {
@@ -148,7 +148,7 @@ namespace InRiseService.Presentation.Controllers
         
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetFiltered([FromBody] MemoryRamFilterDto request)
+        public async Task<IActionResult> GetFiltered([FromQuery] MemoryRamFilterDto request)
         {
             try
             {
