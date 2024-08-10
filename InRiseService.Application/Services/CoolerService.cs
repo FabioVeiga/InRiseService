@@ -1,5 +1,4 @@
-using InRiseService.Application.DTOs.CategoryDto;
-using InRiseService.Application.DTOs.MemoryRamDto;
+using InRiseService.Application.DTOs.CoolerDto;
 using InRiseService.Application.DTOs.PaginationDto;
 using InRiseService.Application.Extentions;
 using InRiseService.Application.Interfaces;
@@ -42,8 +41,7 @@ namespace InRiseService.Application.Services
             {
                 var query = _context.Coolers
                 .AsNoTracking()
-                .Where(p => p.Name.ToUpper().Contains(filter.Name)
-                );
+                .Where(p => p.Name.ToUpper().Contains(filter.Name) || p.ValueClassification == filter.ValueClassification);
 
                 if(filter.IsDeleted.HasValue)
                     query = query.Where(x => x.DeleteIn != null);

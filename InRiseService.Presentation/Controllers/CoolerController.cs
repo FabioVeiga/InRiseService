@@ -1,8 +1,6 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
-using InRiseService.Application.DTOs.CategoryDto;
 using InRiseService.Application.DTOs.CoolerDto;
-using InRiseService.Application.DTOs.MemoryRamDto;
 using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Domain.Coolers;
@@ -200,7 +198,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetFiltered([FromBody] CoolerFilterDto request)
+        public async Task<IActionResult> GetFiltered([FromQuery] CoolerFilterDto request)
         {
             try
             {
