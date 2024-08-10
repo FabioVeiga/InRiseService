@@ -59,14 +59,19 @@ namespace InRiseService.Presentation.Controllers
                 
                 var mapped = _mapper.Map<User>(request);
                 var result = await _userService.InsertAsync(mapped);
+                
+                var dic = new Dictionary<string, string>(){
+                        { "name", result.Name }
+                    };
+                await _sendGridService.SendByTemplateAsync(result.Email, "Criação de conta", dic, "d-291aafae7a284e96af0d22aea37bc42d");
+
                 var mappedResponse = _mapper.Map<UserDtoResponse>(result);
                 var code = await _validationCodeService.InsertAsync(mappedResponse.Id, Domain.Enums.EnumTypeCodeValidation.Email);
                 
                 if(code is not null)
                 {
                     mappedResponse.ValidationCodeMsg = "Foi enviado um email para ativar sua conta!";
-                    var dic = new Dictionary<string, string>(){
-                        { "name", result.Name },
+                    dic = new Dictionary<string, string>(){
                         { "code", code.Code.ToString() },
                         { "dateexpiration", code.ExpirateAt.ToString("dd/MM/yyyy hh:mm") },
                     };
