@@ -26,10 +26,11 @@ namespace InRiseService.Presentation.Controllers
         private readonly IProcessorService _processorService;
         private readonly ITowerService _towerService;
         private readonly IVideoBoardService _videoBoardService;
+        private readonly ISendGridService _sendGridService;
 
         public OrderController(ILogger<OrderController> logger, IUserService userService, IOrderStatusService orderStatusService, IOrderService orderService, ICoolerService coolerService
         , IMemoryRamService memoryRamService, IHttpContextAccessor httpContextAccessor, IMemoryRomService memoryRomService, IMonitorScreenService monitorScreenService, IMotherBoardService motherBoardService
-        , IPowerSupplyService powerSupplyService, IProcessorService processorService, ITowerService towerService, IVideoBoardService videoBoardService)
+        , IPowerSupplyService powerSupplyService, IProcessorService processorService, ITowerService towerService, IVideoBoardService videoBoardService, ISendGridService sendGridService)
         {
             _logger = logger;
             _userService = userService;
@@ -45,6 +46,7 @@ namespace InRiseService.Presentation.Controllers
             _processorService = processorService;
             _towerService = towerService;
             _videoBoardService = videoBoardService;
+            _sendGridService = sendGridService;
         }
 
         [HttpPost]
@@ -59,6 +61,12 @@ namespace InRiseService.Presentation.Controllers
                 var model = await _orderService.CreateAsync(request.Userid, request.TotalPrice);
                 await _orderService.CreateItemsAsync(model.Id, request.ProductDtoRequests);
                 await _orderService.CreateHistoricAsync(model.Id, model.OrderStatusId);
+
+                var dic = new Dictionary<string, string>(){
+                        { "name", model.User.Name },
+                        { "name", model.Number.ToString() }
+                    };
+                await _sendGridService.SendByTemplateAsync(model.User.Email, "A saga do seu novo PC começou!", dic, "d-ae07f00bcea74a9dad4cfbe0944a954f");
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
