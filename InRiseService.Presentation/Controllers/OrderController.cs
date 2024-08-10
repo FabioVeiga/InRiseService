@@ -60,13 +60,16 @@ namespace InRiseService.Presentation.Controllers
                 if (!ModelState.IsValid) return BadRequest(new ValidationProblemDetails(ModelState));
 
                 var model = await _orderService.CreateAsync(request.Userid, request.TotalPrice);
+                var user = await _userService.GetByIdAsync(request.Userid);
                 await _orderService.CreateItemsAsync(model.Id, request.ProductDtoRequests);
                 await _orderService.CreateHistoricAsync(model.Id, model.OrderStatusId);
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 var dic = new Dictionary<string, string>(){
-                        { "name", model.User.Name },
-                        { "name", model.Number.ToString() }
+                        { "name", user.Name },
+                        { "number", model.Number.ToString() }
                     };
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                 await _sendGridService.SendByTemplateAsync(model.User.Email, "A saga do seu novo PC começou!", dic, "d-ae07f00bcea74a9dad4cfbe0944a954f");
 
                 var response = new ApiResponse<dynamic>(
@@ -164,7 +167,8 @@ namespace InRiseService.Presentation.Controllers
                     };
                     if(modelStatus.Name == "Pagamento Confirmado")
                         await _sendGridService.SendByTemplateAsync(model.UserEmail, "A tua aventura começa agora! Pedido confirmado.", dic, "d-2e48645929984f3eae7d4e1209529f26");
-                    if(modelStatus.Name == "Pagamento Confirmado" && model.DateDelivered.HasValue)
+                    
+                    if(modelStatus.Name == "Montagem" && model.DateDelivered.HasValue)
                     {
                         dic.Add("dateestimativedelivery",model.DateDelivered.Value.ToString());
                         await _sendGridService.SendByTemplateAsync(model.UserEmail, "Boas notícias! Estamos a montar o teu PC", dic, "d-209b2be3c25c4d0bb83ef70100e96eb0");

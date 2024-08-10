@@ -137,6 +137,7 @@ namespace InRiseService.Application.Services
                 result.Number = model.Number;
                 result.Date = model.Date;
                 result.DateEstimated = model.DateEstimated;
+                result.DatePayment = model.DatePayment;
                 result.DateDelivered = model.DateDelivered;
                 result.StatusId = model.Status.Id;
                 result.Status = model.Status.Name;

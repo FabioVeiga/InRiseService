@@ -16,6 +16,9 @@ namespace InRiseService.Domain.Orders
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public DateTime Date { get; set; }
 
+        [Display(Name = "Data Pagamento")]
+        public DateTime? DatePayment { get; set; }
+
         [Display(Name = "Data Estimada")]
         public DateTime? DateEstimated { get; set; }
 

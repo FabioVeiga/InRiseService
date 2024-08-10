@@ -8,6 +8,7 @@ namespace InRiseService.Application.DTOs.OrderDto
         public int Number { get; set; }
         public DateTime Date { get; set; }
         public DateTime? DateEstimated { get; set; }
+        public DateTime? DatePayment { get; set; }
         public DateTime? DateDelivered { get; set; }
         public int Performace { get; set; }
         public int StatusId { get; set; }

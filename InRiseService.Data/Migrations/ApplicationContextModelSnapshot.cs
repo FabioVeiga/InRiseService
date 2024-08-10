@@ -600,6 +600,9 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("DateEstimated")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<DateTime?>("DatePayment")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
 

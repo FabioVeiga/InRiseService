@@ -548,6 +548,7 @@ namespace InRiseService.Data.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Number = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DatePayment = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     DateEstimated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     DateDelivered = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     Performace = table.Column<int>(type: "int", nullable: false),

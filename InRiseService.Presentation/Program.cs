@@ -74,6 +74,7 @@ builder.Services.AddDbContext<ApplicationContext>(opt =>
 );
 
 var app = builder.Build();
+var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
@@ -88,7 +89,10 @@ using (var scope = app.Services.CreateScope())
     var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
     try
     {
-        SeedingData.Start(context, InRiseService.Util.PasswordHelper.EncryptPassword("123"));
+        if(env == "Development")
+            SeedingData.Start(context, InRiseService.Util.PasswordHelper.EncryptPassword("123"));
+        else
+            SeedingData.Start(context);
     }
     catch (Exception ex)
     {

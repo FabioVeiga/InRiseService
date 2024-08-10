@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240810141810_Initial_01")]
+    [Migration("20240810191016_Initial_01")]
     partial class Initial_01
     {
         /// <inheritdoc />
@@ -601,6 +601,9 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("DateEstimated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DatePayment")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("DeleteIn")

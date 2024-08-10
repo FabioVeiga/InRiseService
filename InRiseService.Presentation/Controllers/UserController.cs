@@ -71,10 +71,8 @@ namespace InRiseService.Presentation.Controllers
                 if(code is not null)
                 {
                     mappedResponse.ValidationCodeMsg = "Foi enviado um email para ativar sua conta!";
-                    dic = new Dictionary<string, string>(){
-                        { "code", code.Code.ToString() },
-                        { "dateexpiration", code.ExpirateAt.ToString("dd/MM/yyyy hh:mm") },
-                    };
+                    dic.Add("code", code.Code.ToString());
+                    dic.Add("dateexpiration", code.ExpirateAt.ToString("dd/MM/yyyy hh:mm"));
                     var isSend = await _sendGridService.SendByTemplateAsync(result.Email, "Confirmação de conta", dic, "d-5044b14761b343b4a7c085978ca38fb4");
                     if(!isSend)
                         _logger.LogError("Erro ao enviar email para {Email}", result.Email);
