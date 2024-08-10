@@ -88,7 +88,7 @@ using (var scope = app.Services.CreateScope())
     var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
     try
     {
-        //SeedingData.Start(context, InRiseService.Util.PasswordHelper.EncryptPassword("123"));
+        SeedingData.Start(context, InRiseService.Util.PasswordHelper.EncryptPassword("123"));
     }
     catch (Exception ex)
     {

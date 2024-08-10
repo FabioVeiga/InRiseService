@@ -3,6 +3,7 @@ using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.DTOs.OrderDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Domain.Enums;
+using InRiseService.Domain.Orders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -154,6 +155,24 @@ namespace InRiseService.Presentation.Controllers
                 if (modelStatus.IsVisibleToUser)
                 {
                     await _orderService.CreateHistoricAsync(id, statusId);
+                }
+                if(modelStatus.IsSendEmail)
+                {
+                    var dic = new Dictionary<string, string>(){
+                        { "name", model.UserName },
+                        { "number", model.Number.ToString() }
+                    };
+                    if(modelStatus.Name == "Pagamento Confirmado")
+                        await _sendGridService.SendByTemplateAsync(model.UserEmail, "A tua aventura começa agora! Pedido confirmado.", dic, "d-2e48645929984f3eae7d4e1209529f26");
+                    if(modelStatus.Name == "Pagamento Confirmado" && model.DateDelivered.HasValue)
+                    {
+                        dic.Add("dateestimativedelivery",model.DateDelivered.Value.ToString());
+                        await _sendGridService.SendByTemplateAsync(model.UserEmail, "Boas notícias! Estamos a montar o teu PC", dic, "d-209b2be3c25c4d0bb83ef70100e96eb0");
+                    }
+                    if(modelStatus.Name == "Distruibuição")
+                        await _sendGridService.SendByTemplateAsync(model.UserEmail, "Está mais perto! O teu pedido foi expedido.", dic, "d-69690eaeb89f46369f50a5ad8d862521");
+                    if(modelStatus.Name == "Concluído")
+                        await _sendGridService.SendByTemplateAsync(model.UserEmail, "Missão cumprida! A tua aventura com o PC InRise começou.", dic, "d-08b751d7cbf74e5abfc91a03e08ef6b0");
                 }
                 return Ok();
             }

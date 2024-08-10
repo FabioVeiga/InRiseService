@@ -13,6 +13,8 @@ namespace InRiseService.Application.DTOs.OrderDto
         public int StatusId { get; set; }
         public string Status { get; set; } = default!;
         public decimal TotalPrice { get; set; }
+        public string UserName { get; set; } = default!;
+        public string UserEmail { get; set; } = default!;
         public IList<OrderItemDtoResponse> OrderItems { get; set; } = new List<OrderItemDtoResponse>();
     }
     public class OrderItemDtoResponse
