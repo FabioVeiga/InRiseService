@@ -3,7 +3,7 @@ using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.CoolerDto
 {
-    public class CoolerInsertDto
+    public class CoolerRequestDto
     {
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "{0} é obrigatório!")]

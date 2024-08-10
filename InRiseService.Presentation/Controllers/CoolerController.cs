@@ -35,7 +35,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] CoolerInsertDto request)
+        public async Task<IActionResult> Create([FromBody] CoolerRequestDto request)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace InRiseService.Presentation.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update([FromBody] CoolerInsertDto request, int id)
+        public async Task<IActionResult> Update([FromBody] CoolerRequestDto request, int id)
         {
             try
             {

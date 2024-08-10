@@ -6,6 +6,7 @@ namespace InRiseService.Application.DTOs.CoolerDto
     public class CoolerResponseDto : BaseDto
     {
         public string Name { get; set; } = default!;
+        public int ValueClassification { get; set; }
         public string Air { get; set; } = default!;
         public string Refrigeration { get; set; } = default!;
         public int FanQuantity { get; set; } = default!;
