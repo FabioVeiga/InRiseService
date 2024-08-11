@@ -69,7 +69,7 @@ builder.Services.AddAuthentication(x =>
     });
 
 builder.Services.AddDbContext<ApplicationContext>(opt =>
-    opt.UseMySql(builder.Configuration.GetConnectionString("WebApiDatabase"),
+    opt.UseMySql(Environment.GetEnvironmentVariable("WebApiDatabase"),
     new MySqlServerVersion(new Version(8, 0, 23)))
 );
 

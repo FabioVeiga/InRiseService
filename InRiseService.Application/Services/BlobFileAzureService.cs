@@ -14,6 +14,7 @@ namespace InRiseService.Application.Services
         public BlobFileAzureService(IOptions<AzureBlobStorageSetting> options)
         {
             _setting = options.Value;
+            _setting.ConnectionString = Environment.GetEnvironmentVariable("BlobStorageConection");
             _blobServiceClient = new (_setting.ConnectionString);
             _containerClient = _blobServiceClient.GetBlobContainerClient(_setting.ContainerName);
         }
