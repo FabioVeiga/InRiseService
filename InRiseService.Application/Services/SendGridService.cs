@@ -12,21 +12,29 @@ namespace InRiseService.Application.Services
     {
         private readonly SendGridSetting _sendGridSetting;
         private readonly ILogger<SendGridService> _logger;
+        private readonly KeyVaultService _keyVaultService;
 
         public SendGridService(
             IOptions<SendGridSetting> options,
-            ILogger<SendGridService> logger
+            ILogger<SendGridService> logger,
+            KeyVaultService keyVaultService
             ) 
         {
             _sendGridSetting = options.Value;
-            _sendGridSetting.ApiKey = Environment.GetEnvironmentVariable("SECRET_SENDGRID");
+            _keyVaultService = keyVaultService;
             _logger = logger;
+            GetApiKey().GetAwaiter();
+        }
+
+        private async Task GetApiKey(){
+            _sendGridSetting.ApiKey = await _keyVaultService.GetSecretAsync("sendgrid");
         }
 
         public async Task<bool> SendAsync(string toEmail, string name, string subject, string message)
         {
             try
             {
+               
                 var msg = new SendGridMessage()
                 {
                     Personalizations = new List<Personalization>()
@@ -64,7 +72,7 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("Failed to send email: ", ex);
+                _logger.LogError("Failed to send email: {Ex}", ex);
                 throw;
             }
         }
