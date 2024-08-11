@@ -15,6 +15,7 @@ namespace InRiseService.Application.DTOs.ProcessorDto
         public string SuportMemoryROM { get; set; } = default!;
         public string SuportVideo { get; set; } = default!;
         public string Description { get; set; } = string.Empty;
+        public int ValueClassification { get; set; }
         public ICollection<ImageProductResponseDto>? Images { get; set; }
         public PriceResponseDto Price { get; set; } = default!;
     }
