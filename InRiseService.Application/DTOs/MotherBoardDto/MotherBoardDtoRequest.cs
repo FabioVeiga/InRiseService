@@ -44,6 +44,10 @@ namespace InRiseService.Application.DTOs.MotherBoardDto
         [Display(Name = "Descrição")]
         public string Description { get; set; } = string.Empty;
 
+        [Display(Name = "Valor (Classificação)")]
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public int ValueClassification { get; set; }
+
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public PriceRequestDto Price { get; set; } = default!;
     }
