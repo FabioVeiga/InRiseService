@@ -6,19 +6,10 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using InRiseService.Infrastructure.Extentions;
 
-using Azure.Security.KeyVault.Secrets;
-using Azure.Identity;
-
 var builder = WebApplication.CreateBuilder(args);
 
 var secret = builder.Configuration.GetSection("AppSettings").GetValue<string>("Secret");
 var key = Encoding.ASCII.GetBytes(secret);
-
-//var keyVaultName = Environment.GetEnvironmentVariable("SECRET_NAME");
-//var kvUri = $"https://{keyVaultName}.vault.azure.net";
-//var client = new SecretClient(new Uri(kvUri), new DefaultAzureCredential());
-//var secretTest = await client.GetSecretAsync("sendgrid");
-//Environment.SetEnvironmentVariable("SECRET_SENDGRID", secretTest.Value.Value);
 
 // Add services to the container.
 builder.Services.RegisterDependencies();
