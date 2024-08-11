@@ -34,7 +34,6 @@ namespace InRiseService.Application.Services
         {
             try
             {
-               
                 var msg = new SendGridMessage()
                 {
                     Personalizations = new List<Personalization>()
