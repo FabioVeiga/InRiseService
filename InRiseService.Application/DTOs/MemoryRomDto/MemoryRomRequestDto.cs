@@ -45,6 +45,10 @@ namespace InRiseService.Application.DTOs.MemoryRomDto
         [Display(Name = "Descrição")]
         public string Description { get; set; } = string.Empty;
 
+        [Display(Name = "Valor (Classificação)")]
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public int ValueClassification { get; set; }
+
         public PriceRequestDto Price { get; set; } = default!;
     }
 }
