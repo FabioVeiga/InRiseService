@@ -1,15 +1,19 @@
 using System.ComponentModel.DataAnnotations;
 using InRiseService.Application.DTOs.PriceDto;
 
-namespace InRiseService.Application.DTOs.MemoryRamDto
+namespace InRiseService.Application.DTOs.CoolerDto
 {
-    public class CoolerInsertDto
+    public class CoolerRequestDto
     {
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public string Name { get; set; } = default!;
+
+        [Display(Name = "Valor (Classificação)")]
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public int ValueClassification { get; set; }
 
         [Display(Name = "Air")]
         [Required(ErrorMessage = "{0} é obrigatório!")]

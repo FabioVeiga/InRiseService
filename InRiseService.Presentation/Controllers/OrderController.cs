@@ -3,6 +3,7 @@ using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.DTOs.OrderDto;
 using InRiseService.Application.Interfaces;
 using InRiseService.Domain.Enums;
+using InRiseService.Domain.Orders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,10 +27,11 @@ namespace InRiseService.Presentation.Controllers
         private readonly IProcessorService _processorService;
         private readonly ITowerService _towerService;
         private readonly IVideoBoardService _videoBoardService;
+        private readonly ISendGridService _sendGridService;
 
         public OrderController(ILogger<OrderController> logger, IUserService userService, IOrderStatusService orderStatusService, IOrderService orderService, ICoolerService coolerService
         , IMemoryRamService memoryRamService, IHttpContextAccessor httpContextAccessor, IMemoryRomService memoryRomService, IMonitorScreenService monitorScreenService, IMotherBoardService motherBoardService
-        , IPowerSupplyService powerSupplyService, IProcessorService processorService, ITowerService towerService, IVideoBoardService videoBoardService)
+        , IPowerSupplyService powerSupplyService, IProcessorService processorService, ITowerService towerService, IVideoBoardService videoBoardService, ISendGridService sendGridService)
         {
             _logger = logger;
             _userService = userService;
@@ -45,6 +47,7 @@ namespace InRiseService.Presentation.Controllers
             _processorService = processorService;
             _towerService = towerService;
             _videoBoardService = videoBoardService;
+            _sendGridService = sendGridService;
         }
 
         [HttpPost]
@@ -57,8 +60,17 @@ namespace InRiseService.Presentation.Controllers
                 if (!ModelState.IsValid) return BadRequest(new ValidationProblemDetails(ModelState));
 
                 var model = await _orderService.CreateAsync(request.Userid, request.TotalPrice);
+                var user = await _userService.GetByIdAsync(request.Userid);
                 await _orderService.CreateItemsAsync(model.Id, request.ProductDtoRequests);
                 await _orderService.CreateHistoricAsync(model.Id, model.OrderStatusId);
+
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                var dic = new Dictionary<string, string>(){
+                        { "name", user.Name },
+                        { "number", model.Number.ToString() }
+                    };
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                await _sendGridService.SendByTemplateAsync(model.User.Email, "A saga do seu novo PC começou!", dic, "d-ae07f00bcea74a9dad4cfbe0944a954f");
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
@@ -146,6 +158,25 @@ namespace InRiseService.Presentation.Controllers
                 if (modelStatus.IsVisibleToUser)
                 {
                     await _orderService.CreateHistoricAsync(id, statusId);
+                }
+                if(modelStatus.IsSendEmail)
+                {
+                    var dic = new Dictionary<string, string>(){
+                        { "name", model.UserName },
+                        { "number", model.Number.ToString() }
+                    };
+                    if(modelStatus.Name == "Pagamento Confirmado")
+                        await _sendGridService.SendByTemplateAsync(model.UserEmail, "A tua aventura começa agora! Pedido confirmado.", dic, "d-2e48645929984f3eae7d4e1209529f26");
+                    
+                    if(modelStatus.Name == "Montagem" && model.DateDelivered.HasValue)
+                    {
+                        dic.Add("dateestimativedelivery",model.DateDelivered.Value.ToString());
+                        await _sendGridService.SendByTemplateAsync(model.UserEmail, "Boas notícias! Estamos a montar o teu PC", dic, "d-209b2be3c25c4d0bb83ef70100e96eb0");
+                    }
+                    if(modelStatus.Name == "Distruibuição")
+                        await _sendGridService.SendByTemplateAsync(model.UserEmail, "Está mais perto! O teu pedido foi expedido.", dic, "d-69690eaeb89f46369f50a5ad8d862521");
+                    if(modelStatus.Name == "Concluído")
+                        await _sendGridService.SendByTemplateAsync(model.UserEmail, "Missão cumprida! A tua aventura com o PC InRise começou.", dic, "d-08b751d7cbf74e5abfc91a03e08ef6b0");
                 }
                 return Ok();
             }

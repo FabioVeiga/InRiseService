@@ -48,7 +48,6 @@ namespace InRiseService.Infrastructure.Extentions
             services.Configure<AppSetting>(configuration.GetSection("AppSettings"));
             services.Configure<ZipCodeBaseSettings>(configuration.GetSection("ZipCodeBaseSettings"));
             services.Configure<AzureBlobStorageSetting>(configuration.GetSection("AzureBlobStorageSetting"));
-
         }
     }
 }

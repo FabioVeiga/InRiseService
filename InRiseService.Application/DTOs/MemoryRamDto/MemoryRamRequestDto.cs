@@ -3,7 +3,7 @@ using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.MemoryRamDto
 {
-    public class MemoryRamInsertDto
+    public class MemoryRamRequestDto
     {
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
@@ -27,6 +27,10 @@ namespace InRiseService.Application.DTOs.MemoryRamDto
 
         [Display(Name = "Dimensões (mm)")]
         public string Description { get; set; } = string.Empty;
+
+        [Display(Name = "Valor (Classificação)")]
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public int ValueClassification { get; set; }
 
         public PriceRequestDto Price { get; set; } = default!;
     }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InRiseService.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240730233721_Initial_07")]
-    partial class Initial_07
+    [Migration("20240810191016_Initial_01")]
+    partial class Initial_01
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,6 +63,33 @@ namespace InRiseService.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Addresses");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Categories.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("DeleteIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("InsertIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("UpdateIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Computers.Computer", b =>
@@ -188,6 +215,9 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PriceId");
@@ -199,6 +229,9 @@ namespace InRiseService.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ComputerId")
@@ -233,6 +266,9 @@ namespace InRiseService.Data.Migrations
                     b.Property<int?>("ProcessorId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SoftwareId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("TowerId")
                         .HasColumnType("int");
 
@@ -240,6 +276,8 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("ComputerId");
 
@@ -256,6 +294,8 @@ namespace InRiseService.Data.Migrations
                     b.HasIndex("PowerSupplyId");
 
                     b.HasIndex("ProcessorId");
+
+                    b.HasIndex("SoftwareId");
 
                     b.HasIndex("TowerId");
 
@@ -327,6 +367,9 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PriceId");
@@ -384,6 +427,9 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
+
                     b.Property<double>("VelocityRead")
                         .HasColumnType("double");
 
@@ -438,6 +484,9 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("UpdateVolume")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ValueClassification")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -502,6 +551,9 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PriceId");
@@ -545,10 +597,13 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateDelivered")
+                    b.Property<DateTime?>("DateDelivered")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("DateEstimated")
+                    b.Property<DateTime?>("DateEstimated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DatePayment")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("DeleteIn")
@@ -560,10 +615,10 @@ namespace InRiseService.Data.Migrations
                     b.Property<int>("Number")
                         .HasColumnType("int");
 
-                    b.Property<int>("Performace")
+                    b.Property<int>("OrderStatusId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("Performace")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalValue")
@@ -577,7 +632,7 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StatusId");
+                    b.HasIndex("OrderStatusId");
 
                     b.HasIndex("UserId");
 
@@ -590,15 +645,20 @@ namespace InRiseService.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("OrderStatusId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StatusId");
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("OrderStatusId");
 
                     b.ToTable("OrderHistorics");
                 });
@@ -615,21 +675,15 @@ namespace InRiseService.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("ProductType")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("ProductType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("StatusId");
 
                     b.ToTable("OrderItems");
                 });
@@ -676,6 +730,9 @@ namespace InRiseService.Data.Migrations
 
                     b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -786,11 +843,65 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PriceId");
 
                     b.ToTable("Processors");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Softwares.Software", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeleteIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("InsertIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("MemoryRamIdealId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MemoryRamMinId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("ProcessadorIdealId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProcessadorMinId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("VideoBoardIdealId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VideoBoardMinId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Softwares");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Towers.Tower", b =>
@@ -830,6 +941,9 @@ namespace InRiseService.Data.Migrations
 
                     b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1039,6 +1153,9 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PriceId");
@@ -1059,6 +1176,10 @@ namespace InRiseService.Data.Migrations
 
             modelBuilder.Entity("InRiseService.Domain.ImagesSite.ImagensProduct", b =>
                 {
+                    b.HasOne("InRiseService.Domain.Categories.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
                     b.HasOne("InRiseService.Domain.Computers.Computer", "Computer")
                         .WithMany()
                         .HasForeignKey("ComputerId");
@@ -1091,6 +1212,10 @@ namespace InRiseService.Data.Migrations
                         .WithMany()
                         .HasForeignKey("ProcessorId");
 
+                    b.HasOne("InRiseService.Domain.Softwares.Software", "Software")
+                        .WithMany()
+                        .HasForeignKey("SoftwareId");
+
                     b.HasOne("InRiseService.Domain.Towers.Tower", "Tower")
                         .WithMany()
                         .HasForeignKey("TowerId");
@@ -1098,6 +1223,8 @@ namespace InRiseService.Data.Migrations
                     b.HasOne("InRiseService.Domain.VideoBoards.VideoBoard", "VideoBoard")
                         .WithMany()
                         .HasForeignKey("VideoBoardId");
+
+                    b.Navigation("Category");
 
                     b.Navigation("Computer");
 
@@ -1114,6 +1241,8 @@ namespace InRiseService.Data.Migrations
                     b.Navigation("PowerSupply");
 
                     b.Navigation("Processor");
+
+                    b.Navigation("Software");
 
                     b.Navigation("Tower");
 
@@ -1168,7 +1297,7 @@ namespace InRiseService.Data.Migrations
                 {
                     b.HasOne("InRiseService.Domain.OrderStatuses.OrderStatus", "Status")
                         .WithMany()
-                        .HasForeignKey("StatusId")
+                        .HasForeignKey("OrderStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1185,11 +1314,19 @@ namespace InRiseService.Data.Migrations
 
             modelBuilder.Entity("InRiseService.Domain.Orders.OrderHistoric", b =>
                 {
-                    b.HasOne("InRiseService.Domain.OrderStatuses.OrderStatus", "Status")
+                    b.HasOne("InRiseService.Domain.Orders.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("StatusId")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("InRiseService.Domain.OrderStatuses.OrderStatus", "Status")
+                        .WithMany()
+                        .HasForeignKey("OrderStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
 
                     b.Navigation("Status");
                 });
@@ -1201,14 +1338,6 @@ namespace InRiseService.Data.Migrations
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("InRiseService.Domain.OrderStatuses.OrderStatus", "Status")
-                        .WithMany()
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.PowerSupplies.PowerSupply", b =>
@@ -1231,6 +1360,17 @@ namespace InRiseService.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Price");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Softwares.Software", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Categories.Category", "Category")
+                        .WithMany("Softwares")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Towers.Tower", b =>
@@ -1288,6 +1428,11 @@ namespace InRiseService.Data.Migrations
             modelBuilder.Entity("InRiseService.Domain.Addressed.Address", b =>
                 {
                     b.Navigation("UserAddresses");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Categories.Category", b =>
+                {
+                    b.Navigation("Softwares");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Orders.Order", b =>

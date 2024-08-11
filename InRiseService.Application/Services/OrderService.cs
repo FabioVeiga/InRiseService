@@ -129,6 +129,7 @@ namespace InRiseService.Application.Services
                 .AsNoTracking()
                 .Include(x => x.OrderItems)
                 .Include(x => x.Status)
+                .Include(x => x.User)
                 .FirstOrDefaultAsync(x => x.Id == id);
                 if (model == null) return result;
 
@@ -136,10 +137,13 @@ namespace InRiseService.Application.Services
                 result.Number = model.Number;
                 result.Date = model.Date;
                 result.DateEstimated = model.DateEstimated;
+                result.DatePayment = model.DatePayment;
                 result.DateDelivered = model.DateDelivered;
                 result.StatusId = model.Status.Id;
                 result.Status = model.Status.Name;
                 result.TotalPrice = model.TotalValue;
+                result.UserName = model.User.Name;
+                result.UserEmail = model.User.Email;
 
                 foreach (var item in model.OrderItems)
                 {
@@ -272,6 +276,19 @@ namespace InRiseService.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(OrderService), nameof(GetOrderHistoricByNumber), ex);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<OrderStatus>> GetAllOrderStatusAsync()
+        {
+            try
+            {
+               return await _context.OrderStatuses.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(OrderService), nameof(GetAllOrderStatusAsync), ex);
                 throw;
             }
         }

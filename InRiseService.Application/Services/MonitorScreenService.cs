@@ -20,17 +20,18 @@ namespace InRiseService.Application.Services
             _logger = logger;
         }
         
-        public async Task DeleteAsync(MonitorScreen MonitorScreen)
+        public async Task DeleteAsync(MonitorScreen monitorScreen)
         {
             try
             {
-                MonitorScreen.DeleteIn = DateTime.Now;
-                _context.Update(MonitorScreen);
+                monitorScreen.DeleteIn = DateTime.Now;
+                monitorScreen.Active = false;
+                _context.Update(monitorScreen);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MonitorScreenService)}::{nameof(DeleteAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(MonitorScreenService), nameof(DeleteAsync), ex);
                 throw;
             }
         }
@@ -44,15 +45,26 @@ namespace InRiseService.Application.Services
                 .Where(p => p.Name.ToUpper().Contains(filter.Name)
                 );
 
-                if(filter.IsDeleted.HasValue)
-                    query = query.Where(x => x.DeleteIn != null);
+                if (filter.ValueClassification.HasValue)
+                    query = query.Where(x => x.ValueClassification == filter.ValueClassification.Value);
+
+                if (filter.ValueClassification.HasValue)
+                    query = query.Where(x => x.ValueClassification == filter.ValueClassification.Value);
+
+                if (filter.IsActive.HasValue)
+                    query = query.Where(x => x.Active == filter.IsActive.Value);
+
+                if (filter.IsDeleted.HasValue)
+                    query = filter.IsDeleted.Value 
+                        ? query.Where(x => x.DeleteIn != null) 
+                        : query.Where(x => x.DeleteIn == null);
                 
                 var finalListResult = await query.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);
                 return finalListResult;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(GetByFilterAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(MonitorScreenService), nameof(GetByFilterAsync), ex);
                 throw;
             }
         }
@@ -68,7 +80,7 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MonitorScreenService)}::{nameof(GetByIdAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(MonitorScreenService), nameof(GetByIdAsync), ex);
                 throw;
             }
         }
@@ -83,7 +95,7 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MonitorScreenService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(MonitorScreenService), nameof(InsertAsync), ex);
                 throw;
             }
         }
@@ -98,7 +110,7 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MonitorScreenService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(MonitorScreenService), nameof(UpdateAsync), ex);
                 throw;
             }
         }

@@ -29,15 +29,26 @@ namespace InRiseService.Application.Services
                 .Where(p => p.Name.ToUpper().Contains(filter.Name)
                 );
 
-                if(filter.IsDeleted.HasValue)
-                    query = query.Where(x => x.DeleteIn != null);
+                if (filter.ValueClassification.HasValue)
+                    query = query.Where(x => x.ValueClassification == filter.ValueClassification.Value);
+
+                if (filter.ValueClassification.HasValue)
+                    query = query.Where(x => x.ValueClassification == filter.ValueClassification.Value);
+
+                if (filter.IsActive.HasValue)
+                    query = query.Where(x => x.Active == filter.IsActive.Value);
+
+                if (filter.IsDeleted.HasValue)
+                    query = filter.IsDeleted.Value 
+                        ? query.Where(x => x.DeleteIn != null) 
+                        : query.Where(x => x.DeleteIn == null);
                 
                 var finalListResult = await query.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);
                 return finalListResult;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(GetByFilterAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(PowerSuppliesService), nameof(GetByFilterAsync), ex);
                 throw;
             }
         }
@@ -47,12 +58,13 @@ namespace InRiseService.Application.Services
             try
             {
                 powerSupply.DeleteIn = DateTime.Now;
+                powerSupply.Active = false;
                 _context.Update(powerSupply);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(PowerSuppliesService)}::{nameof(DeleteAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(PowerSuppliesService), nameof(DeleteAsync), ex);
                 throw;
             }
         }
@@ -68,7 +80,7 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(PowerSuppliesService)}::{nameof(GetByIdAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(PowerSuppliesService), nameof(GetByIdAsync), ex);
                 throw;
             }
         }
@@ -83,7 +95,7 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(PowerSuppliesService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(PowerSuppliesService), nameof(GetByIdAsync), ex);
                 throw;
             }
         }
@@ -98,7 +110,7 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(PowerSuppliesService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(PowerSuppliesService), nameof(GetByIdAsync), ex);
                 throw;
             }
         }

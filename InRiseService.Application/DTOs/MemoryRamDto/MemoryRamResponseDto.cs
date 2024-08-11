@@ -11,6 +11,7 @@ namespace InRiseService.Application.DTOs.MemoryRamDto
         public double Frequency { get; set; }
         public int Capacity { get; set; }
         public string Description { get; set; } = string.Empty;
+        public int ValueClassification { get; set; }
         public ICollection<ImageProductResponseDto>? Images { get; set; }
         public PriceResponseDto Price { get; set; } = default!;
     }

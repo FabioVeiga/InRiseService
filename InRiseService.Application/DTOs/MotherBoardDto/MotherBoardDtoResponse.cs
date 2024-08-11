@@ -13,6 +13,7 @@ namespace InRiseService.Application.DTOs.MotherBoardDto
         public string SocketSSD { get; set; } = default!;
         public string SocketM2 { get; set; } = default!;
         public string Description { get; set; } = string.Empty;
+        public int ValueClassification { get; set; }
         public ICollection<ImageProductResponseDto>? Images { get; set; }
         public PriceResponseDto Price { get; set; } = default!;
     }

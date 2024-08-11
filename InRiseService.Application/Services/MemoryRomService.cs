@@ -25,12 +25,13 @@ namespace InRiseService.Application.Services
             try
             {
                 memoryRom.DeleteIn = DateTime.Now;
+                memoryRom.Active = false;
                 _context.Update(memoryRom);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MemoryRomService)}::{nameof(DeleteAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(MemoryRomService), nameof(DeleteAsync), ex);
                 throw;
             }
         }
@@ -40,19 +41,28 @@ namespace InRiseService.Application.Services
             try
             {
                 var query = _context.MemoriesRom
-                .AsNoTracking()
-                .Where(p => p.Name.ToUpper().Contains(filter.Name)
-                );
+                .Where(p => p.Name.ToUpper().Contains(filter.Name.ToUpper()));
 
-                if(filter.IsDeleted.HasValue)
-                    query = query.Where(x => x.DeleteIn != null);
+                if (filter.ValueClassification.HasValue)
+                    query = query.Where(x => x.ValueClassification == filter.ValueClassification.Value);
+
+                if (filter.ValueClassification.HasValue)
+                    query = query.Where(x => x.ValueClassification == filter.ValueClassification.Value);
+
+                if (filter.IsActive.HasValue)
+                    query = query.Where(x => x.Active == filter.IsActive.Value);
+
+                if (filter.IsDeleted.HasValue)
+                    query = filter.IsDeleted.Value 
+                        ? query.Where(x => x.DeleteIn != null) 
+                        : query.Where(x => x.DeleteIn == null);
                 
                 var finalListResult = await query.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);
                 return finalListResult;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(GetByFilterAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(MemoryRomService), nameof(GetByFilterAsync), ex);
                 throw;
             }
         }
@@ -68,7 +78,7 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MemoryRomService)}::{nameof(GetByIdAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(MemoryRomService), nameof(GetByIdAsync), ex);
                 throw;
             }
         }
@@ -83,7 +93,7 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MemoryRomService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(MemoryRomService), nameof(InsertAsync), ex);
                 throw;
             }
         }
@@ -98,7 +108,7 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(MemoryRomService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(MemoryRomService), nameof(UpdateAsync), ex);
                 throw;
             }
         }

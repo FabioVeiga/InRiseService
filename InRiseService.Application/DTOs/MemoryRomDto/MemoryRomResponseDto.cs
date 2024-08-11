@@ -15,7 +15,8 @@ namespace InRiseService.Application.DTOs.MemoryRomDto
         public int Potency { get; set; }
         public bool IsHHD { get; set; }
         public bool IsSSD { get; set; }
-        public bool IsSSDM2 { get; set; } 
+        public bool IsSSDM2 { get; set; }
+        public int ValueClassification { get; set; }
         public ICollection<ImageProductResponseDto>? Images { get; set; }
         public PriceResponseDto Price { get; set; } = default!;
     }

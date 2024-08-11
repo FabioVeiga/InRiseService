@@ -1,5 +1,4 @@
-using InRiseService.Application.DTOs.CategoryDto;
-using InRiseService.Application.DTOs.MemoryRamDto;
+using InRiseService.Application.DTOs.CoolerDto;
 using InRiseService.Application.DTOs.PaginationDto;
 using InRiseService.Application.Extentions;
 using InRiseService.Application.Interfaces;
@@ -26,12 +25,13 @@ namespace InRiseService.Application.Services
             try
             {
                 cooler.DeleteIn = DateTime.Now;
+                cooler.Active = false;
                 _context.Update(cooler);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(CoolerService)}::{nameof(DeleteAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(CoolerService), nameof(DeleteAsync), ex);
                 throw;
             }
         }
@@ -42,18 +42,28 @@ namespace InRiseService.Application.Services
             {
                 var query = _context.Coolers
                 .AsNoTracking()
-                .Where(p => p.Name.ToUpper().Contains(filter.Name)
-                );
+                .Where(p => p.Name.ToUpper().Contains(filter.Name.ToUpper()));
 
-                if(filter.IsDeleted.HasValue)
-                    query = query.Where(x => x.DeleteIn != null);
-                
+                if (filter.ValueClassification.HasValue)
+                    query = query.Where(x => x.ValueClassification == filter.ValueClassification.Value);
+
+                if (filter.ValueClassification.HasValue)
+                    query = query.Where(x => x.ValueClassification == filter.ValueClassification.Value);
+
+                if (filter.IsActive.HasValue)
+                    query = query.Where(x => x.Active == filter.IsActive.Value);
+
+                if (filter.IsDeleted.HasValue)
+                    query = filter.IsDeleted.Value 
+                        ? query.Where(x => x.DeleteIn != null) 
+                        : query.Where(x => x.DeleteIn == null);
+                                    
                 var finalListResult = await query.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);
                 return finalListResult;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(GetByFilterAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(CoolerService), nameof(GetByFilterAsync), ex);
                 throw;
             }
         }
@@ -69,7 +79,7 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(CoolerService)}::{nameof(GetByIdAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(CoolerService), nameof(GetByIdAsync), ex);
                 throw;
             }
         }
@@ -84,7 +94,7 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(CoolerService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(CoolerService), nameof(InsertAsync), ex);
                 throw;
             }
         }
@@ -99,7 +109,7 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(CoolerService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(CoolerService), nameof(UpdateAsync), ex);
                 throw;
             }
         }

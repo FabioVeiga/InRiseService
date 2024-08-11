@@ -6,10 +6,20 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using InRiseService.Infrastructure.Extentions;
 
+using Azure.Security.KeyVault.Secrets;
+using Azure.Identity;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var secret = builder.Configuration.GetSection("AppSettings").GetValue<string>("Secret");
 var key = Encoding.ASCII.GetBytes(secret);
+
+var keyVaultName = Environment.GetEnvironmentVariable("SECRET_NAME");
+var kvUri = $"https://{keyVaultName}.vault.azure.net";
+var client = new SecretClient(new Uri(kvUri), new DefaultAzureCredential());
+var secretTest = await client.GetSecretAsync("sendgrid");
+Environment.SetEnvironmentVariable("SECRET_SENDGRID", secretTest.Value.Value);
+
 
 // Add services to the container.
 builder.Services.RegisterDependencies();
@@ -74,6 +84,7 @@ builder.Services.AddDbContext<ApplicationContext>(opt =>
 );
 
 var app = builder.Build();
+var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
@@ -88,7 +99,10 @@ using (var scope = app.Services.CreateScope())
     var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
     try
     {
-        SeedingData.Start(context, InRiseService.Util.PasswordHelper.EncryptPassword("123"));
+        if(env == "Development")
+            SeedingData.Start(context, InRiseService.Util.PasswordHelper.EncryptPassword("123"));
+        else
+            SeedingData.Start(context);
     }
     catch (Exception ex)
     {

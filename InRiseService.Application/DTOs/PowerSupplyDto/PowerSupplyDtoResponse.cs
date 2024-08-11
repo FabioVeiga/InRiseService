@@ -12,6 +12,7 @@ namespace InRiseService.Application.DTOs.PowerSupplyDto
         public string Stamp { get; set; } = default!;
         public bool Modular { get; set; }
         public string Description { get; set; } = string.Empty;
+        public int ValueClassification { get; set; }
         public ICollection<ImageProductResponseDto>? Images { get; set; }
         public PriceResponseDto Price { get; set; } = default!;
     }

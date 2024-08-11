@@ -19,6 +19,7 @@ namespace InRiseService.Application.Services
             ) 
         {
             _sendGridSetting = options.Value;
+            _sendGridSetting.ApiKey = Environment.GetEnvironmentVariable("SECRET_SENDGRID");
             _logger = logger;
         }
 

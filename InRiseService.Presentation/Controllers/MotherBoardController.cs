@@ -146,7 +146,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetFiltered([FromBody] MotherBoardDtoFilterRequest request)
+        public async Task<IActionResult> GetFiltered([FromQuery] MotherBoardDtoFilterRequest request)
         {
             try
             {

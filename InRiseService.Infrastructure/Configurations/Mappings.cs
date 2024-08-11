@@ -50,9 +50,9 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<UserAddress, AddressDtoResponse>().ReverseMap();
             CreateMap<Address, UserAddress>().ReverseMap();
 
-            CreateMap<MemoryRam, MemoryRamInsertDto>().ReverseMap();
+            CreateMap<MemoryRam, MemoryRamRequestDto>().ReverseMap();
             CreateMap<MemoryRam,MemoryRamResponseDto>().ReverseMap();
-            CreateMap<MemoryRamInsertDto,MemoryRam>().ForMember(dest => dest.Price, opt => opt.Ignore());
+            CreateMap<MemoryRamRequestDto,MemoryRam>().ForMember(dest => dest.Price, opt => opt.Ignore());
             CreateMap<MemoryRamResponseDto,MemoryRam>().ForMember(dest => dest.Price, opt => opt.Ignore());
 
             CreateMap<MemoryRom, MemoryRomRequestDto>().ReverseMap();
@@ -83,8 +83,8 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<VideoBoard, VideoBoardDtoResponse>().ReverseMap();
             CreateMap<VideoBoardDtoResponse,VideoBoard>().ForMember(dest => dest.Price, opt => opt.Ignore());
             
-            CreateMap<CoolerInsertDto,Cooler>().ForMember(dest => dest.Price, opt => opt.Ignore());
-            CreateMap<Cooler, CoolerInsertDto>().ReverseMap();
+            CreateMap<CoolerRequestDto,Cooler>().ForMember(dest => dest.Price, opt => opt.Ignore());
+            CreateMap<Cooler, CoolerRequestDto>().ReverseMap();
             CreateMap<Cooler,CoolerResponseDto>().ForMember(dest => dest.Price, opt => opt.Ignore());
             CreateMap<CoolerResponseDto, Cooler>().ForMember(dest => dest.Price, opt => opt.Ignore());
             
