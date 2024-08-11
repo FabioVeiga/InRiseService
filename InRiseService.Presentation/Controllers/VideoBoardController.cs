@@ -144,7 +144,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetFiltered([FromBody] VideoBoardFilterDto request)
+        public async Task<IActionResult> GetFiltered([FromQuery] VideoBoardFilterDto request)
         {
             try
             {
