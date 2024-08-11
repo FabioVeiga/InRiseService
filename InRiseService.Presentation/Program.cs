@@ -20,7 +20,6 @@ var client = new SecretClient(new Uri(kvUri), new DefaultAzureCredential());
 var secretTest = await client.GetSecretAsync("sendgrid");
 Environment.SetEnvironmentVariable("SECRET_SENDGRID", secretTest.Value.Value);
 
-
 // Add services to the container.
 builder.Services.RegisterDependencies();
 builder.Services.RegisterConfigurationDependencies(builder.Configuration);
