@@ -43,14 +43,14 @@ namespace InRiseService.Presentation.Controllers
                     model.IsSendEmail = false;
 
                 await _service.UpdateAsync(model);
-                return Ok();
+                return Ok(model);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"{ex}");
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
-                   "Erro ao gerar código de validação!"
+                   "Erro ao inserir!"
                );
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
@@ -72,14 +72,14 @@ namespace InRiseService.Presentation.Controllers
                     request.IsSendEmail = false;
 
                 await _service.UpdateAsync(request);
-                return Ok();
+                return Ok(request);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"{ex}");
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
-                   "Erro ao gerar código de validação!"
+                   "Erro ao enviar email!"
                );
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
@@ -101,7 +101,7 @@ namespace InRiseService.Presentation.Controllers
                 _logger.LogError($"{ex}");
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
-                   "Erro ao gerar código de validação!"
+                   "Erro ao buscar todos!"
                );
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
