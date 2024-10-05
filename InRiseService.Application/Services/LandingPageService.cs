@@ -30,6 +30,21 @@ namespace InRiseService.Application.Services
             }
         }
 
+        public async Task<LandingPage?> GetByEmailAsync(string email)
+        {
+            try
+            {
+                var model = await _context.LandingPages.FirstOrDefaultAsync(x => x.Email.ToUpper() == email.ToUpper());
+                return model;
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(LandingPageService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
+
         public async Task<LandingPage> InsertAsync(LandingPage model)
         {
             try
@@ -41,6 +56,20 @@ namespace InRiseService.Application.Services
             catch (Exception ex)
             {
                 _logger.LogError($"[{nameof(LandingPageService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
+
+        public async Task UpdateAsync(LandingPage model)
+        {
+            try
+            {
+                _context.Update(model);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(LandingPageService)}::{nameof(UpdateAsync)}] - Exception: {ex}");
                 throw;
             }
         }
