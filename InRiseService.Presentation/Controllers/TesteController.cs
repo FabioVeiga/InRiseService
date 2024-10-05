@@ -11,14 +11,18 @@ namespace InRiseService.Presentation.Controllers
     {
         private readonly ILogger<TesteController> _logger;
         private readonly ISendGridService _sendGridService;
+        private readonly IBlobFileAzureService _blobFileAzureService;
+        private readonly string _secret = "inrise2024";
 
         public TesteController(
             ILogger<TesteController> logger,
-            ISendGridService sendGridService
+            ISendGridService sendGridService,
+            IBlobFileAzureService blobFileAzureService
             )
         {
             _logger = logger;
             _sendGridService = sendGridService;
+            _blobFileAzureService = blobFileAzureService;
         }
 
         [HttpPost]
@@ -50,7 +54,7 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                if(secret  != "inrise2024") return Unauthorized();
+                if(secret  != _secret) return Unauthorized();
                 var dic = new Dictionary<string, string>(){
                     { "-name-", "Fabinho" },
                     { "-email-", "droidbinho@gmail.com" }
@@ -70,6 +74,60 @@ namespace InRiseService.Presentation.Controllers
             }
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("upload-image")]
+        public  async Task<ActionResult> Teste03([FromQuery] string secret, [FromForm] DtoUploadFileTeste request)
+        {
+            try
+            {
+                if(secret  != _secret) return Unauthorized();
+                if (request.File == null || request.File.Length == 0) return BadRequest();
+                using (var stream = request.File.OpenReadStream())
+                {
+                    await _blobFileAzureService.UploadFileAsync(stream, request.File.FileName, request.Pathkey);
+                }
+                return Ok("Imagem enviada com sucesso!");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("delete-image")]
+        public  async Task<ActionResult> Teste04([FromQuery] string secret, [FromForm] string nameFile)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(nameFile))
+                {
+                    return BadRequest("Filename cannot be empty.");
+                }
+
+                var result = await _blobFileAzureService.DeleteFileAsync(nameFile);
+                if (result)
+                {
+                    return Ok("File deleted successfully.");
+                }
+
+                return NotFound("File not found.");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public class DtoUploadFileTeste{
+            public IFormFile File { get; set; } = default!;
+            public string Pathkey { get; set; } = default!;
+
+        }
        
     }
+
+    
 }

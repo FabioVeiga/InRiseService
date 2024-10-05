@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using InRiseService.Domain.Prices;
 
 namespace InRiseService.Domain.VideoBoards
 {
@@ -35,6 +36,16 @@ namespace InRiseService.Domain.VideoBoards
         [MinLength(1, ErrorMessage = "{0} deve conter no mínimo {1} caracteres!")]
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public int Potency { get; set; } = default!;
+
+        [Display(Name = "Descrição")]
+        public string Description { get; set; } = string.Empty;
+
+        [Display(Name = "Valor (Classificação)")]
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public int ValueClassification { get; set; }
+
+        public int PriceId { get; set; }
+        public Price? Price { get; set; }
 
     }
 }

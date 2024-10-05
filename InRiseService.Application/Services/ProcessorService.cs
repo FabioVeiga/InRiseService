@@ -25,12 +25,13 @@ namespace InRiseService.Application.Services
             try
             {
                 processor.DeleteIn = DateTime.Now;
+                processor.Active = false;
                 _context.Processors.Update(processor);
                 await UpdateAsync(processor);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(DeleteAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(ProcessorService), nameof(GetByFilterAsync), ex);
                 throw;
             }
         }
@@ -44,15 +45,26 @@ namespace InRiseService.Application.Services
                 .Where(p => p.Name.ToUpper().Contains(filter.Name)
                 );
 
-                if(filter.IsDeleted.HasValue)
-                    query = query.Where(x => x.DeleteIn != null);
+                if (filter.ValueClassification.HasValue)
+                    query = query.Where(x => x.ValueClassification == filter.ValueClassification.Value);
+
+                if (filter.ValueClassification.HasValue)
+                    query = query.Where(x => x.ValueClassification == filter.ValueClassification.Value);
+
+                if (filter.IsActive.HasValue)
+                    query = query.Where(x => x.Active == filter.IsActive.Value);
+
+                if (filter.IsDeleted.HasValue)
+                    query = filter.IsDeleted.Value 
+                        ? query.Where(x => x.DeleteIn != null) 
+                        : query.Where(x => x.DeleteIn == null);
                 
                 var finalListResult = await query.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);
                 return finalListResult;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(GetByFilterAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(ProcessorService), nameof(GetByFilterAsync), ex);
                 throw;
             }
         }
@@ -62,12 +74,13 @@ namespace InRiseService.Application.Services
             try
             {
                 return await _context.Processors
+                .Include(x => x.Price)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(GetByIdAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(ProcessorService), nameof(GetByIdAsync), ex);
                 throw;
             }
         }
@@ -84,7 +97,7 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(ProcessorService), nameof(InsertAsync), ex);
                 throw;
             }
         }
@@ -99,7 +112,7 @@ namespace InRiseService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[{nameof(ProcessorService)}::{nameof(UpdateAsync)}] - Exception: {ex}");
+                _logger.LogError("[{Service}::{Method}] - Exception: {Ex}", nameof(ProcessorService), nameof(UpdateAsync), ex);
                 throw;
             }
         }

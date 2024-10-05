@@ -27,6 +27,20 @@ namespace InRiseService.Infrastructure.Extentions
             services.AddScoped<IMemoryRamService,MemoryRamService>();
             services.AddScoped<IMemoryRomService,MemoryRomService>();
             services.AddScoped<IVideoBoardService,VideoBoardService>();
+            services.AddScoped<IPowerSupplyService,PowerSuppliesService>();
+            services.AddScoped<ICoolerService,CoolerService>();
+            services.AddScoped<IBlobFileAzureService,BlobFileAzureService>();
+            services.AddScoped<IImageService,ImageService>();
+            services.AddScoped<IMonitorScreenService,MonitorScreenService>();
+            services.AddScoped<ITowerService,TowerService>();
+            services.AddScoped<IComputerService,ComputerService>();
+            services.AddScoped<ILandingPageService,LandingPageService>();
+            services.AddScoped<IOrderStatusService,OrderStatusService>();
+            services.AddScoped<IOrderService,OrderService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ISoftwareService, SoftwareService>();
+            services.AddScoped<KeyVaultService>();
+            services.AddHttpContextAccessor();
         }
 
         public static void RegisterConfigurationDependencies(this IServiceCollection services, IConfiguration configuration)
@@ -34,7 +48,7 @@ namespace InRiseService.Infrastructure.Extentions
             services.Configure<SendGridSetting>(configuration.GetSection("SendGridSetting"));
             services.Configure<AppSetting>(configuration.GetSection("AppSettings"));
             services.Configure<ZipCodeBaseSettings>(configuration.GetSection("ZipCodeBaseSettings"));
-
+            services.Configure<AzureBlobStorageSetting>(configuration.GetSection("AzureBlobStorageSetting"));
         }
     }
 }

@@ -1,7 +1,9 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
+using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.DTOs.ProcessorDto;
 using InRiseService.Application.Interfaces;
+using InRiseService.Domain.Prices;
 using InRiseService.Domain.Processors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,21 +17,24 @@ namespace InRiseService.Presentation.Controllers
         private readonly ILogger<ProcessorController> _logger;
         private readonly IMapper _mapper;
         private readonly IProcessorService _processorService;
+        private readonly IImageService _imageService;
 
         public ProcessorController(
             ILogger<ProcessorController> logger,
             IMapper mapper,
-            IProcessorService processorService
+            IProcessorService processorService,
+            IImageService imageService
             )
         {
             _logger = logger;
             _mapper = mapper;
             _processorService = processorService;
+            _imageService = imageService;
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] ProcessorDtoInsertRequest request)
+        public async Task<IActionResult> Create([FromBody] ProcessorDtoRequest request)
         {
             try
             {
@@ -44,7 +49,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao inserir"
@@ -56,25 +61,25 @@ namespace InRiseService.Presentation.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update([FromBody] ProcessorDtoInsertRequest request, int id)
+        public async Task<IActionResult> Update([FromBody] ProcessorDtoRequest request, int id)
         {
             try
             {
-                var processor = await _processorService.GetByIdAsync(id);
-                if(processor is null) return NotFound();
+                var model = await _processorService.GetByIdAsync(id);
+                if(model is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
-                processor.Core = request.Core;
-                processor.Frequency = request.Frequency;
-                processor.Generation = request.Generation;
-                processor.Name = request.Name;
-                processor.Socket = request.Socket;
-                processor.Potency = request.Potency;
-                await _processorService.UpdateAsync(processor);
+                var modelPrice = model.Price;
+                model = _mapper.Map<Processor>(request);
+                model.Id = id;
+                model.Price = _mapper.Map<Price>(request.Price);
+                model.Price.Id = modelPrice.Id;
+                model.PriceId = modelPrice.Id;
+                await _processorService.UpdateAsync(model);
                 return Ok();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao alterar"
@@ -93,9 +98,13 @@ namespace InRiseService.Presentation.Controllers
                 var result = await _processorService.GetByIdAsync(id);
                 if(result == null) return NotFound();
 
+                var mappedResponse = _mapper.Map<ProcessorDtoResponse>(result);
+                mappedResponse.Images = await _imageService.GetByPowerSupplyIdAsync(result.Id);
+                mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
+
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
-                    result
+                    mappedResponse
                 );
                 return Ok(response);
             }
@@ -110,9 +119,33 @@ namespace InRiseService.Presentation.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var result = await _processorService.GetByIdAsync(id);
+                if(result == null) return NotFound();
+
+                await _processorService.DeleteAsync(result);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
+                var response = new ApiResponse<dynamic>(
+                   StatusCodes.Status500InternalServerError,
+                   "Erro ao deletar"
+               );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetFiltered([FromBody] ProcessorDtoFilterRequest request)
+        public async Task<IActionResult> GetFiltered([FromQuery] ProcessorDtoFilterRequest request)
         {
             try
             {
@@ -136,5 +169,55 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
+    
+        [HttpPut]
+        [Route("Activate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Activate(int id)
+        {
+            try
+            {
+                var model = await _processorService.GetByIdAsync(id);
+                if (model is null) return NotFound();
+                model.Active = true;
+                await _processorService.UpdateAsync(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao ativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+        [HttpPut]
+        [Route("Deactivate/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Deactivate(int id)
+        {
+            try
+            {
+                var model = await _processorService.GetByIdAsync(id);
+                if (model is null) return NotFound();
+                model.Active = false;
+                await _processorService.UpdateAsync(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("{Ex}",ex);
+                var response = new ApiResponse<dynamic>(
+                    StatusCodes.Status500InternalServerError,
+                    "Erro ao desativar"
+                    );
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
+
+    
     }
 }

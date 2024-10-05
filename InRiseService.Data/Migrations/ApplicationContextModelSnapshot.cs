@@ -62,6 +62,270 @@ namespace InRiseService.Data.Migrations
                     b.ToTable("Addresses");
                 });
 
+            modelBuilder.Entity("InRiseService.Domain.Categories.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("DeleteIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("InsertIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("UpdateIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Computers.Computer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("CoolerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeleteIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<decimal>("FinalPrice")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime>("InsertIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("MemoryRamSlot01Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MemoryRamSlot02Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MemoryRomHHDId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MemoryRomSSDId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MemoryRomSSDM2Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MonitorScreenId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MotherBoardId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("PowerSupplyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProcessadorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TowerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("VideoBoardId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Computers");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Coolers.Cooler", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Air")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("DeleteIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Dimension")
+                        .HasMaxLength(100)
+                        .HasColumnType("int");
+
+                    b.Property<int>("FanDiametric")
+                        .HasMaxLength(100)
+                        .HasColumnType("int");
+
+                    b.Property<int>("FanQuantity")
+                        .HasMaxLength(100)
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("InsertIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("MaxVelocit")
+                        .HasMaxLength(100)
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Refrigeration")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("UpdateIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PriceId");
+
+                    b.ToTable("Coolers");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.ImagesSite.ImagensProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ComputerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CoolerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("MemoryRamId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MemoryRomId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MonitorScreenId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MotherBoardId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Pathkey")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("PowerSupplyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProcessorId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SoftwareId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TowerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("VideoBoardId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ComputerId");
+
+                    b.HasIndex("CoolerId");
+
+                    b.HasIndex("MemoryRamId");
+
+                    b.HasIndex("MemoryRomId");
+
+                    b.HasIndex("MonitorScreenId");
+
+                    b.HasIndex("MotherBoardId");
+
+                    b.HasIndex("PowerSupplyId");
+
+                    b.HasIndex("ProcessorId");
+
+                    b.HasIndex("SoftwareId");
+
+                    b.HasIndex("TowerId");
+
+                    b.HasIndex("VideoBoardId");
+
+                    b.ToTable("ImagensProducts");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.LandingPages.LandingPage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsAcceptRGPD")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsSendEmail")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LandingPages");
+                });
+
             modelBuilder.Entity("InRiseService.Domain.MemoriesRam.MemoryRam", b =>
                 {
                     b.Property<int>("Id")
@@ -77,6 +341,10 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<double>("Frequency")
                         .HasColumnType("double");
 
@@ -88,6 +356,9 @@ namespace InRiseService.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Socket")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -96,7 +367,12 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PriceId");
 
                     b.ToTable("MemoriesRam");
                 });
@@ -116,8 +392,21 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("InsertIn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsHHD")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsSSD")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsSSDM2")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -125,6 +414,9 @@ namespace InRiseService.Data.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<int>("Potency")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PriceId")
                         .HasColumnType("int");
 
                     b.Property<string>("Socket")
@@ -135,6 +427,9 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
+
                     b.Property<double>("VelocityRead")
                         .HasColumnType("double");
 
@@ -143,7 +438,62 @@ namespace InRiseService.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PriceId");
+
                     b.ToTable("MemoriesRom");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.MonitorsScreen.MonitorScreen", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("DeleteIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Dimesion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("InsertIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Quality")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("UpdateIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("UpdateVolume")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PriceId");
+
+                    b.ToTable("MonitorsScreen");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.MotherBoards.MotherBoard", b =>
@@ -158,6 +508,10 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("InsertIn")
                         .HasColumnType("datetime(6)");
 
@@ -165,6 +519,9 @@ namespace InRiseService.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
+
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Socket")
                         .IsRequired()
@@ -194,9 +551,229 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("PriceId");
+
                     b.ToTable("MotherBoards");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.OrderStatuses.OrderStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsSendEmail")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsVisibleToUser")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderStatuses");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Orders.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DateDelivered")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DateEstimated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DatePayment")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DeleteIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("InsertIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Performace")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalValue")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime?>("UpdateIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderStatusId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Orders.OrderHistoric", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderStatusId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("OrderStatusId");
+
+                    b.ToTable("OrderHistorics");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Orders.OrderItems", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.PowerSupplies.PowerSupply", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("DeleteIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("InsertIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("Modular")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("Potency")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PotencyReal")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Stamp")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("UpdateIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PriceId");
+
+                    b.ToTable("PowerSupplies");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Prices.Price", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("CostPrice")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("FinalPrice")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("IVA")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("PorcentageADMCost")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("PorcentageDiscount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("PorcentageFixedCost")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("PorcentageProfit")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Prices");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Processors.Processor", b =>
@@ -214,6 +791,10 @@ namespace InRiseService.Data.Migrations
 
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<double>("Frequency")
                         .HasMaxLength(100)
@@ -234,6 +815,9 @@ namespace InRiseService.Data.Migrations
 
                     b.Property<int>("Potency")
                         .HasMaxLength(10)
+                        .HasColumnType("int");
+
+                    b.Property<int>("PriceId")
                         .HasColumnType("int");
 
                     b.Property<string>("Socket")
@@ -259,9 +843,113 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("PriceId");
+
                     b.ToTable("Processors");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Softwares.Software", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeleteIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("InsertIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("MemoryRamIdealId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MemoryRamMinId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("ProcessadorIdealId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProcessadorMinId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("VideoBoardIdealId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VideoBoardMinId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Softwares");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Towers.Tower", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("DeleteIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Dimesion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("InsertIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("MaxFans")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateIn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PriceId");
+
+                    b.ToTable("Towers");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Users.User", b =>
@@ -433,6 +1121,10 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("DeleteIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Dimension")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -450,6 +1142,9 @@ namespace InRiseService.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("int");
 
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Socket")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -458,9 +1153,235 @@ namespace InRiseService.Data.Migrations
                     b.Property<DateTime?>("UpdateIn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("ValueClassification")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("PriceId");
+
                     b.ToTable("VideosBoard");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Coolers.Cooler", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.ImagesSite.ImagensProduct", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Categories.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("InRiseService.Domain.Computers.Computer", "Computer")
+                        .WithMany()
+                        .HasForeignKey("ComputerId");
+
+                    b.HasOne("InRiseService.Domain.Coolers.Cooler", "Cooler")
+                        .WithMany()
+                        .HasForeignKey("CoolerId");
+
+                    b.HasOne("InRiseService.Domain.MemoriesRam.MemoryRam", "MemoryRam")
+                        .WithMany()
+                        .HasForeignKey("MemoryRamId");
+
+                    b.HasOne("InRiseService.Domain.MemoriesRom.MemoryRom", "MemoryRom")
+                        .WithMany()
+                        .HasForeignKey("MemoryRomId");
+
+                    b.HasOne("InRiseService.Domain.MonitorsScreen.MonitorScreen", "MonitorScreen")
+                        .WithMany()
+                        .HasForeignKey("MonitorScreenId");
+
+                    b.HasOne("InRiseService.Domain.MotherBoards.MotherBoard", "MotherBoard")
+                        .WithMany()
+                        .HasForeignKey("MotherBoardId");
+
+                    b.HasOne("InRiseService.Domain.PowerSupplies.PowerSupply", "PowerSupply")
+                        .WithMany()
+                        .HasForeignKey("PowerSupplyId");
+
+                    b.HasOne("InRiseService.Domain.Processors.Processor", "Processor")
+                        .WithMany()
+                        .HasForeignKey("ProcessorId");
+
+                    b.HasOne("InRiseService.Domain.Softwares.Software", "Software")
+                        .WithMany()
+                        .HasForeignKey("SoftwareId");
+
+                    b.HasOne("InRiseService.Domain.Towers.Tower", "Tower")
+                        .WithMany()
+                        .HasForeignKey("TowerId");
+
+                    b.HasOne("InRiseService.Domain.VideoBoards.VideoBoard", "VideoBoard")
+                        .WithMany()
+                        .HasForeignKey("VideoBoardId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Computer");
+
+                    b.Navigation("Cooler");
+
+                    b.Navigation("MemoryRam");
+
+                    b.Navigation("MemoryRom");
+
+                    b.Navigation("MonitorScreen");
+
+                    b.Navigation("MotherBoard");
+
+                    b.Navigation("PowerSupply");
+
+                    b.Navigation("Processor");
+
+                    b.Navigation("Software");
+
+                    b.Navigation("Tower");
+
+                    b.Navigation("VideoBoard");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.MemoriesRam.MemoryRam", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.MemoriesRom.MemoryRom", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.MonitorsScreen.MonitorScreen", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.MotherBoards.MotherBoard", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Orders.Order", b =>
+                {
+                    b.HasOne("InRiseService.Domain.OrderStatuses.OrderStatus", "Status")
+                        .WithMany()
+                        .HasForeignKey("OrderStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InRiseService.Domain.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Status");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Orders.OrderHistoric", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Orders.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InRiseService.Domain.OrderStatuses.OrderStatus", "Status")
+                        .WithMany()
+                        .HasForeignKey("OrderStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Status");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Orders.OrderItems", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Orders.Order", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.PowerSupplies.PowerSupply", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Processors.Processor", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Softwares.Software", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Categories.Category", "Category")
+                        .WithMany("Softwares")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Towers.Tower", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.UsersAddress.UserAddress", b =>
@@ -493,9 +1414,30 @@ namespace InRiseService.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("InRiseService.Domain.VideoBoards.VideoBoard", b =>
+                {
+                    b.HasOne("InRiseService.Domain.Prices.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
+                });
+
             modelBuilder.Entity("InRiseService.Domain.Addressed.Address", b =>
                 {
                     b.Navigation("UserAddresses");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Categories.Category", b =>
+                {
+                    b.Navigation("Softwares");
+                });
+
+            modelBuilder.Entity("InRiseService.Domain.Orders.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("InRiseService.Domain.Users.User", b =>

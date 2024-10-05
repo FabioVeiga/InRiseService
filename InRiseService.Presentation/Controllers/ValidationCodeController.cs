@@ -40,12 +40,16 @@ namespace InRiseService.Presentation.Controllers
                 var user = await _userService.GetByEmailAsync(email);
                 if(user is null) return NotFound();
 
+                var dic = new Dictionary<string, string>(){
+                        { "name", user.Name }
+                    };
+
                 var code = await _validationCodeService.GetLastValideCodeByUserIdAsync(user.Id);
                 if(code is not null)
                 {
-                    await _sendGridService.SendAsync(
-                        user.Email, user.Name, "Confirmação de Cadastro", code.Code.ToString()
-                    );
+                    dic.Add("code", code.Code.ToString());
+                    dic.Add("dateexpiration", code.ExpirateAt.ToString("dd/MM/yyyy hh:mm"));
+                    await _sendGridService.SendByTemplateAsync(user.Email, "Confirmação de conta", dic, "d-5044b14761b343b4a7c085978ca38fb4");
 
                     return BadRequest(
                         new ApiResponse<dynamic>(
@@ -55,9 +59,10 @@ namespace InRiseService.Presentation.Controllers
                 }
 
                 var newCode = await _validationCodeService.InsertAsync(user.Id);
-                var message = await _sendGridService.SendAsync(
-                    user.Email, user.Name, "Confirmação de Cadastro", newCode.Code.ToString()
-                );
+                dic.Add("code", newCode.Code.ToString());
+                dic.Add("dateexpiration", newCode.ExpirateAt.ToString("dd/MM/yyyy hh:mm"));
+                
+                await _sendGridService.SendByTemplateAsync(user.Email, "Confirmação de conta", dic, "d-5044b14761b343b4a7c085978ca38fb4");
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status201Created,

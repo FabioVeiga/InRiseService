@@ -16,7 +16,11 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5036",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SECRET_NAME": "SecretsInriseDev",
+        "SECRET_SENDGRID": "SECRET",
+        "MYSQLCONNSTR_WebApiDatabase": "Data Source=sql.freedb.tech; Initial Catalog=freedb_inrisedb; User Id=freedb_inriseuser; Password=AxA$AT$?r?u3nZK",
+        "BlobStorageConection": "DefaultEndpointsProtocol=https;AccountName=inrisecomputadoresdev;AccountKey=RPLr76c/SaAvekwn2R/93ctylkVxpAKgatAWHJbG3KUHQM4enem8kXexB+Dkza9l0qXGBkzhfiSw+AStT6Gejg==;EndpointSuffix=core.windows.net"
       }
     },
     "https": {

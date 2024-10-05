@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using InRiseService.Domain.Prices;
 
 namespace InRiseService.Domain.MemoriesRom
 {
@@ -31,5 +32,24 @@ namespace InRiseService.Domain.MemoriesRom
         [Display(Name = "Potência/Consumo W")]
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int Potency { get; set; }
+        
+        [Display(Name = "HHD")]
+        public bool IsHHD { get; set; } = false;
+
+        [Display(Name = "SSD")]
+        public bool IsSSD { get; set; } = true;
+
+        [Display(Name = "SSDM2")]
+        public bool IsSSDM2 { get; set; } = false;
+
+        [Display(Name = "Descrição")]
+        public string Description { get; set; } = string.Empty;
+
+        [Display(Name = "Valor (Classificação)")]
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public int ValueClassification { get; set; }
+
+        public int PriceId { get; set; }
+        public Price? Price { get; set; }
     }
 }

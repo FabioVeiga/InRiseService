@@ -5,8 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using InRiseService.Infrastructure.Extentions;
-using InRiseService.Application.DTOs.ApiSettingDto;
-using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,11 +69,17 @@ builder.Services.AddAuthentication(x =>
     });
 
 builder.Services.AddDbContext<ApplicationContext>(opt =>
-    opt.UseMySql(builder.Configuration.GetConnectionString("WebApiDatabase"),
+    opt.UseMySql(Environment.GetEnvironmentVariable("MYSQLCONNSTR_WebApiDatabase"),
     new MySqlServerVersion(new Version(8, 0, 23)))
 );
 
+// builder.Services.AddDbContext<ApplicationContext>(opt =>
+//     opt.UseMySql(builder.Configuration.GetConnectionString("WebApiDatabase"),
+//     new MySqlServerVersion(new Version(8, 0, 23)))
+// );
+
 var app = builder.Build();
+var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
@@ -85,6 +89,22 @@ app.UseSwaggerUI(options =>
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
 });
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+    try
+    {
+        if(env == "Development")
+            SeedingData.Start(context, InRiseService.Util.PasswordHelper.EncryptPassword("123"));
+        else
+            SeedingData.Start(context);
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Um erro ocorreu durante a inicialização de dados.");
+    }
+}
 
 app.UseHttpsRedirection();
 
