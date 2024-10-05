@@ -44,5 +44,19 @@ namespace InRiseService.Application.Services
                 throw;
             }
         }
+
+        public async Task UpdateAsync(LandingPage model)
+        {
+            try
+            {
+                _context.Update(model);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(LandingPageService)}::{nameof(UpdateAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
     }
 }

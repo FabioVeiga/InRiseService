@@ -73,6 +73,11 @@ builder.Services.AddDbContext<ApplicationContext>(opt =>
     new MySqlServerVersion(new Version(8, 0, 23)))
 );
 
+// builder.Services.AddDbContext<ApplicationContext>(opt =>
+//     opt.UseMySql(builder.Configuration.GetConnectionString("WebApiDatabase"),
+//     new MySqlServerVersion(new Version(8, 0, 23)))
+// );
+
 var app = builder.Build();
 var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
