@@ -56,8 +56,8 @@ namespace InRiseService.Presentation.Controllers
             }
         }
         
-        [Authorize(Roles = "Admin")]
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public  async Task<ActionResult> SendEmail([FromBody] LandingPage request)
         {
             try
