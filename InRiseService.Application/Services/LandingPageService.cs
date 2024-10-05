@@ -30,6 +30,20 @@ namespace InRiseService.Application.Services
             }
         }
 
+        public async Task<bool> GetByEmailAsync(string email)
+        {
+            try
+            {
+                var model = await _context.LandingPages.FirstOrDefaultAsync(x => x.Email.ToUpper() == email.ToUpper());
+                return model != null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{nameof(LandingPageService)}::{nameof(InsertAsync)}] - Exception: {ex}");
+                throw;
+            }
+        }
+
         public async Task<LandingPage> InsertAsync(LandingPage model)
         {
             try

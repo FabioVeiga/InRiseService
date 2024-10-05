@@ -32,6 +32,8 @@ namespace InRiseService.Presentation.Controllers
             {
                 if(!ModelState.IsValid) return BadRequest();
                 if(secret  != _secret) return Unauthorized();
+                var isEmailInserted = await _service.GetByEmailAsync(request.Email);
+                if (isEmailInserted) return BadRequest("Email already exists");
                 var model = await _service.InsertAsync(request);
                 var dic = new Dictionary<string, string>(){
                     { "name", model.Name }
