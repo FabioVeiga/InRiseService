@@ -30,12 +30,13 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task<bool> GetByEmailAsync(string email)
+        public async Task<LandingPage?> GetByEmailAsync(string email)
         {
             try
             {
                 var model = await _context.LandingPages.FirstOrDefaultAsync(x => x.Email.ToUpper() == email.ToUpper());
-                return model != null;
+                return model;
+                
             }
             catch (Exception ex)
             {

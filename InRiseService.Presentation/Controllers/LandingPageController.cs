@@ -33,12 +33,12 @@ namespace InRiseService.Presentation.Controllers
                 if(!ModelState.IsValid) return BadRequest();
                 if(secret  != _secret) return Unauthorized();
                 var isEmailInserted = await _service.GetByEmailAsync(request.Email);
-                if (isEmailInserted) return BadRequest("Email already exists");
+                if (isEmailInserted is not null) return BadRequest("Email already exists");
                 var model = await _service.InsertAsync(request);
                 var dic = new Dictionary<string, string>(){
                     { "name", model.Name }
                 };
-                var sendEmail = await _sendGridService.SendByTemplateAsync(model.Name, "LandPage.", dic, "d-2e48645929984f3eae7d4e1209529fXX");
+                var sendEmail = await _sendGridService.SendByTemplateAsync(model.Email, "teste", dic, "d-fcc470eb9b6b4d7aa3a640cbc0fb54b3");
                 if(sendEmail)
                     model.IsSendEmail = true;
                 else
@@ -58,23 +58,25 @@ namespace InRiseService.Presentation.Controllers
             }
         }
         
-        [HttpPost]
+        [HttpPut]
         [Authorize(Roles = "Admin")]
-        public  async Task<ActionResult> SendEmail([FromBody] LandingPage request)
+        public async Task<ActionResult> SendEmail([FromBody] string email)
         {
             try
             {
+                var model = await _service.GetByEmailAsync(email);
+                if (model is null) return NotFound();
                 var dic = new Dictionary<string, string>(){
-                    { "name", request.Name }
+                    { "name", model.Name }
                 };
-                var sendEmail = await _sendGridService.SendByTemplateAsync(request.Name, "LandPage.", dic, "d-2e48645929984f3eae7d4e1209529fXX");
+                var sendEmail = await _sendGridService.SendByTemplateAsync(model.Name, "teste", dic, "d-fcc470eb9b6b4d7aa3a640cbc0fb54b3");
                 if(sendEmail)
-                    request.IsSendEmail = true;
+                    model.IsSendEmail = true;
                 else
-                    request.IsSendEmail = false;
+                    model.IsSendEmail = false;
 
-                await _service.UpdateAsync(request);
-                return Ok(request);
+                await _service.UpdateAsync(model);
+                return Ok(model);
             }
             catch (Exception ex)
             {

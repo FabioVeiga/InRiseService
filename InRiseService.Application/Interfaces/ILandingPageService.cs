@@ -6,7 +6,7 @@ namespace InRiseService.Application.Interfaces
     {
         Task<LandingPage> InsertAsync(LandingPage model); 
         Task UpdateAsync(LandingPage model); 
-        Task<bool> GetByEmailAsync(string email);
+        Task<LandingPage?> GetByEmailAsync(string email);
         Task<IList<LandingPage>> GetAll();
     }
 }
