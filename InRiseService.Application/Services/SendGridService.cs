@@ -27,7 +27,7 @@ namespace InRiseService.Application.Services
         }
 
         private async Task GetApiKey(){
-            _sendGridSetting.ApiKey = await _keyVaultService.GetSecretAsync("sendgrid");
+            _sendGridSetting.ApiKey = Environment.GetEnvironmentVariable("SECRET_SENDGRID");
         }
 
         public async Task<bool> SendAsync(string toEmail, string name, string subject, string message)
