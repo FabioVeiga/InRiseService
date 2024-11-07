@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+InRiseService.Presentation/appsettings.json
+InRiseService.Presentation/Properties/launchSettings.json

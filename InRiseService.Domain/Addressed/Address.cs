@@ -12,6 +12,6 @@ namespace InRiseService.Domain.Addressed
         public string Province { get; set; } = null!;
         
         [JsonIgnore]
-        public ICollection<UserAddress> UserAddresses { get; set; }
+        public ICollection<UserAddress> UserAddresses { get; set; } = [];
     }
 }

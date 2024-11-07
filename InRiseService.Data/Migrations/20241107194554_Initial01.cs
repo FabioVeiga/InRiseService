@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InRiseService.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial_01 : Migration
+    public partial class Initial01 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -103,7 +103,8 @@ namespace InRiseService.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsAcceptRGPD = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    IsAcceptRGPD = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsSendEmail = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {

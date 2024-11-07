@@ -20,13 +20,13 @@ using InRiseService.Domain.UsersAddress;
 using InRiseService.Domain.ValidationCodes;
 using InRiseService.Domain.VideoBoards;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace InRiseService.Data.Context
 {
-    public class ApplicationContext : DbContext
+    public class ApplicationContext(DbContextOptions<ApplicationContext> options) : DbContext(options)
     {
-        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options){}
-
         public DbSet<User> Users { get; set; }
         public DbSet<UserAddress> UserAddresses { get; set; }
         public DbSet<Address> Addresses { get; set; }
@@ -51,8 +51,29 @@ namespace InRiseService.Data.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Software> Softwares { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+    }
+
+    public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationContext>
+    {
+        public ApplicationContext CreateDbContext(string[] args)
         {
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .AddJsonFile("appsettings.Development.json", optional: true)
+            .AddEnvironmentVariables()
+            .Build();
+
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            }
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
+            optionsBuilder.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 23)));
+
+            return new ApplicationContext(optionsBuilder.Options);
         }
     }
 }
