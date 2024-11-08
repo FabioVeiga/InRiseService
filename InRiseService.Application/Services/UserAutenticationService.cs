@@ -28,15 +28,16 @@ namespace InRiseService.Application.Services
         {
             try
             {
+                System.Console.WriteLine($"recebido: {request.Email}");
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes(_appSetting.Secret);
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
+                    Subject = new ClaimsIdentity(
+                    [
                         new Claim(ClaimTypes.Email, request.Email),
                         new Claim(ClaimTypes.Role, request.Profile.ToString()),
-                    }),
+                    ]),
                     Expires = DateTime.UtcNow.AddHours(_appSetting.AcessTokenTime),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
