@@ -25,8 +25,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace InRiseService.Data.Context
 {
-    public class ApplicationContext(DbContextOptions<ApplicationContext> options) : DbContext(options)
+    public class ApplicationContext(DbContextOptions<ApplicationContext> options, IConfiguration configuration) : DbContext(options)
     {
+        private readonly IConfiguration _configuration = configuration;
+
         public DbSet<User> Users { get; set; }
         public DbSet<UserAddress> UserAddresses { get; set; }
         public DbSet<Address> Addresses { get; set; }
@@ -51,6 +53,20 @@ namespace InRiseService.Data.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Software> Softwares { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            optionsBuilder.UseMySql(
+                connectionString,
+                new MySqlServerVersion(new Version(8, 0, 25)), // Replace with your MySQL version
+                options => options.EnableRetryOnFailure(
+                    maxRetryCount: 5, // Number of retry attempts
+                    maxRetryDelay: TimeSpan.FromSeconds(10), // Max delay between retries
+                    errorNumbersToAdd: null // List of error numbers to retry on
+                )
+            );
+        }
+
     }
 
     public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationContext>
@@ -73,7 +89,7 @@ namespace InRiseService.Data.Context
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
             optionsBuilder.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 23)));
 
-            return new ApplicationContext(optionsBuilder.Options);
+            return new ApplicationContext(optionsBuilder.Options, configuration);
         }
     }
 }
