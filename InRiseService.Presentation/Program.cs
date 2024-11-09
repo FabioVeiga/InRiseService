@@ -68,10 +68,17 @@ builder.Services.AddAuthentication(x =>
         };
     });
 
+#if DEBUG
 builder.Services.AddDbContext<ApplicationContext>(opt =>
     opt.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
     new MySqlServerVersion(new Version(8, 0, 23)))
 );
+#else
+builder.Services.AddDbContext<ApplicationContext>(opt =>
+opt.UseMySql(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
+new MySqlServerVersion(new Version(8, 0, 23)))));
+#endif
+
 
 // builder.Services.AddDbContext<ApplicationContext>(opt =>
 //     opt.UseMySql(builder.Configuration.GetConnectionString("WebApiDatabase"),
@@ -94,7 +101,7 @@ using (var scope = app.Services.CreateScope())
     var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
     try
     {
-        if(env == "Development")
+        if (env == "Development")
             SeedingData.Start(context, InRiseService.Util.PasswordHelper.EncryptPassword("123"));
         else
             SeedingData.Start(context);

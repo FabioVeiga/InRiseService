@@ -20,7 +20,8 @@
         "SECRET_NAME": "SecretsInriseDev",
         "SECRET_SENDGRID": "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",
         "MYSQLCONNSTR_WebApiDatabase": "Data Source=sql.freedb.tech; Initial Catalog=freedb_inrisedb; User Id=freedb_inriseuser; Password=cmXdCqgZW!P4gx%",
-        "BlobStorageConection": "DefaultEndpointsProtocol=https;AccountName=inrisecomputadoresdev;AccountKey=RPLr76c/SaAvekwn2R/93ctylkVxpAKgatAWHJbG3KUHQM4enem8kXexB+Dkza9l0qXGBkzhfiSw+AStT6Gejg==;EndpointSuffix=core.windows.net"
+        "BlobStorageConection": "DefaultEndpointsProtocol=https;AccountName=inrisecomputadoresdev;AccountKey=RPLr76c/SaAvekwn2R/93ctylkVxpAKgatAWHJbG3KUHQM4enem8kXexB+Dkza9l0qXGBkzhfiSw+AStT6Gejg==;EndpointSuffix=core.windows.net",
+        "MYSQLCONNSTR_localdb": "Database=localdb;Data Source=127.0.0.1:50037;User Id=azure;Password=6#vWHD_$"
       }
     },
     "https": {
