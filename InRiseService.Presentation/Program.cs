@@ -71,12 +71,11 @@ builder.Services.AddAuthentication(x =>
 #if DEBUG
 builder.Services.AddDbContext<ApplicationContext>(opt =>
     opt.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
-    new MySqlServerVersion(new Version(8, 0, 23)))
-);
+    new MySqlServerVersion(new Version(8, 0, 23))));
 #else
 builder.Services.AddDbContext<ApplicationContext>(opt =>
-opt.UseMySql(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
-new MySqlServerVersion(new Version(8, 0, 23))));
+    opt.UseMySql(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
+    new MySqlServerVersion(new Version(8, 0, 23))));
 #endif
 
 
