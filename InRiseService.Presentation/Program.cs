@@ -76,7 +76,7 @@ builder.Services.AddDbContext<ApplicationContext>(opt =>
 #else
 builder.Services.AddDbContext<ApplicationContext>(opt =>
 opt.UseMySql(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
-new MySqlServerVersion(new Version(8, 0, 23)))));
+new MySqlServerVersion(new Version(8, 0, 23))));
 #endif
 
 
