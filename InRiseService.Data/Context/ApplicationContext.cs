@@ -53,20 +53,6 @@ namespace InRiseService.Data.Context
         public DbSet<Category> Categories { get; set; }
         public DbSet<Software> Softwares { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var connectionString = _configuration.GetConnectionString("DefaultConnection");
-            optionsBuilder.UseMySql(
-                connectionString,
-                new MySqlServerVersion(new Version(8, 0, 25)), // Replace with your MySQL version
-                options => options.EnableRetryOnFailure(
-                    maxRetryCount: 5, // Number of retry attempts
-                    maxRetryDelay: TimeSpan.FromSeconds(10), // Max delay between retries
-                    errorNumbersToAdd: null // List of error numbers to retry on
-                )
-            );
-        }
-
     }
 
     public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationContext>
@@ -87,7 +73,9 @@ namespace InRiseService.Data.Context
                 throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             }
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
-            optionsBuilder.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 23)));
+            optionsBuilder.UseMySql(connectionString, 
+            new MySqlServerVersion(new Version(8, 0, 23)),
+            opt => opt.EnableRetryOnFailure());
 
             return new ApplicationContext(optionsBuilder.Options, configuration);
         }
