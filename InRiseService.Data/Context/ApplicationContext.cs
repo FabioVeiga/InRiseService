@@ -66,11 +66,11 @@ namespace InRiseService.Data.Context
             .AddEnvironmentVariables()
             .Build();
 
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var connectionString = configuration.GetConnectionString("MYSQLCONNSTR_WebApiDatabase");
 
             if (string.IsNullOrEmpty(connectionString))
             {
-                throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+                throw new InvalidOperationException("Connection string 'MYSQLCONNSTR_WebApiDatabase' not found.");
             }
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
             optionsBuilder.UseMySql(connectionString, 

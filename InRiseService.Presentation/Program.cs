@@ -68,8 +68,11 @@ builder.Services.AddAuthentication(x =>
         };
     });
 
+var con = builder.Configuration.GetConnectionString("MYSQLCONNSTR_WebApiDatabase");
+System.Console.WriteLine(con);
+
 builder.Services.AddDbContext<ApplicationContext>(opt =>
-    opt.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+    opt.UseMySql(con,
     new MySqlServerVersion(new Version(8, 0, 23)), // Replace with your actual MySQL version
             opt => opt.EnableRetryOnFailure()
     )
