@@ -66,11 +66,11 @@ namespace InRiseService.Data.Context
             .AddEnvironmentVariables()
             .Build();
 
-            var connectionString = configuration.GetConnectionString("MYSQLCONNSTR_WebApiDatabase");
+            var connectionString = configuration.GetConnectionString("Aiven");
 
             if (string.IsNullOrEmpty(connectionString))
             {
-                throw new InvalidOperationException("Connection string 'MYSQLCONNSTR_WebApiDatabase' not found.");
+                throw new InvalidOperationException("Connection string 'Aiven' not found.");
             }
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
             optionsBuilder.UseMySql(connectionString, 
