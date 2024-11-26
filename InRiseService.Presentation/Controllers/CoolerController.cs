@@ -23,8 +23,7 @@ namespace InRiseService.Presentation.Controllers
             ILogger<CoolerController> logger,
             IMapper mapper,
             ICoolerService coolerService,
-            IImageService imageService,
-            IBlobFileAzureService blobFileAzureService
+            IImageService imageService
             )
         {
             _logger = logger;
