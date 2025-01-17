@@ -265,7 +265,7 @@ namespace InRiseService.Presentation.Controllers
                 "memoryram" => await _memoryRamService.GetByIdAsync(imagensProduct.MemoryRamId ?? 0) is not null,
                 "memoryrom" => await _memoryRomService.GetByIdAsync(imagensProduct.MemoryRomId ?? 0) is not null,
                 "monitorscreen" => await _monitorScreenService.GetByIdAsync(imagensProduct.MonitorScreenId ?? 0) is not null,
-                "motherboard" => await _motherBoardService.GetByIdAsync(imagensProduct.MonitorScreenId ?? 0) is not null,
+                "motherboard" => await _motherBoardService.GetByIdAsync(imagensProduct.MotherBoardId ?? 0) is not null,
                 "powersupply" => await _powerSupplyService.GetByIdAsync(imagensProduct.PowerSupplyId ?? 0) is not null,
                 "processor" => await _processorService.GetByIdAsync(imagensProduct.ProcessorId ?? 0) is not null,
                 "tower" => await _towerService.GetByIdAsync(imagensProduct.TowerId ?? 0) is not null,
