@@ -220,7 +220,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetFiltered([FromBody] ComputerFilterDto request)
+        public async Task<IActionResult> GetFiltered([FromQuery] ComputerFilterDto request)
         {
             try
             {
