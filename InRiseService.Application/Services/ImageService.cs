@@ -178,7 +178,7 @@ namespace InRiseService.Application.Services
                     .Select(x => new ImageProductResponseDto
                     {
                         Id = x.Id,
-                        Url = _setting.BaseUrl + "/" + x.Pathkey + "/" + x.ImageName
+                        Url = _setting.BaseUrl + "/" + _setting.ContainerName + "/" + x.Pathkey + "/" + x.ImageName
                     });
                 return await result.ToListAsync();
             }
