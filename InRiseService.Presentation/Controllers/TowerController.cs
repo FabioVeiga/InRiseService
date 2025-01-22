@@ -99,7 +99,7 @@ namespace InRiseService.Presentation.Controllers
                 if(result == null) return NotFound();
 
                 var mappedResponse = _mapper.Map<TowerDtoResponse>(result);
-                mappedResponse.Images = await _imageService.GetByPowerSupplyIdAsync(result.Id);
+                mappedResponse.Images = await _imageService.GetByTowerIdAsync(result.Id);
                 mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
 
                 var response = new ApiResponse<dynamic>(

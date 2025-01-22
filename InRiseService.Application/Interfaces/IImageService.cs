@@ -9,15 +9,18 @@ namespace InRiseService.Application.Interfaces
         Task<bool> DeleteAsync(ImagensProduct image);
         Task<ImagensProduct?> GetByIdAsync(int id);
 
-        Task<ICollection<ImageProductResponseDto>> GetByCoolerIdAsync(int id);
+        Task<ICollection<ImageProductResponseDto>> GetByCategoryIdAsync(int id);
         Task<ICollection<ImageProductResponseDto>> GetByComputerIdAsync(int id);
+        Task<ICollection<ImageProductResponseDto>> GetByCoolerIdAsync(int id);
         Task<ICollection<ImageProductResponseDto>> GetByMemoryRamIdAsync(int id);
         Task<ICollection<ImageProductResponseDto>> GetByMemoryRomIdAsync(int id);
         Task<ICollection<ImageProductResponseDto>> GetByMonitorScreenIdAsync(int id);
         Task<ICollection<ImageProductResponseDto>> GetByMotherBoardIdAsync(int id);
         Task<ICollection<ImageProductResponseDto>> GetByPowerSupplyIdAsync(int id);
-        Task<ICollection<ImageProductResponseDto>> GetByCategoryIdAsync(int id);
+        Task<ICollection<ImageProductResponseDto>> GetByProcessorIdAsync(int id);
         Task<ICollection<ImageProductResponseDto>> GetBySoftwareIdAsync(int id);
+        Task<ICollection<ImageProductResponseDto>> GetByTowerIdAsync(int id);
+        Task<ICollection<ImageProductResponseDto>> GetByVideoBoardIdAsync(int id);
         
 
         ICollection<ImageCategoryDto> GetImageCategories();
