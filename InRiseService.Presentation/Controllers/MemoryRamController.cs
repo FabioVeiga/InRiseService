@@ -93,7 +93,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             try
@@ -147,7 +147,7 @@ namespace InRiseService.Presentation.Controllers
         }
         
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetFiltered([FromQuery] MemoryRamFilterDto request)
         {
             try

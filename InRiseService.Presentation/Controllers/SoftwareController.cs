@@ -3,8 +3,6 @@ using InRiseService.Application.DTOs.ApiResponseDto;
 using InRiseService.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using InRiseService.Application.DTOs.CategoryDto;
-using InRiseService.Domain.Categories;
 using InRiseService.Application.DTOs.SoftwareDto;
 using InRiseService.Domain.Softwares;
 
@@ -68,7 +66,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             try
@@ -121,7 +119,7 @@ namespace InRiseService.Presentation.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetFiltered([FromQuery]SoftwareFilterDto request)
         {
             try

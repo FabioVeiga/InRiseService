@@ -166,7 +166,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             try
