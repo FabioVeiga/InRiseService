@@ -6,6 +6,7 @@ using InRiseService.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using InRiseService.Domain.Towers;
+using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.Services
 {
@@ -36,7 +37,7 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task<Pagination<Tower>> GetByFilterAsync(TowerFilterDto filter)
+        public async Task<Pagination<TowerDtoResponse>> GetByFilterAsync(TowerFilterDto filter)
         {
             try
             {
@@ -59,7 +60,31 @@ namespace InRiseService.Application.Services
                         ? query.Where(x => x.DeleteIn != null) 
                         : query.Where(x => x.DeleteIn == null);
                 
-                var finalListResult = await query.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);
+                var listResultDto = query.Select(x => new TowerDtoResponse()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Active = x.Active,
+                    InsertIn = x.InsertIn,
+                    DeleteIn = x.DeleteIn,
+                    UpdateIn = x.UpdateIn,
+                    Description = x.Description,
+                    ValueClassification = x.ValueClassification,
+                    Dimesion = x.Dimesion,
+                    MaxFans = x.MaxFans,
+                    Price = new PriceResponseDto(){
+                        Id = x.Price!.Id,
+                        CostPrice = x.Price.CostPrice,
+                        FinalPrice = x.Price.FinalPrice,
+                        IVA = x.Price.IVA,
+                        PorcentageADMCost = x.Price.PorcentageADMCost,
+                        PorcentageDiscount = x.Price.PorcentageDiscount,
+                        PorcentageFixedCost = x.Price.PorcentageFixedCost,
+                        PorcentageProfit = x.Price.PorcentageProfit,
+                        }
+                });
+
+                var finalListResult = await listResultDto.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);
                 return finalListResult;
             }
             catch (Exception ex)

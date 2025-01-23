@@ -3,9 +3,8 @@ using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.MemoryRamDto
 {
-    public class MemoryRamResponseDto
+    public class MemoryRamResponseDto : BaseDto
     {
-        public int Id { get; set; }
         public string Name { get; set; } = default!;
         public string Socket { get; set; } = default!;
         public double Frequency { get; set; }

@@ -4,9 +4,8 @@ using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.MemoryRomDto
 {
-    public class MemoryRomResponseDto
+    public class MemoryRomResponseDto : BaseDto
     {
-        public int Id { get; set; }
         public string Name { get; set; } = default!;
         public string Socket { get; set; } = default!;
         public double VelocityRead { get; set; } = default!;

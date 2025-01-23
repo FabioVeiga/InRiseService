@@ -3,7 +3,7 @@ using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.VideoBoardDto
 {
-    public class VideoBoardDtoResponse
+    public class VideoBoardDtoResponse : BaseDto
     {
         public string Name { get; set; } = default!;
         public string Socket { get; set; } = default!;

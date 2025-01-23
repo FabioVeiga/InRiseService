@@ -10,6 +10,6 @@ namespace InRiseService.Application.Interfaces
         Task UpdateAsync(Tower Tower);
         Task DeleteAsync(Tower Tower);
         Task<Tower?> GetByIdAsync(int id);
-        Task<Pagination<Tower>> GetByFilterAsync(TowerFilterDto filter);
+        Task<Pagination<TowerDtoResponse>> GetByFilterAsync(TowerFilterDto filter);
     }
 }

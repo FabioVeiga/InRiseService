@@ -10,6 +10,6 @@ namespace InRiseService.Application.Interfaces
         Task UpdateAsync(MemoryRom MemoryRom);
         Task DeleteAsync(MemoryRom MemoryRom);
         Task<MemoryRom?> GetByIdAsync(int id);
-        Task<Pagination<MemoryRom>> GetByFilterAsync(MemoryRomFilterDto filter);
+        Task<Pagination<MemoryRomResponseDto>> GetByFilterAsync(MemoryRomFilterDto filter);
     }
 }

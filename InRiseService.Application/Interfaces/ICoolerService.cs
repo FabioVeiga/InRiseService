@@ -10,6 +10,6 @@ namespace InRiseService.Application.Interfaces
         Task UpdateAsync(Cooler Cooler);
         Task DeleteAsync(Cooler Cooler);
         Task<Cooler?> GetByIdAsync(int id);
-        Task<Pagination<Cooler>> GetByFilterAsync(CoolerFilterDto filter);
+        Task<Pagination<CoolerResponseDto>> GetByFilterAsync(CoolerFilterDto filter);
     }
 }

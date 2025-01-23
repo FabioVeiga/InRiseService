@@ -1,4 +1,5 @@
 using InRiseService.Application.DTOs.PaginationDto;
+using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.DTOs.ProcessorDto;
 using InRiseService.Application.Extentions;
 using InRiseService.Application.Interfaces;
@@ -36,11 +37,12 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task<Pagination<Processor>> GetByFilterAsync(ProcessorDtoFilterRequest filter)
+        public async Task<Pagination<ProcessorDtoResponse>> GetByFilterAsync(ProcessorDtoFilterRequest filter)
         {
             try
             {
                 var query = _context.Processors
+                .Include(x => x.Price)
                 .AsNoTracking()
                 .Where(p => p.Name.ToUpper().Contains(filter.Name)
                 );
@@ -58,8 +60,38 @@ namespace InRiseService.Application.Services
                     query = filter.IsDeleted.Value 
                         ? query.Where(x => x.DeleteIn != null) 
                         : query.Where(x => x.DeleteIn == null);
-                
-                var finalListResult = await query.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);
+
+                var listResultDto = query.Select(x => new ProcessorDtoResponse()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Active = x.Active,
+                    InsertIn = x.InsertIn,
+                    DeleteIn = x.DeleteIn,
+                    UpdateIn = x.UpdateIn,
+                    Description = x.Description,
+                    ValueClassification = x.ValueClassification,
+                    Potency = x.Potency,
+                    Core = x.Core,
+                    Frequency = x.Frequency,
+                    Generation = x.Generation,
+                    Socket = x.Socket,
+                    SuportMemoryRAM = x.SuportMemoryRAM,
+                    SuportMemoryROM = x.SuportMemoryROM,
+                    SuportVideo = x.SuportVideo,
+                    Price = new PriceResponseDto(){
+                        Id = x.Price!.Id,
+                        CostPrice = x.Price.CostPrice,
+                        FinalPrice = x.Price.FinalPrice,
+                        IVA = x.Price.IVA,
+                        PorcentageADMCost = x.Price.PorcentageADMCost,
+                        PorcentageDiscount = x.Price.PorcentageDiscount,
+                        PorcentageFixedCost = x.Price.PorcentageFixedCost,
+                        PorcentageProfit = x.Price.PorcentageProfit,
+                        }
+                });
+
+                var finalListResult = await listResultDto.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);
                 return finalListResult;
             }
             catch (Exception ex)

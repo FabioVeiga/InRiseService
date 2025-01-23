@@ -10,6 +10,6 @@ namespace InRiseService.Application.Interfaces
         Task UpdateAsync(VideoBoard videoBoard);
         Task DeleteAsync(VideoBoard videoBoard);
         Task<VideoBoard?> GetByIdAsync(int id);
-        Task<Pagination<VideoBoard>> GetByFilterAsync(VideoBoardFilterDto filter);
+        Task<Pagination<VideoBoardDtoResponse>> GetByFilterAsync(VideoBoardFilterDto filter);
     }
 }

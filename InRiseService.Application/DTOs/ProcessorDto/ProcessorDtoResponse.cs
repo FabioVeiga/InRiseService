@@ -3,7 +3,7 @@ using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.ProcessorDto
 {
-    public class ProcessorDtoResponse
+    public class ProcessorDtoResponse : BaseDto
     {
         public string Name { get; set; } = default!;
         public string Generation { get; set; } = default!;

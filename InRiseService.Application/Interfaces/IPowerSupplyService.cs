@@ -11,6 +11,6 @@ namespace InRiseService.Application.Interfaces
         Task UpdateAsync(PowerSupply PowerSupply);
         Task DeleteAsync(PowerSupply PowerSupply);
         Task<PowerSupply?> GetByIdAsync(int id);
-        Task<Pagination<PowerSupply>> GetByFilterAsync(PowerSupplyFilterDto filter);
+        Task<Pagination<PowerSupplyDtoResponse>> GetByFilterAsync(PowerSupplyFilterDto filter);
     }
 }

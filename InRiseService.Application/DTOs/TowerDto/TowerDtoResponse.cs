@@ -3,9 +3,8 @@ using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.TowerDto
 {
-    public class TowerDtoResponse
+    public class TowerDtoResponse : BaseDto
     {
-        public int Id { get; set; }
         public string Name { get; set; } = default!;
         public string Dimesion { get; set; } = default!;
         public int MaxFans { get; set; } = default!;

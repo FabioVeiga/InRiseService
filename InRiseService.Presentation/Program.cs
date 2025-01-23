@@ -69,7 +69,6 @@ builder.Services.AddAuthentication(x =>
     });
 
 var con = builder.Configuration.GetConnectionString("Aiven");
-System.Console.WriteLine(con);
 
 builder.Services.AddDbContext<ApplicationContext>(opt =>
     opt.UseMySql(con,

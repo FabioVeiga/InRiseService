@@ -10,6 +10,6 @@ namespace InRiseService.Application.Interfaces
         Task UpdateAsync(MonitorScreen MonitorScreen);
         Task DeleteAsync(MonitorScreen MonitorScreen);
         Task<MonitorScreen?> GetByIdAsync(int id);
-        Task<Pagination<MonitorScreen>> GetByFilterAsync(MonitorScreenFilterDto filter);
+        Task<Pagination<MonitorScreenResponseDto>> GetByFilterAsync(MonitorScreenFilterDto filter);
     }
 }

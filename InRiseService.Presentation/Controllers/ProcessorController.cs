@@ -153,6 +153,12 @@ namespace InRiseService.Presentation.Controllers
                 if(result.TotalItems == 0)
                     return NotFound();
 
+                foreach (var item in result.Items)
+                {
+                    var mappedResponse = _mapper.Map<ProcessorDtoResponse>(item);
+                    mappedResponse.Images = await _imageService.GetByProcessorIdAsync(item.Id);
+                }
+
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
                     result

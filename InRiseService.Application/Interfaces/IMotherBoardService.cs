@@ -10,7 +10,7 @@ namespace InRiseService.Application.Interfaces
         Task UpdateAsync(MotherBoard motherBoard);
         Task DeleteAsync(MotherBoard motherBoard);
         Task<MotherBoard?> GetByIdAsync(int id);
-        Task<Pagination<MotherBoard>> GetByFilterAsync(MotherBoardDtoFilterRequest request);
+        Task<Pagination<MotherBoardDtoResponse>> GetByFilterAsync(MotherBoardDtoFilterRequest request);
 
     }
 }

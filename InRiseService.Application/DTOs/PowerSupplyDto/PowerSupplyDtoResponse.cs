@@ -3,9 +3,8 @@ using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.PowerSupplyDto
 {
-    public class PowerSupplyDtoResponse
+    public class PowerSupplyDtoResponse : BaseDto
     {
-        public int Id { get; set; }
         public string Name { get; set; } = default!;
         public int Potency { get; set; }
         public int PotencyReal { get; set; }

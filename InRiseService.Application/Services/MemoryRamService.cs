@@ -1,5 +1,6 @@
 using InRiseService.Application.DTOs.MemoryRamDto;
 using InRiseService.Application.DTOs.PaginationDto;
+using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.Extentions;
 using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
@@ -36,11 +37,12 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task<Pagination<MemoryRam>> GetByFilterAsync(MemoryRamFilterDto filter)
+        public async Task<Pagination<MemoryRamResponseDto>> GetByFilterAsync(MemoryRamFilterDto filter)
         {
             try
             {
                 var query = _context.MemoriesRam
+                .Include(x => x.Price)
                 .AsNoTracking()
                 .Where(p => p.Name.ToUpper().Contains(filter.Name.ToUpper()));
 
@@ -57,8 +59,31 @@ namespace InRiseService.Application.Services
                     query = filter.IsDeleted.Value 
                         ? query.Where(x => x.DeleteIn != null) 
                         : query.Where(x => x.DeleteIn == null);
-                                    
-                var finalListResult = await query.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);
+
+                var listResultDto = query.Select(x => new MemoryRamResponseDto(){
+                    Id = x.Id,
+                    Name = x.Name,
+                    ValueClassification = x.ValueClassification,
+                    Active = x.Active,
+                    DeleteIn = x.DeleteIn,
+                    Capacity = x.Capacity,
+                    Description = x.Description,
+                    Frequency = x.Frequency,
+                    InsertIn = x.InsertIn,
+                    Socket = x.Socket,
+                    Price = new PriceResponseDto(){
+                        Id = x.Price!.Id,
+                        CostPrice = x.Price.CostPrice,
+                        FinalPrice = x.Price.FinalPrice,
+                        IVA = x.Price.IVA,
+                        PorcentageADMCost = x.Price.PorcentageADMCost,
+                        PorcentageDiscount = x.Price.PorcentageDiscount,
+                        PorcentageFixedCost = x.Price.PorcentageFixedCost,
+                        PorcentageProfit = x.Price.PorcentageProfit,
+                        }
+                });
+
+                var finalListResult = await listResultDto.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);
                 return finalListResult;
             }
             catch (Exception ex)

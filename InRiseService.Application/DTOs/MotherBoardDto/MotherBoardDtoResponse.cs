@@ -3,9 +3,8 @@ using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.MotherBoardDto
 {
-    public class MotherBoardDtoResponse
+    public class MotherBoardDtoResponse : BaseDto
     {
-        public int Id { get; set; }
         public string Name { get; set; } = default!;
         public string Socket { get; set; } = default!;
         public string SocketMemory { get; set; } = default!;

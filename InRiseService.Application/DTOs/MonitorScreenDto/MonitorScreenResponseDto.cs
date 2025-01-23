@@ -3,9 +3,8 @@ using InRiseService.Application.DTOs.PriceDto;
 
 namespace InRiseService.Application.DTOs.MonitorScreenDto
 {
-    public class MonitorScreenResponseDto
+    public class MonitorScreenResponseDto : BaseDto
     {
-        public int Id { get; set; }
         public string Name { get; set; } = default!;
         public string Dimesion { get; set; } = default!;
         public int UpdateVolume { get; set; } = default!;
