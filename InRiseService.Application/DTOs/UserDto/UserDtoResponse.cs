@@ -1,4 +1,5 @@
 using InRiseService.Domain;
+using InRiseService.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace InRiseService.Application.UserDto
@@ -14,5 +15,6 @@ namespace InRiseService.Application.UserDto
         public bool Marketing { get; set; }
         public bool Term { get; set; }
         public string? ValidationCodeMsg { get; set; }
+        public EnumProfile Profile { get; set; }
     }
 }

@@ -191,7 +191,8 @@ namespace InRiseService.Application.Services
                     Lastname = x.Lastname,
                     Name = x.Name,
                     UpdateIn = x.UpdateIn,
-                    PhoneNumber = x.PhoneNumber
+                    PhoneNumber = x.PhoneNumber,
+                    Profile = x.Profile
                 });
 
                 var finalListResult = await listResultDto.PaginationAsync(request.Pagination.PageIndex, request.Pagination.PageSize);
