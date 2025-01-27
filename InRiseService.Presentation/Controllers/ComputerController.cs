@@ -219,7 +219,7 @@ namespace InRiseService.Presentation.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetFiltered([FromQuery] ComputerFilterDto request)
         {
             try
