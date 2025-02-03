@@ -93,7 +93,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> GetById(int id)
         {
             try
@@ -119,7 +119,7 @@ namespace InRiseService.Presentation.Controllers
 
         [HttpGet]
         [Route("user/{userId}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> GetByUserId(int userId)
         {
             try
