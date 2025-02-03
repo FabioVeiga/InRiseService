@@ -28,10 +28,11 @@ namespace InRiseService.Presentation.Controllers
         private readonly ITowerService _towerService;
         private readonly IVideoBoardService _videoBoardService;
         private readonly ISendGridService _sendGridService;
+        private readonly IComputerService _computerService;
 
         public OrderController(ILogger<OrderController> logger, IUserService userService, IOrderStatusService orderStatusService, IOrderService orderService, ICoolerService coolerService
         , IMemoryRamService memoryRamService, IHttpContextAccessor httpContextAccessor, IMemoryRomService memoryRomService, IMonitorScreenService monitorScreenService, IMotherBoardService motherBoardService
-        , IPowerSupplyService powerSupplyService, IProcessorService processorService, ITowerService towerService, IVideoBoardService videoBoardService, ISendGridService sendGridService)
+        , IPowerSupplyService powerSupplyService, IProcessorService processorService, ITowerService towerService, IVideoBoardService videoBoardService, ISendGridService sendGridService, IComputerService computerService)
         {
             _logger = logger;
             _userService = userService;
@@ -48,6 +49,7 @@ namespace InRiseService.Presentation.Controllers
             _towerService = towerService;
             _videoBoardService = videoBoardService;
             _sendGridService = sendGridService;
+            _computerService = computerService;
         }
 
         [HttpPost]
@@ -260,34 +262,37 @@ namespace InRiseService.Presentation.Controllers
                 switch (item.TypeCategory)
                 {
                     case EnumTypeCategoryImage.cooler:
-                        if (await _coolerService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.cooler), $"Produto não encontrado - Id: ${item.ProductId}");
+                        if (await _coolerService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.cooler), $"Produto não encontrado - Id: ${item.ProductId} da categoria id {(int)item.TypeCategory}");
                         break;
                     case EnumTypeCategoryImage.memoryRam:
-                        if (await _memoryRamService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.memoryRam), $"Produto não encontrado - Id: ${item.ProductId}");
+                        if (await _memoryRamService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.memoryRam), $"Produto não encontrado - Id: ${item.ProductId} da categoria id {(int)item.TypeCategory}");
                         break;
                     case EnumTypeCategoryImage.memoryRom:
-                        if (await _memoryRomService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.memoryRom), $"Produto não encontrado - Id: ${item.ProductId}");
+                        if (await _memoryRomService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.memoryRom), $"Produto não encontrado - Id: ${item.ProductId} da categoria id {(int)item.TypeCategory}");
                         break;
                     case EnumTypeCategoryImage.monitorScreen:
-                        if (await _monitorScreenService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.monitorScreen), $"Produto não encontrado - Id: ${item.ProductId}");
+                        if (await _monitorScreenService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.monitorScreen), $"Produto não encontrado - Id: ${item.ProductId} da categoria id {(int)item.TypeCategory}");
                         break;
                     case EnumTypeCategoryImage.motherBoard:
-                        if (await _motherBoardService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.motherBoard), $"Produto não encontrado - Id: ${item.ProductId}");
+                        if (await _motherBoardService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.motherBoard), $"Produto não encontrado - Id: ${item.ProductId} da categoria id {(int)item.TypeCategory}");
                         break;
                     case EnumTypeCategoryImage.powerSupply:
-                        if (await _powerSupplyService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.powerSupply), $"Produto não encontrado - Id: ${item.ProductId}");
+                        if (await _powerSupplyService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.powerSupply), $"Produto não encontrado - Id: ${item.ProductId} da categoria id {(int)item.TypeCategory}");
                         break;
                     case EnumTypeCategoryImage.processor:
-                        if (await _processorService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.processor), $"Produto não encontrado - Id: ${item.ProductId}");
+                        if (await _processorService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.processor), $"Produto não encontrado - Id: ${item.ProductId} da categoria id {(int)item.TypeCategory}");
                         break;
                     case EnumTypeCategoryImage.tower:
-                        if (await _towerService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.tower), $"Produto não encontrado - Id: ${item.ProductId}");
+                        if (await _towerService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.tower), $"Produto não encontrado - Id: ${item.ProductId} da categoria id {(int)item.TypeCategory}");
                         break;
                     case EnumTypeCategoryImage.videoBoard:
-                        if (await _videoBoardService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.videoBoard), $"Produto não encontrado - Id: ${item.ProductId}");
+                        if (await _videoBoardService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.videoBoard), $"Produto não encontrado - Id: ${item.ProductId} da categoria id {(int)item.TypeCategory}");
+                        break;
+                    case EnumTypeCategoryImage.computer:
+                        if (await _computerService.GetByIdAsync(item.ProductId) is null) ModelState.AddModelError(nameof(EnumTypeCategoryImage.computer), $"Produto não encontrado - Id: ${item.ProductId} da categoria id {(int)item.TypeCategory}");
                         break;
                     default:
-                        ModelState.AddModelError(nameof(item.TypeCategory), "Tipo {item.TypeCategory} de produto não encontrado!");
+                        ModelState.AddModelError(nameof(item.TypeCategory.category), $"Tipo ({(int)item.TypeCategory}) {item.TypeCategory} do productId {item.ProductId}  não encontrado!");
                         break;
                 }
             }
