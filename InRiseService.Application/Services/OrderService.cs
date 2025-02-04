@@ -204,15 +204,21 @@ namespace InRiseService.Application.Services
 
         private string GetProductName(int productId, EnumTypeCategoryImage productType)
         {
-            switch (productType)
+            return productType switch
             {
-                case EnumTypeCategoryImage.cooler:
-                    return _context.Coolers.FirstOrDefault(x => x.Id == productId)?.Name ?? string.Empty;
-                case EnumTypeCategoryImage.memoryRam:
-                    return _context.MemoriesRam.FirstOrDefault(x => x.Id == productId)?.Name ?? string.Empty;
-                default:
-                    return string.Empty;
-            }
+                EnumTypeCategoryImage.cooler => _context.Coolers.FirstOrDefault(x => x.Id == productId)?.Name ?? string.Empty,
+                EnumTypeCategoryImage.memoryRam => _context.MemoriesRam.FirstOrDefault(x => x.Id == productId)?.Name ?? string.Empty,
+                EnumTypeCategoryImage.computer => _context.Computers.FirstOrDefault(x => x.Id == productId)?.Name ?? string.Empty,
+                EnumTypeCategoryImage.memoryRom => _context.MemoriesRom.FirstOrDefault(x => x.Id == productId)?.Name ?? string.Empty,
+                EnumTypeCategoryImage.monitorScreen => _context.MonitorsScreen.FirstOrDefault(x => x.Id == productId)?.Name ?? string.Empty,
+                EnumTypeCategoryImage.motherBoard => _context.MotherBoards.FirstOrDefault(x => x.Id == productId)?.Name ?? string.Empty,
+                EnumTypeCategoryImage.powerSupply => _context.PowerSupplies.FirstOrDefault(x => x.Id == productId)?.Name ?? string.Empty,
+                EnumTypeCategoryImage.processor => _context.Processors.FirstOrDefault(x => x.Id == productId)?.Name ?? string.Empty,
+                EnumTypeCategoryImage.software => _context.Softwares.FirstOrDefault(x => x.Id == productId)?.Name ?? string.Empty,
+                EnumTypeCategoryImage.tower => _context.Towers.FirstOrDefault(x => x.Id == productId)?.Name ?? string.Empty,
+                EnumTypeCategoryImage.videoBoard => _context.VideosBoard.FirstOrDefault(x => x.Id == productId)?.Name ?? string.Empty,
+                _ => string.Empty,
+            };
         }
 
         public async Task<bool> UpdateAsync(int id, int orderStatusId)
