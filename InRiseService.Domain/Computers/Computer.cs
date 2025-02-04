@@ -50,5 +50,9 @@ namespace InRiseService.Domain.Computers
         [Display(Name = "Preço de Venda")]
         [Range(0.0, double.MaxValue, ErrorMessage = "{0} precisa ser maior que {1}")]
         public decimal FinalPrice { get; set; }
+
+        [Display(Name = "Valor (Classificação)")]
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public int ValueClassification { get; set; }
     }
 }

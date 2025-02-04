@@ -18,6 +18,7 @@ namespace InRiseService.Application.DTOs.ComputerDto
         public int CoolerId { get; set; }
         public int MonitorScreenId { get; set; }
         public decimal FinalPrice { get; set; }
+        public int ValueClassification { get; set; }
         public ICollection<ImageProductResponseDto>? Images { get; set; }
     }
 }

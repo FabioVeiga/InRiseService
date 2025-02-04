@@ -10,6 +10,10 @@ namespace InRiseService.Application.DTOs.ComputerDto
         [MaxLength(100, ErrorMessage = "{0} deve conter no máximo {1} caracteres!")]
         public string Name { get; set; } = default!;
 
+        [Display(Name = "Valor (Classificação)")]
+        [Required(ErrorMessage = "{0} é obrigatório!")]
+        public int ValueClassification { get; set; }
+
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int ProcessadorId { get; set; }
 
