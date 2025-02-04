@@ -227,7 +227,7 @@ namespace InRiseService.Presentation.Controllers
             try
             {
                 var result = await _orderService.GetOrderHistoricByNumber(number);
-                if (result == null) return NotFound();
+                if (result.Count() == 0) return NotFound();
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
                     result
