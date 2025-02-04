@@ -46,6 +46,9 @@ namespace InRiseService.Application.Services
 
                 if(filter.IsDeleted.HasValue)
                     query = query.Where(x => x.DeleteIn != null);
+
+                if(filter.ValueClassification.HasValue)
+                    query = query.Where(x => x.ValueClassification == filter.ValueClassification.Value);
                 
                 var finalListResult = await query.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);
                 return finalListResult;
