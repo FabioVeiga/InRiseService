@@ -1,52 +1,44 @@
 using AutoMapper;
 using InRiseService.Application.DTOs.ApiResponseDto;
-using InRiseService.Application.DTOs.MemoryRamDto;
-using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.Interfaces;
-using InRiseService.Domain.MemoriesRam;
-using InRiseService.Domain.Prices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using InRiseService.Application.DTOs.ProductCategoryDto;
+using InRiseService.Domain.ProductCategories;
 
 namespace InRiseService.Presentation.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MemoryRamController : ControllerBase
+    public class ProductCategoryController : ControllerBase
     {
-        private readonly ILogger<MemoryRamController> _logger;
+        private readonly ILogger<ProductCategoryController> _logger;
         private readonly IMapper _mapper;
-        private readonly IMemoryRamService _memoryRamService;
-        private readonly IImageService _imageService;
+        private readonly IProductCategoryService _productCategoryService;
 
-        public MemoryRamController(
-            ILogger<MemoryRamController> logger,
+        public ProductCategoryController(
+            ILogger<ProductCategoryController> logger,
             IMapper mapper,
-            IMemoryRamService memoryRamService,
-            IImageService imageService
+            IProductCategoryService productCategoryService
             )
         {
             _logger = logger;
             _mapper = mapper;
-            _memoryRamService = memoryRamService;
-            _imageService = imageService;
+            _productCategoryService = productCategoryService;
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] MemoryRamRequestDto request)
+        public async Task<IActionResult> Create([FromBody] ProductCategoryRequestDto request)
         {
             try
             {
                 if(!ModelState.IsValid) return BadRequest();
-                var mapped = _mapper.Map<MemoryRam>(request);
-                mapped.Price = _mapper.Map<Price>(request.Price);
-                var result = await _memoryRamService.InsertAsync(mapped);
-                var mappedResponse = _mapper.Map<MemoryRamResponseDto>(result);
-                mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
+                var mapped = _mapper.Map<ProductCategory>(request);
+                var result = await _productCategoryService.InsertAsync(mapped);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
-                    mappedResponse
+                    result
                 );
                 return Ok(response);
             }
@@ -64,20 +56,16 @@ namespace InRiseService.Presentation.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update([FromBody] MemoryRamRequestDto request, int id)
+        public async Task<IActionResult> Update([FromBody] ProductCategoryRequestDto request, int id)
         {
             try
             {
-                var model = await _memoryRamService.GetByIdAsync(id);
+                var model = await _productCategoryService.GetByIdAsync(id);
                 if(model is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
-                var modelPrice = model.Price;
-                model = _mapper.Map<MemoryRam>(request);
+                model = _mapper.Map<ProductCategory>(request);
                 model.Id = id;
-                model.Price = _mapper.Map<Price>(request.Price);
-                model.Price.Id = modelPrice!.Id;
-                model.PriceId = modelPrice.Id;
-                await _memoryRamService.UpdateAsync(model);
+                await _productCategoryService.UpdateAsync(model);
                 return Ok();
             }
             catch (Exception ex)
@@ -98,12 +86,10 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var result = await _memoryRamService.GetByIdAsync(id);
+                var result = await _productCategoryService.GetByIdAsync(id);
                 if(result == null) return NotFound();
 
-                var mappedResponse = _mapper.Map<MemoryRamResponseDto>(result);
-                mappedResponse.Images = await _imageService.GetByMemoryRamIdAsync(result.Id);
-                mappedResponse.Price = _mapper.Map<PriceResponseDto>(result.Price);
+                var mappedResponse = _mapper.Map<ProductCategoryResponseDto>(result);
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
@@ -113,7 +99,7 @@ namespace InRiseService.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex}");
+                _logger.LogError("{Ex}",ex);
                 var response = new ApiResponse<dynamic>(
                    StatusCodes.Status500InternalServerError,
                    "Erro ao buscar"
@@ -129,10 +115,10 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var result = await _memoryRamService.GetByIdAsync(id);
+                var result = await _productCategoryService.GetByIdAsync(id);
                 if(result == null) return NotFound();
 
-                await _memoryRamService.DeleteAsync(result);
+                await _productCategoryService.DeleteAsync(result);
                 return Ok();
             }
             catch (Exception ex)
@@ -145,22 +131,16 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
-        
+
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetFiltered([FromQuery] MemoryRamFilterDto request)
+        public async Task<IActionResult> GetFiltered([FromQuery]ProductCategoryFilterDto request)
         {
             try
             {
-               var result = await _memoryRamService.GetByFilterAsync(request);
+               var result = await _productCategoryService.GetByFilterAsync(request);
                 if(result.TotalItems == 0)
                     return NotFound();
-
-                foreach (var item in result.Items)
-                {
-                    var mappedResponse = _mapper.Map<MemoryRamResponseDto>(item);
-                    mappedResponse.Images = await _imageService.GetByMemoryRamIdAsync(item.Id);
-                }
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
@@ -178,7 +158,7 @@ namespace InRiseService.Presentation.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
-    
+
         [HttpPut]
         [Route("Activate/{id}")]
         [Authorize(Roles = "Admin")]
@@ -186,10 +166,10 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var Cooler = await _memoryRamService.GetByIdAsync(id);
-                if (Cooler is null) return NotFound();
-                Cooler.Active = true;
-                await _memoryRamService.UpdateAsync(Cooler);
+                var model = await _productCategoryService.GetByIdAsync(id);
+                if (model is null) return NotFound();
+                model.Active = true;
+                await _productCategoryService.UpdateAsync(model);
                 return Ok();
             }
             catch (Exception ex)
@@ -210,10 +190,10 @@ namespace InRiseService.Presentation.Controllers
         {
             try
             {
-                var Cooler = await _memoryRamService.GetByIdAsync(id);
-                if (Cooler is null) return NotFound();
-                Cooler.Active = false;
-                await _memoryRamService.UpdateAsync(Cooler);
+                var model = await _productCategoryService.GetByIdAsync(id);
+                if (model is null) return NotFound();
+                model.Active = false;
+                await _productCategoryService.UpdateAsync(model);
                 return Ok();
             }
             catch (Exception ex)

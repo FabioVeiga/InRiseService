@@ -9,7 +9,7 @@ namespace InRiseService.Application.Services
 
         public KeyVaultService()
         {
-            string  _keyVaultName = Environment.GetEnvironmentVariable("SECRET_NAME");
+            string  _keyVaultName = Environment.GetEnvironmentVariable("SECRET_NAME")!;
             string kvUri = $"https://{_keyVaultName}.vault.azure.net";
             _secretClient = new SecretClient(new Uri(kvUri), new DefaultAzureCredential());
         }
