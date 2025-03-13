@@ -6,6 +6,7 @@ namespace InRiseService.Application.DTOs.ProductDto
     {
         public string Name { get; set; } = string.Empty;
         public bool? IsDeleted { get; set; }
+        public bool? IsActive { get; set; }
         public PaginationRequest Pagination { get; set; } = default!;
     }
 }
