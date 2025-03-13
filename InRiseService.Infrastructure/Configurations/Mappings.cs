@@ -9,6 +9,8 @@ using InRiseService.Application.DTOs.MotherBoardDto;
 using InRiseService.Application.DTOs.PowerSupplyDto;
 using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.DTOs.ProcessorDto;
+using InRiseService.Application.DTOs.ProductCategoryDto;
+using InRiseService.Application.DTOs.ProductDto;
 using InRiseService.Application.DTOs.SoftwareDto;
 using InRiseService.Application.DTOs.TowerDto;
 using InRiseService.Application.DTOs.UserAddressDto;
@@ -28,6 +30,8 @@ using InRiseService.Domain.MotherBoards;
 using InRiseService.Domain.PowerSupplies;
 using InRiseService.Domain.Prices;
 using InRiseService.Domain.Processors;
+using InRiseService.Domain.ProductCategories;
+using InRiseService.Domain.Products;
 using InRiseService.Domain.Softwares;
 using InRiseService.Domain.Towers;
 using InRiseService.Domain.Users;
@@ -99,6 +103,12 @@ namespace InRiseService.Infrastructure.Configurations
 
             CreateMap<Category, CategoryRequestDto>().ReverseMap();
             CreateMap<Category, CategoryResponseDto>().ReverseMap();
+
+            CreateMap<ProductCategory, ProductCategoryRequestDto>().ReverseMap();
+            CreateMap<ProductCategory, ProductCategoryResponseDto>().ReverseMap();
+
+            CreateMap<Product, ProductRequestDto>().ReverseMap();
+            CreateMap<Product, ProductResponseDto>().ReverseMap();
         }
     }
 }
