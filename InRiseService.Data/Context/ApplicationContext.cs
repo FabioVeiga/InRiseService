@@ -13,6 +13,8 @@ using InRiseService.Domain.OrderStatuses;
 using InRiseService.Domain.PowerSupplies;
 using InRiseService.Domain.Prices;
 using InRiseService.Domain.Processors;
+using InRiseService.Domain.ProductCategories;
+using InRiseService.Domain.Products;
 using InRiseService.Domain.Softwares;
 using InRiseService.Domain.Towers;
 using InRiseService.Domain.Users;
@@ -52,7 +54,8 @@ namespace InRiseService.Data.Context
         public DbSet<OrderHistoric> OrderHistorics { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Software> Softwares { get; set; }
-
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
     }
 
     public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationContext>
