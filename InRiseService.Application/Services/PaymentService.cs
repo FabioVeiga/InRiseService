@@ -8,7 +8,7 @@ namespace InRiseService.Application.Services
 {
     public class PaymentService(ILogger<PaymentService> logger) : IPaymentService
     {
-        private readonly string _key = "sk_test_51PlB012KYHPXsQOeQJpI2TaOpNeE8xrOQslBN2lGHowq1MwgyZ1VP6L6UabuzAaGKU4kjsSwNPd0AGOfqyeawBbf00e81hGMh5";
+        private readonly string _key = Environment.GetEnvironmentVariable("SkipeAppKey")!;
         private readonly ILogger<PaymentService> _logger = logger;
 
         public string CreateSessionStripe(PaymentProductsRequestDto paymentProductsRequestDto)
@@ -23,9 +23,11 @@ namespace InRiseService.Application.Services
                             Currency = "usd",
                             ProductData = new SessionLineItemPriceDataProductDataOptions(){
                                 Name = item.Name,
+
                             },
                             UnitAmountDecimal = item.Price,
-                        }
+                        },
+                        Quantity = item.Quantity
                     });
                 }
                 StripeConfiguration.ApiKey = _key;
