@@ -28,6 +28,9 @@ namespace InRiseService.Domain.Softwares
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int VideoBoardIdealId { get; set; }
 
+        [Display(Name = "Descrição")]
+        public string Description { get; set; } = string.Empty;
+
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
 

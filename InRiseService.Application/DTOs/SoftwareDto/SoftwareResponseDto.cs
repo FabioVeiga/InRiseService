@@ -11,6 +11,7 @@ namespace InRiseService.Application.DTOs.SoftwareDto
         public int MemoryRamIdealId { get; set; }
         public int VideoBoardMinId { get; set; }
         public int VideoBoardIdealId { get; set; }
+        public string Description { get; set; } = string.Empty;
         public ICollection<ImageProductResponseDto>? Images { get; set; }
     }
 }
