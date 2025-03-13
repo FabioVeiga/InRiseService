@@ -179,6 +179,11 @@ namespace InRiseService.Application.Services
             return await GetImagesByNavigationPropertyAsync(id, x => x.Category);
         }
 
+        public async Task<ICollection<ImageProductResponseDto>> GetByProductIdAsync(int id)
+        {
+            return await GetImagesByNavigationPropertyAsync(id, x => x.Product);
+        }
+
         private async Task<ICollection<ImageProductResponseDto>> GetImagesByNavigationPropertyAsync<T>(
             int id,
             Expression<Func<ImagensProduct, T>> navigationProperty)
@@ -203,6 +208,5 @@ namespace InRiseService.Application.Services
                 throw;
             }
         }
-
     }
 }

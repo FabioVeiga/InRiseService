@@ -29,6 +29,8 @@ namespace InRiseService.Presentation.Controllers
         private readonly IComputerService _computerService;
         private readonly ICategoryService _categoryService;
         private readonly ISoftwareService _softwareService;
+        private readonly IProductService _productService;
+        private readonly IProductCategoryService _productCategoryService;
 
 
         public ImageController(
@@ -36,7 +38,8 @@ namespace InRiseService.Presentation.Controllers
             IBlobFileAzureService blobFileAzureService, IMemoryRamService memoryRamService, IMemoryRomService memoryRomService,
             IMonitorScreenService monitorScreenService, IMotherBoardService motherBoardService, IPowerSupplyService powerSupplyService,
             IProcessorService processorService, ITowerService towerService, IVideoBoardService videoBoardService,
-            IComputerService computerService, ICategoryService categoryService, ISoftwareService softwareService)
+            IComputerService computerService, ICategoryService categoryService, ISoftwareService softwareService,
+            IProductService productService, IProductCategoryService productCategoryService)
         {
             _logger = logger;
             _mapper = mapper;
@@ -54,6 +57,8 @@ namespace InRiseService.Presentation.Controllers
             _computerService = computerService;
             _categoryService = categoryService;
             _softwareService = softwareService;
+            _productService = productService;
+            _productCategoryService = productCategoryService;
         }
 
         [HttpGet]
@@ -252,6 +257,12 @@ namespace InRiseService.Presentation.Controllers
                     ImageName = file.FileName,
                     Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
                 },
+                { Id: 13 } => new ImagensProduct()
+                {
+                    ProductId = idProduct,
+                    ImageName = file.FileName,
+                    Pathkey = $"{imageCategoryDto.Name}/{idProduct}"
+                },
                 _ => throw new NotImplementedException()
             };
             return model;
@@ -273,6 +284,7 @@ namespace InRiseService.Presentation.Controllers
                 "computer" => await _computerService.GetByIdAsync(imagensProduct.ComputerId ?? 0) is not null,
                 "category" => await _categoryService.GetByIdAsync(imagensProduct.CategoryId ?? 0) is not null,
                 "software" => await _softwareService.GetByIdAsync(imagensProduct.SoftwareId ?? 0) is not null,
+                "product" => await _productService.GetByIdAsync(imagensProduct.ProductId ?? 0) is not null,
                 _ => throw new NotImplementedException()
             };
             return result;

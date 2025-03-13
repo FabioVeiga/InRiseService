@@ -21,7 +21,7 @@ namespace InRiseService.Application.Interfaces
         Task<ICollection<ImageProductResponseDto>> GetBySoftwareIdAsync(int id);
         Task<ICollection<ImageProductResponseDto>> GetByTowerIdAsync(int id);
         Task<ICollection<ImageProductResponseDto>> GetByVideoBoardIdAsync(int id);
-        
+        Task<ICollection<ImageProductResponseDto>> GetByProductIdAsync(int id);
 
         ICollection<ImageCategoryDto> GetImageCategories();
         ImageCategoryDto? GetImageCategoryByName(string nameCategoryImage);

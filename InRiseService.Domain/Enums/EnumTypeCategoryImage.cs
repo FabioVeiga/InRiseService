@@ -37,5 +37,8 @@ namespace InRiseService.Domain.Enums
 
         [Description("software")]
         software = 12,
+
+        [Description("product")]
+        product = 13,
     }
 }
