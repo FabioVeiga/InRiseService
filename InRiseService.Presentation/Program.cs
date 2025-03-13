@@ -9,7 +9,7 @@ using InRiseService.Infrastructure.Extentions;
 var builder = WebApplication.CreateBuilder(args);
 
 var secret = builder.Configuration.GetSection("AppSettings").GetValue<string>("Secret");
-var key = Encoding.ASCII.GetBytes(secret);
+var key = Encoding.ASCII.GetBytes(secret!);
 
 // Add services to the container.
 builder.Services.RegisterDependencies();

@@ -73,7 +73,7 @@ namespace InRiseService.Presentation.Controllers
                 model = _mapper.Map<MemoryRom>(request);
                 model.Id = id;
                 model.Price = _mapper.Map<Price>(request.Price);
-                model.Price.Id = modelPrice.Id;
+                model.Price.Id = modelPrice!.Id;
                 model.PriceId = modelPrice.Id;
                 await _memoryRomService.UpdateAsync(model);
                 return Ok();

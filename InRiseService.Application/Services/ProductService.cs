@@ -22,7 +22,7 @@ namespace InRiseService.Application.Services
                 product.DeleteIn = DateTime.Now;
                 product.Active = false;
                 _context.Products.Update(product);
-                await UpdateAsync(product);
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -97,12 +97,13 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task<Product> InsertAsync(Product product)
+        public async Task<Product> InsertAsync(Product product, ProductRequestDto dto)
         {
             try
             {
                 product.InsertIn = DateTime.Now;
                 product.Active = true;
+                product.SetValueTypeProducts(dto.ValueTypeProducts);
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return product;
@@ -114,11 +115,12 @@ namespace InRiseService.Application.Services
             }
         }
 
-        public async Task UpdateAsync(Product product)
+        public async Task UpdateAsync(Product product, ProductRequestDto dto)
         {
             try
             {
                 product.UpdateIn = DateTime.Now;
+                _context.Add(product);
                 _context.Update(product);
                 await _context.SaveChangesAsync();
             }

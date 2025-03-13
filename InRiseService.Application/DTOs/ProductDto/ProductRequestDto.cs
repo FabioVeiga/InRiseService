@@ -19,7 +19,7 @@ namespace InRiseService.Application.DTOs.ProductDto
         public int ProductCategoryId { get; set; }
 
         [Required(ErrorMessage = "{0} é obrigatório!")]
-        public IList<EnumValueTypeProduct> ValueTypeProducts { get; set; } = [];
+        public List<EnumValueTypeProduct> ValueTypeProducts { get; set; } = [];
 
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public PriceRequestDto Price { get; set; } = default!;

@@ -6,8 +6,8 @@ namespace InRiseService.Application.Interfaces
 {
     public interface IProductService
     {
-        Task<Product> InsertAsync(Product product);
-        Task UpdateAsync(Product product);
+        Task<Product> InsertAsync(Product product, ProductRequestDto dto);
+        Task UpdateAsync(Product product, ProductRequestDto dto);
         Task DeleteAsync(Product product);
         Task<Pagination<ProductResponseDto>> GetByFilterAsync(ProductFilterDto filter);
         Task<Product?> GetByIdAsync(int id);
