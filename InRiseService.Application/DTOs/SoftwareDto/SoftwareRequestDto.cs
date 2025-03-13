@@ -25,6 +25,9 @@ namespace InRiseService.Application.DTOs.SoftwareDto
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int VideoBoardIdealId { get; set; }
 
+        [Display(Name = "Descrição")]
+        public string Description { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "{0} é obrigatório!")]
         public int CategoryId { get; set; }
     }
