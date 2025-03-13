@@ -40,6 +40,8 @@ namespace InRiseService.Infrastructure.Extentions
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ISoftwareService, SoftwareService>();
             services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductCategoryService, ProductCategoryService>();
             services.AddScoped<KeyVaultService>();
             services.AddHttpContextAccessor();
         }
