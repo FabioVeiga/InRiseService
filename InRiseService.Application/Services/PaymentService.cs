@@ -6,15 +6,11 @@ using Stripe.Checkout;
 
 namespace InRiseService.Application.Services
 {
-    public class PaymentService : IPaymentService
+    public class PaymentService(ILogger<PaymentService> logger) : IPaymentService
     {
-        private string _key;
-        private readonly ILogger<PaymentService> _logger;
-        public PaymentService(ILogger<PaymentService> logger)
-        {
-            _logger = logger;
-            _key = Environment.GetEnvironmentVariable("SkipeAppKey")!;
-        }
+        private readonly string _key = "sk_test_51PlB012KYHPXsQOeQJpI2TaOpNeE8xrOQslBN2lGHowq1MwgyZ1VP6L6UabuzAaGKU4kjsSwNPd0AGOfqyeawBbf00e81hGMh5";
+        private readonly ILogger<PaymentService> _logger = logger;
+
         public string CreateSessionStripe(PaymentProductsRequestDto paymentProductsRequestDto)
         {
             try
