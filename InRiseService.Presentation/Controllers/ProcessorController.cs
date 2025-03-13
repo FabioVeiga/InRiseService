@@ -72,7 +72,7 @@ namespace InRiseService.Presentation.Controllers
                 model = _mapper.Map<Processor>(request);
                 model.Id = id;
                 model.Price = _mapper.Map<Price>(request.Price);
-                model.Price.Id = modelPrice.Id;
+                model.Price.Id = modelPrice!.Id;
                 model.PriceId = modelPrice.Id;
                 await _processorService.UpdateAsync(model);
                 return Ok();

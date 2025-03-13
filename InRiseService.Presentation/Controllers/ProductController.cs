@@ -5,30 +5,25 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using InRiseService.Application.DTOs.ProductDto;
 using InRiseService.Domain.Products;
+using InRiseService.Domain.Prices;
 
 namespace InRiseService.Presentation.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProductController : ControllerBase
+    public class ProductController(
+        ILogger<ProductController> logger,
+        IMapper mapper,
+        IProductService productService,
+        IProductCategoryService productCategoryService,
+        IImageService imageService
+            ) : ControllerBase
     {
-        private readonly ILogger<ProductController> _logger;
-        private readonly IMapper _mapper;
-        private readonly IProductService _productService;
-        private readonly IProductCategoryService _productCategoryService;
-
-        public ProductController(
-            ILogger<ProductController> logger,
-            IMapper mapper,
-            IProductService productService,
-            IProductCategoryService productCategoryService
-            )
-        {
-            _logger = logger;
-            _mapper = mapper;
-            _productService = productService;
-            _productCategoryService = productCategoryService;
-        }
+        private readonly ILogger<ProductController> _logger = logger;
+        private readonly IMapper _mapper = mapper;
+        private readonly IProductService _productService = productService;
+        private readonly IProductCategoryService _productCategoryService = productCategoryService;
+        private readonly IImageService _imageService = imageService;
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
@@ -38,6 +33,8 @@ namespace InRiseService.Presentation.Controllers
             {
                 if(!ModelState.IsValid) return BadRequest();
                 var mapped = _mapper.Map<Product>(request);
+                var category = await _productCategoryService.GetByIdAsync(request.ProductCategoryId);
+                if(category == null) return NotFound("Category not found");
                 var result = await _productService.InsertAsync(mapped, request);
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
@@ -66,8 +63,14 @@ namespace InRiseService.Presentation.Controllers
                 var model = await _productService.GetByIdAsync(id);
                 if(model is null) return NotFound();
                 if(!ModelState.IsValid) return BadRequest();
+                var category = await _productCategoryService.GetByIdAsync(request.ProductCategoryId);
+                if(category == null) return NotFound("Category not found");
+                var modelPrice = model.Price;
                 model = _mapper.Map<Product>(request);
                 model.Id = id;
+                model.Price = _mapper.Map<Price>(request.Price);
+                model.Price.Id = modelPrice!.Id;
+                model.PriceId = modelPrice.Id;
                 await _productService.UpdateAsync(model, request);
                 return Ok();
             }
@@ -93,6 +96,11 @@ namespace InRiseService.Presentation.Controllers
                 if(result == null) return NotFound();
 
                 var mappedResponse = _mapper.Map<ProductResponseDto>(result);
+                mappedResponse.Category = new ProductCategoryResponseSimpleDto(){
+                    Id = result.ProductCategory.Id,
+                    Name = result.ProductCategory.Name,
+                    Description = result.ProductCategory.Description
+                };
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,
@@ -144,6 +152,12 @@ namespace InRiseService.Presentation.Controllers
                var result = await _productService.GetByFilterAsync(request);
                 if(result.TotalItems == 0)
                     return NotFound();
+
+                foreach (var item in result.Items)
+                {
+                    var mappedResponse = _mapper.Map<ProductResponseDto>(item);
+                    mappedResponse.Images = await _imageService.GetByProductIdAsync(item.Id);
+                }
 
                 var response = new ApiResponse<dynamic>(
                     StatusCodes.Status200OK,

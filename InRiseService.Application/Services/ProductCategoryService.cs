@@ -2,6 +2,7 @@ using InRiseService.Application.DTOs.PaginationDto;
 using InRiseService.Application.DTOs.PriceDto;
 using InRiseService.Application.DTOs.ProcessorDto;
 using InRiseService.Application.DTOs.ProductCategoryDto;
+using InRiseService.Application.DTOs.ProductDto;
 using InRiseService.Application.Extentions;
 using InRiseService.Application.Interfaces;
 using InRiseService.Data.Context;
@@ -38,6 +39,7 @@ namespace InRiseService.Application.Services
             {
                 var query = _context.ProductCategories
                 .Include(x => x.Products)
+                .ThenInclude(x => x.Price)
                 .AsNoTracking()
                 .Where(p => p.Name.ToUpper().Contains(filter.Name)
                 );
@@ -46,8 +48,8 @@ namespace InRiseService.Application.Services
                     query = query.Where(x => x.Active == filter.IsActive.Value);
 
                 if (filter.IsDeleted.HasValue)
-                    query = filter.IsDeleted.Value 
-                        ? query.Where(x => x.DeleteIn != null) 
+                    query = filter.IsDeleted.Value
+                        ? query.Where(x => x.DeleteIn != null)
                         : query.Where(x => x.DeleteIn == null);
 
                 var listResultDto = query.Select(x => new ProductCategoryResponseDto()
@@ -58,7 +60,28 @@ namespace InRiseService.Application.Services
                     InsertIn = x.InsertIn,
                     DeleteIn = x.DeleteIn,
                     UpdateIn = x.UpdateIn,
-                    Description = x.Description
+                    Description = x.Description,
+                    Products = x.Products.Select(p => new ProductResponseDto()
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        InsertIn = x.InsertIn,
+                        DeleteIn = x.DeleteIn,
+                        UpdateIn = x.UpdateIn,
+                        Description = x.Description,
+                        Price = new PriceResponseDto()
+                        {
+                            Id = p.Price!.Id,
+                            CostPrice = p.Price.CostPrice,
+                            FinalPrice = p.Price.FinalPrice,
+                            IVA = p.Price.IVA,
+                            PorcentageADMCost = p.Price.PorcentageADMCost,
+                            PorcentageDiscount = p.Price.PorcentageDiscount,
+                            PorcentageFixedCost = p.Price.PorcentageFixedCost,
+                            PorcentageProfit = p.Price.PorcentageProfit,
+                        },
+                        ValueTypeProducts = p.ValueTypeProducts
+                    }).ToList()
                 });
 
                 var finalListResult = await listResultDto.PaginationAsync(filter.Pagination.PageIndex, filter.Pagination.PageSize);

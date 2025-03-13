@@ -35,7 +35,7 @@ namespace InRiseService.Application.Services
         {
             try
             {
-                var query = _context.Processors
+                var query = _context.Products
                 .Include(x => x.Price)
                 .AsNoTracking()
                 .Where(p => p.Name.ToUpper().Contains(filter.Name)
@@ -104,7 +104,7 @@ namespace InRiseService.Application.Services
                 product.InsertIn = DateTime.Now;
                 product.Active = true;
                 product.SetValueTypeProducts(dto.ValueTypeProducts);
-                _context.Add(product);
+                _context.Products.Add(product);
                 await _context.SaveChangesAsync();
                 return product;
             }
@@ -120,7 +120,7 @@ namespace InRiseService.Application.Services
             try
             {
                 product.UpdateIn = DateTime.Now;
-                _context.Add(product);
+                product.SetValueTypeProducts(dto.ValueTypeProducts);
                 _context.Update(product);
                 await _context.SaveChangesAsync();
             }

@@ -9,9 +9,15 @@ namespace InRiseService.Application.DTOs.ProductDto
     {
         public string Name { get; set; } = default!;
         public string Description { get; set; } = string.Empty;
-        public ProductCategoryResponseDto Category { get; set; } = default!;
-        public IList<EnumValueTypeProduct> ValueTypeProducts { get; set; } = [];
+        public ProductCategoryResponseSimpleDto Category { get; set; } = default!;
+        public string ValueTypeProducts { get; set; } = string.Empty;
         public ICollection<ImageProductResponseDto>? Images { get; set; }
         public PriceResponseDto Price { get; set; } = default!;
+    }
+
+    public class ProductCategoryResponseSimpleDto{
+        public int Id { get; set; }
+        public string Name { get; set; } = default!;
+        public string Description { get; set; } = string.Empty;
     }
 }

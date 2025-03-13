@@ -108,7 +108,9 @@ namespace InRiseService.Infrastructure.Configurations
             CreateMap<ProductCategory, ProductCategoryResponseDto>().ReverseMap();
 
             CreateMap<Product, ProductRequestDto>().ReverseMap();
-            CreateMap<Product, ProductResponseDto>().ReverseMap();
+            CreateMap<Product , ProductResponseDto>();
+            CreateMap<ProductRequestDto, Product>();
+            CreateMap<ProductResponseDto, Product>().ForMember(dest => dest.Price, opt => opt.Ignore());
         }
     }
 }

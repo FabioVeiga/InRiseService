@@ -27,7 +27,7 @@ namespace InRiseService.Domain.Products
         public Price? Price { get; set; }
 
         public void SetValueTypeProducts(List<EnumValueTypeProduct> valueTypeProducts){
-            ValueTypeProducts = string.Join(";", valueTypeProducts);
+            ValueTypeProducts = string.Join(";", valueTypeProducts.Select(v => ((int)v).ToString()));
         }
     }
 }
