@@ -62,18 +62,21 @@ namespace InRiseService.Data.Context
     {
         public ApplicationContext CreateDbContext(string[] args)
         {
+            string env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
+            System.Console.WriteLine($"env: {env}");
+
             IConfigurationRoot configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
-            .AddJsonFile("appsettings.Development.json", optional: true)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true)
             .AddEnvironmentVariables()
             .Build();
 
-            var connectionString = configuration.GetConnectionString("Aiven");
+            var connectionString = configuration.GetConnectionString("MYSQLCONNSTR_WebApiDatabase");
 
             if (string.IsNullOrEmpty(connectionString))
             {
-                throw new InvalidOperationException("Connection string 'Aiven' not found.");
+                throw new InvalidOperationException("Connection string MYSQLCONNSTR_WebApiDatabase not found.");
             }
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
             optionsBuilder.UseMySql(connectionString, 

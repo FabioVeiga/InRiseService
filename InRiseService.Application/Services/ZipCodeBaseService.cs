@@ -22,6 +22,7 @@ namespace InRiseService.Application.Services
         {
             _logger = logger;
             _zipCodeBaseSettings = options.Value;
+            _zipCodeBaseSettings.ApiKey = Environment.GetEnvironmentVariable("ZipCodeBaseSettings_ApiKey")!;
             _httpClient = httpClient;
             _uri = $"{_zipCodeBaseSettings.Url}search?apikey={_zipCodeBaseSettings.ApiKey}&country={_zipCodeBaseSettings.CountryDefault}";
         }

@@ -8,8 +8,11 @@ using InRiseService.Infrastructure.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var secret = builder.Configuration.GetSection("AppSettings").GetValue<string>("Secret");
+//secrets
+var secret = Environment.GetEnvironmentVariable("AppSetting_Secret");
 var key = Encoding.ASCII.GetBytes(secret!);
+var con = builder.Configuration.GetConnectionString("MYSQLCONNSTR_WebApiDatabase");
+var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
 // Add services to the container.
 builder.Services.RegisterDependencies();
@@ -68,8 +71,6 @@ builder.Services.AddAuthentication(x =>
         };
     });
 
-var con = builder.Configuration.GetConnectionString("Aiven");
-
 builder.Services.AddDbContext<ApplicationContext>(opt =>
     opt.UseMySql(con,
     new MySqlServerVersion(new Version(8, 0, 23)), // Replace with your actual MySQL version
@@ -77,13 +78,7 @@ builder.Services.AddDbContext<ApplicationContext>(opt =>
     )
 );
 
-// builder.Services.AddDbContext<ApplicationContext>(opt =>
-//     opt.UseMySql(builder.Configuration.GetConnectionString("WebApiDatabase"),
-//     new MySqlServerVersion(new Version(8, 0, 23)))
-// );
-
 var app = builder.Build();
-var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
