@@ -22,13 +22,13 @@ namespace InRiseService.Application.Services
             _context = context;
             _logger = logger;
             _appSetting = options.Value;
+            _appSetting.Secret = Environment.GetEnvironmentVariable("AppSettingSecret")!;
         }
 
         public UserAutenticationAcessTokenDtoResponse GetTokenAsync(UserAutenticationDtoRequest request)
         {
             try
             {
-                System.Console.WriteLine($"recebido: {request.Email}");
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes(_appSetting.Secret);
                 var tokenDescriptor = new SecurityTokenDescriptor
