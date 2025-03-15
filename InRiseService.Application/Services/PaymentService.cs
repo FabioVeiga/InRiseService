@@ -20,10 +20,9 @@ namespace InRiseService.Application.Services
                 {
                     lineItens.Add(new SessionLineItemOptions(){
                         PriceData = new SessionLineItemPriceDataOptions(){
-                            Currency = "usd",
+                            Currency = "eur",
                             ProductData = new SessionLineItemPriceDataProductDataOptions(){
                                 Name = item.Name,
-
                             },
                             UnitAmountDecimal = item.Price,
                         },
