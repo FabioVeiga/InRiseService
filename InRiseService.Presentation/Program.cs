@@ -9,7 +9,7 @@ using InRiseService.Infrastructure.Extentions;
 var builder = WebApplication.CreateBuilder(args);
 
 //secrets
-var secret = Environment.GetEnvironmentVariable("AppSetting_Secret");
+var secret = Environment.GetEnvironmentVariable("AppSettingSecret");
 var key = Encoding.ASCII.GetBytes(secret!);
 var con = builder.Configuration.GetConnectionString("MYSQLCONNSTR_WebApiDatabase");
 var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");

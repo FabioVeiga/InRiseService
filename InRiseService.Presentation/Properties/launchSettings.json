@@ -23,7 +23,7 @@
         "MYSQLCONNSTR_WebApiDatabase": "Data Source=sql.freedb.tech; Initial Catalog=freedb_inrisedb; User Id=freedb_inriseuser; Password=cmXdCqgZW!P4gx%",
         "BlobStorageConection": "DefaultEndpointsProtocol=https;AccountName=inrisecomputadoresdev;AccountKey=RPLr76c/SaAvekwn2R/93ctylkVxpAKgatAWHJbG3KUHQM4enem8kXexB+Dkza9l0qXGBkzhfiSw+AStT6Gejg==;EndpointSuffix=core.windows.net",
         "SkipeAppKey": "sk_test_51PlB012KYHPXsQOeQJpI2TaOpNeE8xrOQslBN2lGHowq1MwgyZ1VP6L6UabuzAaGKU4kjsSwNPd0AGOfqyeawBbf00e81hGMh5",
-        "AppSetting_Secret": "d123d1bn23n132k1o23r1ieu2y1t31e3f2dagb23dgtu",
+        "AppSettingSecret": "d123d1bn23n132k1o23r1ieu2y1t31e3f2dagb23dgtu",
         "ZipCodeBaseSettings_ApiKey": "bb9599e0-f790-11ee-aa6d-07d99e62011c"
       }
     },
