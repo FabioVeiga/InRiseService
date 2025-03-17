@@ -60,18 +60,22 @@ jobs:
           slot-name: 'Production'
           package: .
 
+      - name: Zip ca.pem file
+        shell: bash
+        run: zip ca.zip ./path/to/ca.pem
+
       - name: Upload ca.pem to Azure Web App
         shell: pwsh
         run: |
           az webapp config appsettings set `
             --name apiinriseservice `
-            --resource-group "InRiseComputadoresDev" `
-            --settings CA_CERT_PATH=/home/site/wwwroot/caminho/ca.pem
+            --resource-group "SEU_RESOURCE_GROUP" `
+            --settings CA_CERT_PATH=/home/site/wwwroot/ca.pem
           
           az webapp deployment source config-zip `
-            --resource-group "InRiseComputadoresDev" `
+            --resource-group "SEU_RESOURCE_GROUP" `
             --name apiinriseservice `
-            --src-path ./caminho/ca.pem
+            --src ca.zip
         env:
           AZURE_CLIENT_ID: ${{ secrets.AZUREAPPSERVICE_CLIENTID_73D85DB5387C4B7293EA1F51993A967C }}
           AZURE_TENANT_ID: ${{ secrets.AZUREAPPSERVICE_TENANTID_6B8A7C2BFD39489195A631D1BAFB2BAB }}
