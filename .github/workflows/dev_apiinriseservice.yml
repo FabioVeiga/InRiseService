@@ -68,7 +68,7 @@ jobs:
         shell: pwsh
         run: |
           $zipFile = "ca.zip"
-          $fileToZip = "./caminho/ca.pem"  # Ajuste após depurar
+          $fileToZip = "D:\a\InRiseService\InRiseService"  # Ajuste após depurar
           Add-Type -AssemblyName System.IO.Compression.FileSystem
           [System.IO.Compression.ZipFile]::CreateFromDirectory((Get-Item $fileToZip).DirectoryName, $zipFile)
           Write-Host "Zip created: $zipFile"
