@@ -51,6 +51,7 @@ jobs:
           # Defina o caminho onde o arquivo .pem será criado
           $PEM_DIR = "caminho"
           $PEM_FILE = "$PEM_DIR/ca.pem"
+          $PEM_FILE_VALUE = $env:CA_CERT_VALUE
 
           # Verifique se o diretório existe, se não, crie-o
           if (-not (Test-Path -Path $PEM_DIR)) {
@@ -60,7 +61,7 @@ jobs:
           # Crie o arquivo .pem com conteúdo de exemplo (substitua pelo conteúdo real do seu certificado)
           $pemContent = @"
           -----BEGIN CERTIFICATE-----
-          [Seu conteúdo de certificado]
+          $PEM_FILE_VALUE
           -----END CERTIFICATE-----
           "@
           
@@ -82,14 +83,10 @@ jobs:
           $SOURCE_PATH = "caminho/ca.pem"
           $DEST_PATH = "caminho/ca.pem"
 
-          # Verificar se o caminho de origem e destino são diferentes
-          if ($SOURCE_PATH -ne $DEST_PATH) {
-            # Copiar o arquivo para o destino
-            Copy-Item -Path $SOURCE_PATH -Destination $DEST_PATH -Force
-            Write-Host "Arquivo .pem copiado para $DEST_PATH"
-          } else {
-            Write-Host "O arquivo de origem e destino são os mesmos, nenhuma cópia realizada."
-          }
+          # Copiar o arquivo para o destino
+          Copy-Item -Path $SOURCE_PATH -Destination $DEST_PATH -Force
+
+          Write-Host "Arquivo .pem copiado para $DEST_PATH"
         
       - name: Login to Azure
 
