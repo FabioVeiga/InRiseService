@@ -81,6 +81,10 @@ jobs:
           $RESOURCE_GROUP = "InRiseComputadoresDev"
           $PEM_FILE_PATH = "./caminho/ca.pem"
           $DESTINO = "/home/site/wwwroot/caminho/ca.pem"
+
+          # Recuperando credenciais armazenadas como secrets
+          $USERNAME = "${{ secrets.AZURE_USERNAME }}"
+          $PASSWORD = "${{ secrets.AZURE_PASSWORD }}"
   
           # Obter credenciais do Kudu - Recuperando o nome de usuário e a senha diretamente
           $PublishingProfile = az webapp deployment list-publishing-profiles --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --query '[0]' -o json
