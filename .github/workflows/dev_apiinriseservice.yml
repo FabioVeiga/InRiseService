@@ -60,14 +60,9 @@ jobs:
           slot-name: 'Production'
           package: .
 
-      - name: Zip ca.pem file using PowerShell
-        shell: pwsh
-        run: |
-          $zipFile = "ca.zip"
-          $fileToZip = "./InRiseService.Presentation/caminho/ca.pem"
-          Add-Type -AssemblyName System.IO.Compression.FileSystem
-          [System.IO.Compression.ZipFile]::CreateFromDirectory((Get-Item $fileToZip).DirectoryName, $zipFile)
-          Write-Host "Zip created: $zipFile"
+      - name: Zip ca.pem file
+        shell: bash
+        run: zip ca.zip ./InRiseService.Presentation/caminho/ca.pem
 
       - name: Upload ca.pem to Azure Web App
         shell: pwsh
