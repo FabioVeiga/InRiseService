@@ -112,4 +112,3 @@ jobs:
             Write-Host "Erro ao criar o arquivo .pem"
             exit 1
           }
-    
