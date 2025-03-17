@@ -60,9 +60,18 @@ jobs:
           slot-name: 'Production'
           package: .
 
-      - name: Zip ca.pem file
-        shell: bash
-        run: zip ca.zip ./caminho/ca.pem
+      - name: Debug - List files
+        shell: pwsh
+        run: Get-ChildItem -Recurse
+
+      - name: Zip ca.pem file using PowerShell
+        shell: pwsh
+        run: |
+          $zipFile = "ca.zip"
+          $fileToZip = "./caminho/ca.pem"  # Ajuste após depurar
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          [System.IO.Compression.ZipFile]::CreateFromDirectory((Get-Item $fileToZip).DirectoryName, $zipFile)
+          Write-Host "Zip created: $zipFile"
 
       - name: Upload ca.pem to Azure Web App
         shell: pwsh
@@ -80,7 +89,3 @@ jobs:
           AZURE_CLIENT_ID: ${{ secrets.AZUREAPPSERVICE_CLIENTID_73D85DB5387C4B7293EA1F51993A967C }}
           AZURE_TENANT_ID: ${{ secrets.AZUREAPPSERVICE_TENANTID_6B8A7C2BFD39489195A631D1BAFB2BAB }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FEE4818FF6B446C49500A72E348EFF9B }}
-
-      - name: Debug - List files
-        shell: pwsh
-        run: Get-ChildItem -Recurse
