@@ -44,7 +44,23 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-      
+        
+      - name: Login to Azure
+
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_73D85DB5387C4B7293EA1F51993A967C }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6B8A7C2BFD39489195A631D1BAFB2BAB }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FEE4818FF6B446C49500A72E348EFF9B }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'apiinriseservice'
+          slot-name: 'Production'
+          package: .
+
       - name: Create .pem file if not exists
         shell: pwsh
         run: |
@@ -76,21 +92,4 @@ jobs:
             Write-Host "Erro ao criar o arquivo .pem"
             exit 1
           }
-        
-      - name: Login to Azure
-
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_73D85DB5387C4B7293EA1F51993A967C }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6B8A7C2BFD39489195A631D1BAFB2BAB }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FEE4818FF6B446C49500A72E348EFF9B }}
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'apiinriseservice'
-          slot-name: 'Production'
-          package: .
-
           
