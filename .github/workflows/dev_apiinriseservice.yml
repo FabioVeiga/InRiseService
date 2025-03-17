@@ -60,6 +60,10 @@ jobs:
           slot-name: 'Production'
           package: .
 
+      - name: Debug - List files
+        shell: pwsh
+        run: Get-ChildItem -Recurse
+
       - name: Zip ca.pem file
         shell: bash
         run: zip ca.zip ./InRiseService.Presentation/caminho/ca.pem
