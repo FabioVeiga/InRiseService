@@ -56,6 +56,24 @@ jobs:
           if (-not (Test-Path -Path $PEM_DIR)) {
             New-Item -ItemType Directory -Path $PEM_DIR -Force
           }
+
+          # Crie o arquivo .pem com conteúdo de exemplo (substitua pelo conteúdo real do seu certificado)
+          $pemContent = @"
+          -----BEGIN CERTIFICATE-----
+          [Seu conteúdo de certificado]
+          -----END CERTIFICATE-----
+          "@
+          
+          # Crie ou sobrescreva o arquivo .pem
+          Set-Content -Path $PEM_FILE -Value $pemContent
+          
+          # Verifique se o arquivo foi criado com sucesso
+          if (Test-Path -Path $PEM_FILE) {
+            Write-Host "Arquivo .pem criado com sucesso em $PEM_FILE"
+          } else {
+            Write-Host "Erro ao criar o arquivo .pem"
+            exit 1
+          }
         
       - name: Login to Azure
 
@@ -73,3 +91,4 @@ jobs:
           slot-name: 'Production'
           package: .
 
+          
