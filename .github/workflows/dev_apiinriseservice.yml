@@ -60,19 +60,21 @@ jobs:
           slot-name: 'Production'
           package: .
 
-      - name: Upload .pem file to WebApp
+      - name: Upload ca.pem file to WebApp
+        shell: pwsh
         run: |
           # Variáveis
-          WEBAPP_NAME="apiinriseservice"
-          RESOURCE_GROUP="InRiseComputadoresDev"
-          PEM_FILE_PATH="./caminho/ca.pem"
-          DESTINO="/home/site/wwwroot/caminho/ca.pem"
-
+          $WEBAPP_NAME = "apiinriseservice"
+          $RESOURCE_GROUP = "InRiseComputadoresDev"
+          $PEM_FILE_PATH = "./caminho/ca.pem"
+          $DESTINO = "/home/site/wwwroot/caminho/ca.pem"
+  
           # Obter credenciais do Kudu
-          USERNAME=$(az webapp deployment list-publishing-profiles --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --query '[0].userName' -o tsv)
-          PASSWORD=$(az webapp deployment list-publishing-profiles --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --query '[0].userPWD' -o tsv)
-
+          $USERNAME = az webapp deployment list-publishing-profiles --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --query '[0].userName' -o tsv
+          $PASSWORD = az webapp deployment list-publishing-profiles --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --query '[0].userPWD' -o tsv
+  
+          # Criar cabeçalho de autenticação
+          $AuthHeader = @{ Authorization = "Basic " + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$USERNAME`:$PASSWORD")) }
+  
           # Subir o arquivo para o WebApp
-          curl -X PUT -u "$USERNAME:$PASSWORD" \
-            --upload-file $PEM_FILE_PATH \
-            "https://$WEBAPP_NAME.scm.azurewebsites.net/api/vfs/$DESTINO"
+          Invoke-RestMethod -Uri "https://$WEBAPP_NAME.scm.azurewebsites.net/api/vfs/$DESTINO" -Method Put -Headers $AuthHeader -InFile $PEM_FILE_PATH
