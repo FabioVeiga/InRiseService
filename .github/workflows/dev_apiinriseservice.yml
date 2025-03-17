@@ -55,7 +55,7 @@ jobs:
 
       - name: Fetch secrets from Azure Key Vault
         id: azure-key-vault
-        uses: azure/azure-keyvault@v2
+        uses: azure/azure-keyvault@v1.4.3
         with:
           secrets: |
             AZUREAPPSERVICE_CLIENTID
