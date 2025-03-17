@@ -60,6 +60,19 @@ jobs:
           slot-name: 'Production'
           package: .
 
+      - name: Create PEM file path
+        shell: pwsh
+        run: |
+          # Criar diretório, se necessário
+          $PEM_FILE_PATH = "./caminho"
+          New-Item -ItemType Directory -Path $PEM_FILE_PATH -Force | Out-Null
+
+          # Criar ou mover o arquivo .pem para o caminho esperado
+          $FILE_PATH = "$PEM_FILE_PATH/ca.pem"
+          Set-Content -Path $FILE_PATH -Value "-----BEGIN CERTIFICATE-----
+          [Certificado ou conteúdo do arquivo .pem]
+          -----END CERTIFICATE-----"
+
       - name: Upload ca.pem file to WebApp
         shell: pwsh
         run: |
