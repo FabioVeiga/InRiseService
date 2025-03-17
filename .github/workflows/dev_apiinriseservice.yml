@@ -61,13 +61,21 @@ jobs:
           slot-name: 'Production'
           package: .
 
-      - name: Create folder and generate ca.pem file
+      - name: Create .pem file if not exists
+        shell: pwsh
         run: |
-          # Cria a pasta no diretório atual (ou em outro caminho, se necessário)
-          mkdir -p ./caminho
-          
-          # Cria o arquivo ca.pem com o conteúdo desejado (substitua com o conteúdo real do arquivo .pem)
-          echo "-----BEGIN CERTIFICATE-----
+          # Defina o caminho onde o arquivo .pem será criado
+          $PEM_DIR = "caminho"
+          $PEM_FILE = "$PEM_DIR/ca.pem"
+
+          # Verifique se o diretório existe, se não, crie-o
+          if (-not (Test-Path -Path $PEM_DIR)) {
+            New-Item -ItemType Directory -Path $PEM_DIR -Force
+          }
+
+          # Crie o arquivo .pem com conteúdo de exemplo (substitua pelo conteúdo real do seu certificado)
+          $pemContent = @"
+          -----BEGIN CERTIFICATE-----
           MIIEQTCCAqmgAwIBAgIUTkpG7P62MTLXsR51K80i9uZKwd0wDQYJKoZIhvcNAQEM
           BQAwOjE4MDYGA1UEAwwvYmUyNmJmNTctYzE3OC00ZjU3LWIzYTgtYWJiODQxMDUx
           OWZlIFByb2plY3QgQ0EwHhcNMjQxMTEwMDEzNDM5WhcNMzQxMTA4MDEzNDM5WjA6
@@ -91,5 +99,17 @@ jobs:
           IPEiG07dkQ3jHehDoMn4Wkq5H+FCJhWnjbqIYnQGRhuzhOgIrrU6EEK9MezsJj0c
           G/MUbrbAmQQxMsMY6IgkOYi4khH2VB5STpNR8N7q4WEvYfLcGXdR5UKFSnrCjFog
           sYqwEGvOb0FdlbKQuCGOnZXHxCw32B9IxfY7atMvaOx52IaprA==
-          -----END CERTIFICATE-----" > ./caminho/ca.pem
-
+          -----END CERTIFICATE-----
+          "@
+          
+          # Crie ou sobrescreva o arquivo .pem
+          Set-Content -Path $PEM_FILE -Value $pemContent
+          
+          # Verifique se o arquivo foi criado com sucesso
+          if (Test-Path -Path $PEM_FILE) {
+            Write-Host "Arquivo .pem criado com sucesso em $PEM_FILE"
+          } else {
+            Write-Host "Erro ao criar o arquivo .pem"
+            exit 1
+          }
+    
