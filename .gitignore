@@ -401,3 +401,4 @@ Ajuda/scripts.txt
 InRiseService.Presentation/appsettings.Production.json
 InRiseService.Presentation/appsettings.Development.json
 caminho/ca.pem
+InRiseService.Presentation/Properties/launchSettings.json
