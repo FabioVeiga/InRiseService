@@ -62,7 +62,7 @@ jobs:
 
       - name: Zip ca.pem file
         shell: bash
-        run: zip ca.zip ./caminho/ca.pem
+        run: zip ca.zip ./InRiseService.Presentation/caminho/ca.pem
 
       - name: Upload ca.pem to Azure Web App
         shell: pwsh
