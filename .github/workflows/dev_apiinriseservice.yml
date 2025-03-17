@@ -60,9 +60,14 @@ jobs:
           slot-name: 'Production'
           package: .
 
-      - name: Zip ca.pem file
-        shell: bash
-        run: zip ca.zip ./InRiseService.Presentation/caminho/ca.pem
+      - name: Zip ca.pem file using PowerShell
+        shell: pwsh
+        run: |
+          $zipFile = "ca.zip"
+          $fileToZip = "./caminho/ca.pem"
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          [System.IO.Compression.ZipFile]::CreateFromDirectory((Get-Item $fileToZip).DirectoryName, $zipFile)
+          Write-Host "Zip created: $zipFile"
 
       - name: Upload ca.pem to Azure Web App
         shell: pwsh
@@ -70,7 +75,7 @@ jobs:
           az webapp config appsettings set `
             --name apiinriseservice `
             --resource-group "InRiseComputadoresDev" `
-            --settings CA_CERT_PATH=/home/site/wwwroot/ca.pem
+            --settings CA_CERT_PATH=/home/site/wwwroot/caminho/ca.pem
           
           az webapp deployment source config-zip `
             --resource-group "InRiseComputadoresDev" `
