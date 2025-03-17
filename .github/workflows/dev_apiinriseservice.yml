@@ -84,3 +84,5 @@ jobs:
           app-name: 'apiinriseservice'
           slot-name: 'Production'
           package: .
+
+          
