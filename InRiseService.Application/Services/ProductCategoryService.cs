@@ -52,6 +52,10 @@ namespace InRiseService.Application.Services
                         ? query.Where(x => x.DeleteIn != null)
                         : query.Where(x => x.DeleteIn == null);
 
+                if(!string.IsNullOrEmpty(filter.ValueTypeProducts)){
+                    query = query.Where(x => x.Products.Any(p => p.ValueTypeProducts.Contains(filter.ValueTypeProducts)));
+                }
+
                 var listResultDto = query.Select(x => new ProductCategoryResponseDto()
                 {
                     Id = x.Id,
