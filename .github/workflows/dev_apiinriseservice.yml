@@ -37,32 +37,21 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # Requisito para JWT
-      contents: read  # Para usar o Key Vault
+      id-token: write # This is required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-
+        
       - name: Login to Azure
+
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Fetch secrets from Azure Key Vault
-        id: azure-key-vault
-        uses: azure/azure-keyvault@v1.4.3
-        with:
-          secrets: |
-            AZUREAPPSERVICE_CLIENTID
-            AZUREAPPSERVICE_TENANTID
-            AZUREAPPSERVICE_SUBSCRIPTIONID
-            CA_CERT_VALUE
-          keyvault: 'SecretsInriseDev'
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_73D85DB5387C4B7293EA1F51993A967C }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6B8A7C2BFD39489195A631D1BAFB2BAB }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FEE4818FF6B446C49500A72E348EFF9B }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -75,25 +64,27 @@ jobs:
       - name: Create .pem file if not exists
         shell: pwsh
         run: |
-          # Caminho para o arquivo .pem
+          # Defina o caminho onde o arquivo .pem será criado
           $PEM_DIR = "caminho"
           $PEM_FILE = "$PEM_DIR/ca.pem"
+          $PEM_FILE_VALUE = "MIIEQTCCAqmgAwIBAgIUTkpG7P62MTLXsR51K80i9uZKwd0wDQYJKoZIhvcNAQEMBQAwOjE4MDYGA1UEAwwvYmUyNmJmNTctYzE3OC00ZjU3LWIzYTgtYWJiODQxMDUxOWZlIFByb2plY3QgQ0EwHhcNMjQxMTEwMDEzNDM5WhcNMzQxMTA4MDEzNDM5WjA6MTgwNgYDVQQDDC9iZTI2YmY1Ny1jMTc4LTRmNTctYjNhOC1hYmI4NDEwNTE5ZmUgUHJvamVjdCBDQTCCAaIwDQYJKoZIhvcNAQEBBQADggGPADCCAYoCggGBAOeeZG3sziPrg3Ml8xMPy/nJrlTGNQ8xm/lABrf/dGZ/umFXGcwtOquSrLyaNRvprabnkzCwoTOjv6BNdq9HrfVHq/LOHhtOh+hjknX3e/ziHmamMCf5zasDcvJO0mC4uYqFbMzGu2mCcMaxMjlUXgodtp83UOcFYI8cuWWU/fS6aVCL5HaXkOOKSB2HiEa43TVHKcz4NjqBp3l0H6aL5JR3fCEGrk/5eNyKAMyqkF+7AjjK9IMoyy3IYmPI0uJkSy872y+IgHRAdjOG60QN60v1fhVAUKsunkWZ61OtW2iNnR8MfrzNkb8MUjIp2M4bLb4euQaeA/7LxK4v1GAir2OKuwonJsSWjyXeYZm7Xz0JXFOLlStB7cxhfCfCP6XcwD4MNhPbUbRz32hIZfVliKcAC33rttwFZ37FAVjJWSkwYJxr7MX2cmp7u4gWX1U6OUHIS4SPd4h2A0Hod7shN0uKX9X+9/YlpMuBRfOs9ffLZvcttywxMT0ka7pfdY4fYwIDAQABoz8wPTAdBgNVHQ4EFgQU9sbOAzPC8Q0J2UeMLYsdB8PriKkwDwYDVR0TBAgwBgEB/wIBADALBgNVHQ8EBAMCAQYwDQYJKoZIhvcNAQEMBQADggGBAIqKiVWsTNPhg1rAoqizWpiREDq6G/yOlBgUqWXxZLajLpk4S3Mgr+j+GYtrdb8VkLm8Lygsj0LA0sQcDQ6tvdk1loacDLiaLNOnqrA6IqXSTsfqK/FoIR7yd0F34oJYiwWj76CEYh98Q6bpFE9dgD+R0kJy/8WD1GSht3IPW7rTLAL14rsBHPmQhLo1GlQGb+KG7gYtMw2MjlZAfdSS5lIwTgdT+4S0b+22AZmZxX6wKqbXR5BsJuSNnlIaq8/771wt9leO1UfZjbZaDc5FW27Sxp/3ohzE4+T9Z7N2+sW/Q5h4ze9NQ7a0/UDUSd7sUe9WyV+VNI6Wmew8IPEiG07dkQ3jHehDoMn4Wkq5H+FCJhWnjbqIYnQGRhuzhOgIrrU6EEK9MezsJj0cG/MUbrbAmQQxMsMY6IgkOYi4khH2VB5STpNR8N7q4WEvYfLcGXdR5UKFSnrCjFogsYqwEGvOb0FdlbKQuCGOnZXHxCw32B9IxfY7atMvaOx52IaprA=="
+          Write-Host "O valor da variável de ambiente PEM_FILE_VALUE é: $PEM_FILE_VALUE"
 
           # Verifique se o diretório existe, se não, crie-o
           if (-not (Test-Path -Path $PEM_DIR)) {
             New-Item -ItemType Directory -Path $PEM_DIR -Force
           }
 
-          # Crie o arquivo .pem com conteúdo do secret
+          # Crie o arquivo .pem com conteúdo de exemplo
           $pemContent = @"
           -----BEGIN CERTIFICATE-----
-          ${{ steps.azure-key-vault.outputs.CA_CERT_VALUE }}
+          $PEM_FILE_VALUE
           -----END CERTIFICATE-----
           "@
-
+          
           # Crie ou sobrescreva o arquivo .pem
           Set-Content -Path $PEM_FILE -Value $pemContent
-
+          
           # Verifique se o arquivo foi criado com sucesso
           if (Test-Path -Path $PEM_FILE) {
             Write-Host "Arquivo .pem criado com sucesso em $PEM_FILE"
@@ -101,3 +92,4 @@ jobs:
             Write-Host "Erro ao criar o arquivo .pem"
             exit 1
           }
+          
