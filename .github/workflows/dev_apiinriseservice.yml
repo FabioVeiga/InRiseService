@@ -45,7 +45,11 @@ jobs:
         with:
           name: .net-app
       
+      - name: Copy ca.pem file
+        run: cp caminho/ca.pem cacminho
+        
       - name: Login to Azure
+
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_73D85DB5387C4B7293EA1F51993A967C }}
@@ -59,40 +63,3 @@ jobs:
           app-name: 'apiinriseservice'
           slot-name: 'Production'
           package: .
-
-      - name: Create PEM file path
-        shell: pwsh
-        run: |
-          # Criar diretório, se necessário
-          $PEM_FILE_PATH = "./caminho"
-          New-Item -ItemType Directory -Path $PEM_FILE_PATH -Force | Out-Null
-
-          # Criar ou mover o arquivo .pem para o caminho esperado
-          $FILE_PATH = "$PEM_FILE_PATH/ca.pem"
-          Set-Content -Path $FILE_PATH -Value "-----BEGIN CERTIFICATE-----
-          [Certificado ou conteúdo do arquivo .pem]
-          -----END CERTIFICATE-----"
-
-      - name: Upload ca.pem file to WebApp
-        shell: pwsh
-        run: |
-          # Variáveis
-          $WEBAPP_NAME = "apiinriseservice"
-          $RESOURCE_GROUP = "InRiseComputadoresDev"
-          $PEM_FILE_PATH = "./caminho/ca.pem"
-          $DESTINO = "/home/site/wwwroot/caminho/ca.pem"
-
-          # Recuperando credenciais armazenadas como secrets
-          $USERNAME = "${{ secrets.AZURE_USERNAME }}"
-          $PASSWORD = "${{ secrets.AZURE_PASSWORD }}"
-  
-          # Obter credenciais do Kudu - Recuperando o nome de usuário e a senha diretamente
-          $PublishingProfile = az webapp deployment list-publishing-profiles --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --query '[0]' -o json
-          $USERNAME = ($PublishingProfile | ConvertFrom-Json).userName
-          $PASSWORD = ($PublishingProfile | ConvertFrom-Json).userPWD
-
-          # Criar cabeçalho de autenticação
-          $AuthHeader = @{ Authorization = "Basic " + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$USERNAME`:$PASSWORD")) }
-
-          # Subir o arquivo para o WebApp
-          Invoke-RestMethod -Uri "https://$WEBAPP_NAME.scm.azurewebsites.net/api/vfs$DESTINO" -Method Put -Headers $AuthHeader -InFile $PEM_FILE_PATH
