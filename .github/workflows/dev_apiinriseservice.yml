@@ -51,7 +51,8 @@ jobs:
           # Defina o caminho onde o arquivo .pem será criado
           $PEM_DIR = "caminho"
           $PEM_FILE = "$PEM_DIR/ca.pem"
-           $PEM_FILE_VALUE = "${{ env.CA_CERT_VALUE }}"
+          $PEM_FILE_VALUE = "${{ env.CA_CERT_VALUE }}"
+          Write-Host "O valor da variável de ambiente PEM_FILE_VALUE é: $PEM_FILE_VALUE"
 
           # Verifique se o diretório existe, se não, crie-o
           if (-not (Test-Path -Path $PEM_DIR)) {
