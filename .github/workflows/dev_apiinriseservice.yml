@@ -82,12 +82,13 @@ jobs:
           $PEM_FILE_PATH = "./caminho/ca.pem"
           $DESTINO = "/home/site/wwwroot/caminho/ca.pem"
   
-          # Obter credenciais do Kudu
-          $USERNAME = az webapp deployment list-publishing-profiles --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --query '[0].userName' -o tsv
-          $PASSWORD = az webapp deployment list-publishing-profiles --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --query '[0].userPWD' -o tsv
-  
+          # Obter credenciais do Kudu - Recuperando o nome de usuário e a senha diretamente
+          $PublishingProfile = az webapp deployment list-publishing-profiles --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --query '[0]' -o json
+          $USERNAME = ($PublishingProfile | ConvertFrom-Json).userName
+          $PASSWORD = ($PublishingProfile | ConvertFrom-Json).userPWD
+
           # Criar cabeçalho de autenticação
           $AuthHeader = @{ Authorization = "Basic " + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$USERNAME`:$PASSWORD")) }
-  
+
           # Subir o arquivo para o WebApp
-          Invoke-RestMethod -Uri "https://$WEBAPP_NAME.scm.azurewebsites.net/api/vfs/$DESTINO" -Method Put -Headers $AuthHeader -InFile $PEM_FILE_PATH
+          Invoke-RestMethod -Uri "https://$WEBAPP_NAME.scm.azurewebsites.net/api/vfs$DESTINO" -Method Put -Headers $AuthHeader -InFile $PEM_FILE_PATH
