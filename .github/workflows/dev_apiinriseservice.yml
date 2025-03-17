@@ -1,93 +1,101 @@
-name: Build and deploy ASP.Net Core app to Azure Web App - apiinriseservice
+  name: Build and deploy ASP.Net Core app to Azure Web App - apiinriseservice
 
-on:
-  push:
-    branches:
-      - dev
-  workflow_dispatch:
+  on:
+    push:
+      branches:
+        - dev
+    workflow_dispatch:
 
-jobs:
-  build:
-    runs-on: windows-latest
+  jobs:
+    build:
+      runs-on: windows-latest
 
-    steps:
-      - uses: actions/checkout@v4
+      steps:
+        - uses: actions/checkout@v4
 
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.x'
+        - name: Set up .NET Core
+          uses: actions/setup-dotnet@v4
+          with:
+            dotnet-version: '8.x'
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+        - name: Build with dotnet
+          run: dotnet build --configuration Release
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        - name: dotnet publish
+          run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+        - name: Upload artifact for deployment job
+          uses: actions/upload-artifact@v4
+          with:
+            name: .net-app
+            path: ${{env.DOTNET_ROOT}}/myapp
 
-  deploy:
-    runs-on: windows-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write # This is required for requesting the JWT
+        - name: Fetch secrets from Azure Key Vault
+          id: azure-key-vault
+          uses: azure/azure-keyvault@v2
+          with:
+            secrets: |
+              CA_CERT_VALUE
+            keyvault: 'SecretsInriseDev'
 
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: .net-app
-        
-      - name: Login to Azure
+    deploy:
+      runs-on: windows-latest
+      needs: build
+      environment:
+        name: 'Production'
+        url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      permissions:
+        id-token: write # This is required for requesting the JWT
 
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_73D85DB5387C4B7293EA1F51993A967C }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6B8A7C2BFD39489195A631D1BAFB2BAB }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FEE4818FF6B446C49500A72E348EFF9B }}
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'apiinriseservice'
-          slot-name: 'Production'
-          package: .
-
-      - name: Create .pem file if not exists
-        shell: pwsh
-        run: |
-          # Defina o caminho onde o arquivo .pem será criado
-          $PEM_DIR = "caminho"
-          $PEM_FILE = "$PEM_DIR/ca.pem"
-
-          # Verifique se o diretório existe, se não, crie-o
-          if (-not (Test-Path -Path $PEM_DIR)) {
-            New-Item -ItemType Directory -Path $PEM_DIR -Force
-          }
-
-          # Crie o arquivo .pem com conteúdo de exemplo
-          $pemContent = @"
-          -----BEGIN CERTIFICATE-----
-          ${{ env.CA_CERT_VALUE }}
-          -----END CERTIFICATE-----
-          "@
+      steps:
+        - name: Download artifact from build job
+          uses: actions/download-artifact@v4
+          with:
+            name: .net-app
           
-          # Crie ou sobrescreva o arquivo .pem
-          Set-Content -Path $PEM_FILE -Value $pemContent
-          
-          # Verifique se o arquivo foi criado com sucesso
-          if (Test-Path -Path $PEM_FILE) {
-            Write-Host "Arquivo .pem criado com sucesso em $PEM_FILE"
-          } else {
-            Write-Host "Erro ao criar o arquivo .pem"
-            exit 1
-          }
-          
+        - name: Login to Azure
+
+          uses: azure/login@v2
+          with:
+            client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_73D85DB5387C4B7293EA1F51993A967C }}
+            tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6B8A7C2BFD39489195A631D1BAFB2BAB }}
+            subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FEE4818FF6B446C49500A72E348EFF9B }}
+
+        - name: Deploy to Azure Web App
+          id: deploy-to-webapp
+          uses: azure/webapps-deploy@v3
+          with:
+            app-name: 'apiinriseservice'
+            slot-name: 'Production'
+            package: .
+
+        - name: Create .pem file if not exists
+          shell: pwsh
+          run: |
+            # Defina o caminho onde o arquivo .pem será criado
+            $PEM_DIR = "caminho"
+            $PEM_FILE = "$PEM_DIR/ca.pem"
+
+            # Verifique se o diretório existe, se não, crie-o
+            if (-not (Test-Path -Path $PEM_DIR)) {
+              New-Item -ItemType Directory -Path $PEM_DIR -Force
+            }
+
+            # Crie o arquivo .pem com conteúdo de exemplo
+            $pemContent = @"
+            -----BEGIN CERTIFICATE-----
+              ${{ steps.azure-key-vault.outputs.CA_CERT_VALUE }}
+            -----END CERTIFICATE-----
+            "@
+            
+            # Crie ou sobrescreva o arquivo .pem
+            Set-Content -Path $PEM_FILE -Value $pemContent
+            
+            # Verifique se o arquivo foi criado com sucesso
+            if (Test-Path -Path $PEM_FILE) {
+              Write-Host "Arquivo .pem criado com sucesso em $PEM_FILE"
+            } else {
+              Write-Host "Erro ao criar o arquivo .pem"
+              exit 1
+            }
+            
