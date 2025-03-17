@@ -56,18 +56,6 @@ jobs:
           if (-not (Test-Path -Path $PEM_DIR)) {
             New-Item -ItemType Directory -Path $PEM_DIR -Force
           }
-      
-      - name: Copy .pem file to destination
-        shell: pwsh
-        run: |
-          # Caminho de origem e destino para copiar o arquivo
-          $SOURCE_PATH = "caminho/ca.pem"
-          $DEST_PATH = "caminho/ca.pem"
-
-          # Copiar o arquivo para o destino
-          Copy-Item -Path $SOURCE_PATH -Destination $DEST_PATH -Force
-
-          Write-Host "Arquivo .pem copiado para $DEST_PATH"
         
       - name: Login to Azure
 
@@ -85,4 +73,3 @@ jobs:
           slot-name: 'Production'
           package: .
 
-          
