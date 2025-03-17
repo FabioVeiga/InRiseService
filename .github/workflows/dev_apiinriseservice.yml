@@ -61,14 +61,16 @@ jobs:
           package: .
 
       - name: Upload ca.pem to Azure Web App
+        shell: pwsh
         run: |
-          az webapp config appsettings set --name apiinriseservice \
-            --resource-group <SEU_RESOURCE_GROUP> \
+          az webapp config appsettings set `
+            --name apiinriseservice `
+            --resource-group "InRiseComputadoresDev" `
             --settings CA_CERT_PATH=/home/site/wwwroot/caminho/ca.pem
           
-          az webapp deployment source config-zip \
-            --resource-group <SEU_RESOURCE_GROUP> \
-            --name apiinriseservice \
+          az webapp deployment source config-zip `
+            --resource-group "InRiseComputadoresDev" `
+            --name apiinriseservice `
             --src-path ./caminho/ca.pem
         env:
           AZURE_CLIENT_ID: ${{ secrets.AZUREAPPSERVICE_CLIENTID_73D85DB5387C4B7293EA1F51993A967C }}
